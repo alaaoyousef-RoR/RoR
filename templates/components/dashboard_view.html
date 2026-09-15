@@ -1,0 +1,183 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     VIEW: MAIN DASHBOARD (لوحة المؤشرات والأداء)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="view-section active" id="view-kpi-dashboard">
+  
+  <!-- Header Banner -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+    <div>
+      <h1 style="font-size:1.6rem;font-weight:800;color:var(--text-primary);margin-bottom:4px;">
+        لوحة قيادة الأداء والعمليات لـ RoR
+      </h1>
+      <p style="font-size:0.85rem;color:var(--text-secondary);">
+        المرحلة الانتقالية بعد 4 سنوات تشغيل • التركيز على الكفاءة التشغيلية ونمو مبيعات الجملة
+      </p>
+    </div>
+    <div style="display:flex;gap:0.75rem;">
+      <button onclick="triggerAiAdvisor()" class="btn btn-primary">
+        <span>🤖</span> استشارة الذكاء الاصطناعي
+      </button>
+      <button onclick="exportCafeSalesCSV()" class="btn btn-secondary">
+        <span>📊</span> تصدير تقرير البار
+      </button>
+    </div>
+  </div>
+
+  <!-- 4 KPI Cards Grid -->
+  <div class="kpi-grid">
+    <!-- 1. Cafe Bar Revenue -->
+    <div class="kpi-card">
+      <div class="kpi-icon blue">☕</div>
+      <div class="kpi-content">
+        <div class="kpi-label">إيرادات البار (المقهى)</div>
+        <div class="kpi-value" id="kpiBarRevenue">0 ر.س</div>
+        <div class="kpi-change positive">
+          <span>▲ +14.2%</span> مقارنة بمتوسط الأسابيع السابقة
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Roastery Wholesale Revenue -->
+    <div class="kpi-card">
+      <div class="kpi-icon dark">🌱</div>
+      <div class="kpi-content">
+        <div class="kpi-label">مبيعات المحمصة (الجملة والأرباع)</div>
+        <div class="kpi-value" id="kpiRoastRevenue">0 ر.س</div>
+        <div class="kpi-change positive">
+          <span>▲ +28.5%</span> حماصة جيسن 15 كجم
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Total Expenses -->
+    <div class="kpi-card">
+      <div class="kpi-icon orange">💳</div>
+      <div class="kpi-content">
+        <div class="kpi-label">إجمالي الالتزامات والمصاريف</div>
+        <div class="kpi-value" id="kpiTotalExpenses">0 ر.س</div>
+        <div class="kpi-change" style="color:var(--text-secondary);">
+          <span>● تكاليف محكومة</span> ثابتة ومتغيرة
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Net Operating Income -->
+    <div class="kpi-card">
+      <div class="kpi-icon green">💰</div>
+      <div class="kpi-content">
+        <div class="kpi-label">صافي التدفق التشغيلي</div>
+        <div class="kpi-value" id="kpiNetIncome">0 ر.س</div>
+        <div class="kpi-change positive">
+          <span>✓ فائض سيولة</span> بعد الوفاء بالمصاريف
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart & Top Sellers 2-Column Section -->
+  <div style="display:grid;grid-template-columns: 2fr 1fr;gap:1.5rem;margin-bottom:1.5rem;">
+    
+    <!-- Main Trend Chart -->
+    <div class="content-card" style="margin-bottom:0;display:flex;flex-direction:column;">
+      <div class="card-header">
+        <div>
+          <h3>📈 مسار الإيرادات والمصاريف التشغيلية</h3>
+          <div class="card-subtitle">تطور الأداء المالي على مدار الـ 8 أسابيع</div>
+        </div>
+        <span class="badge badge-blue">مباشر • محدث</span>
+      </div>
+      <div style="flex:1;min-height:300px;position:relative;">
+        <canvas id="revenueExpensesChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Top Sellers Table Card -->
+    <div class="content-card" style="margin-bottom:0;">
+      <div class="card-header">
+        <div>
+          <h3>⭐ الأصناف الأكثر ربحية</h3>
+          <div class="card-subtitle">وفق معادلة المساهمة والطلب</div>
+        </div>
+        <a href="#menu-engineering" class="btn btn-ghost" style="padding:4px 8px;font-size:12px;">المزيد</a>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>الصنف</th>
+              <th>السعر</th>
+              <th>الهامش</th>
+              <th>الحالة</th>
+            </tr>
+          </thead>
+          <tbody id="topSellersBody">
+            <!-- Populated via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Operational Overview Row -->
+  <div style="display:grid;grid-template-columns: 1fr 1fr;gap:1.5rem;">
+    
+    <!-- 40-Task Plan Progress Summary -->
+    <div class="content-card" style="margin-bottom:0;">
+      <div class="card-header">
+        <div>
+          <h3>📋 جاهزية خطة الـ 40 مهمة</h3>
+          <div class="card-subtitle">المهام المعتمدة للمرحلة الانتقالية</div>
+        </div>
+        <span class="badge badge-oxford">خطة 8 أسابيع</span>
+      </div>
+      <div style="margin-bottom:1.25rem;">
+        <div style="display:flex;justify-content:space-between;font-size:0.85rem;font-weight:700;margin-bottom:0.4rem;">
+          <span>نسبة إنجاز المهام الكلية</span>
+          <span><span id="completedTasks">0</span> / 40 مهمة</span>
+        </div>
+        <div class="progress-bar" style="height:10px;">
+          <div class="progress-fill" id="taskProgressFill" style="width: 0%;"></div>
+        </div>
+      </div>
+      <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;">
+        تم استكمال حصر الأصول وضبط أسعار التكلفة المعيارية ومصفوفة المسؤوليات RACI. يجري حالياً تفعيل حسابات التكلفة الأساسية وخطة التوسع.
+      </p>
+      <div style="margin-top:1rem;">
+        <a href="#40-tasks" class="btn btn-secondary" style="font-size:12px;">
+          عرض جدول المهام بالكامل ➔
+        </a>
+      </div>
+    </div>
+
+    <!-- AI Business Advisor Highlights -->
+    <div class="content-card" style="margin-bottom:0;background:linear-gradient(135deg,#FFFFFF 0%,var(--bg-cream) 100%);">
+      <div class="card-header">
+        <div>
+          <h3 style="color:var(--primary-accent);">🤖 المستشار الذكي لـ RoR (Gemini AI)</h3>
+          <div class="card-subtitle">تحليل فوري لقوائم الدخل والمبيعات والتحميص</div>
+        </div>
+        <span class="badge badge-green">مفعل</span>
+      </div>
+      <div style="font-size:0.84rem;color:var(--text-primary);line-height:1.65;margin-bottom:1rem;">
+        <div style="display:flex;gap:0.5rem;align-items:flex-start;margin-bottom:0.5rem;">
+          <span style="color:#16A34A;font-weight:bold;">✓</span>
+          <span><strong>مبيعات الجملة:</strong> حماصة جيسن 15 كجم تحقق أعلى عائد نقدي لكل ساعة تشغيل، وينصح برفع عدد المقاهي المتعاقدة إلى 10.</span>
+        </div>
+        <div style="display:flex;gap:0.5rem;align-items:flex-start;margin-bottom:0.5rem;">
+          <span style="color:#0066FF;font-weight:bold;">✓</span>
+          <span><strong>كفاءة البار:</strong> شفت المساء لـ "علم" يسجل متوسط فاتورة 26.8 ر.س نتيجة إقبال الحلويات، وفرصة لمضاعفة مشروبات الكولد برو.</span>
+        </div>
+        <div style="display:flex;gap:0.5rem;align-items:flex-start;">
+          <span style="color:#FD980E;font-weight:bold;">✓</span>
+          <span><strong>نقطة التعادل:</strong> تتطلب تغطية التكاليف الثابتة بيع 68 كوباً يومياً، ويحقق الفرع حالياً متوسط 140 كوباً يومياً (أمان مالي مرتفع).</span>
+        </div>
+      </div>
+      <button onclick="triggerAiAdvisor()" class="btn btn-primary" style="font-size:12px;width:100%;justify-content:center;">
+        تحديث التحليل وتوليد توصيات مخصصة
+      </button>
+    </div>
+
+  </div>
+
+</div>

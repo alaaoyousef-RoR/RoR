@@ -1,0 +1,402 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     VIEW: 40-TASK PLAN (خطة الـ 40 مهمة)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="view-section" id="view-40-tasks">
+  <div class="content-card">
+    <div class="card-header">
+      <div>
+        <h2>✅ خطة الـ 40 مهمة التنفيذية للمرحلة الانتقالية</h2>
+        <div class="card-subtitle">توزيع المهام المحورية على أسابيع التشغيل الثمانية مع حوكمة المسؤوليات</div>
+      </div>
+      <div style="display:flex;gap:0.5rem;">
+        <button onclick="exportToCSV(tasks, 'خطة_الـ40_مهمة_RoR')" class="btn btn-secondary" style="font-size:12px;">
+          <span>📥</span> تصدير CSV
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters & Progress Summary -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;background:var(--bg-cream);padding:1rem 1.25rem;border-radius:var(--radius-md);margin-bottom:1.5rem;border:1px solid var(--border-light);">
+      <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+          <label style="font-size:0.82rem;font-weight:700;">تصفية حسب الأسبوع:</label>
+          <select id="weekFilter" onchange="filterTasksByWeek(this.value)" style="padding:4px 10px;border-radius:6px;border:1px solid var(--border-light);font-family:inherit;font-size:12px;">
+            <option value="all">جميع الأسابيع (1 - 8)</option>
+            <option value="1">الأسبوع 1</option>
+            <option value="2">الأسبوع 2</option>
+            <option value="3">الأسبوع 3</option>
+            <option value="4">الأسبوع 4</option>
+            <option value="5">الأسبوع 5</option>
+            <option value="6">الأسبوع 6</option>
+            <option value="7">الأسبوع 7</option>
+            <option value="8">الأسبوع 8</option>
+          </select>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+          <label style="font-size:0.82rem;font-weight:700;">الحالة:</label>
+          <select id="statusFilter" onchange="filterTasksByStatus(this.value)" style="padding:4px 10px;border-radius:6px;border:1px solid var(--border-light);font-family:inherit;font-size:12px;">
+            <option value="all">كل الحالات</option>
+            <option value="completed">مكتمل ✓</option>
+            <option value="in-progress">قيد التنفيذ</option>
+            <option value="pending">معلق</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th width="90">الأسبوع</th>
+            <th>المهمة التنفيذية</th>
+            <th width="160">المسؤول</th>
+            <th width="140">الحالة</th>
+            <th width="70">إجراء</th>
+          </tr>
+        </thead>
+        <tbody id="tasksTableBody">
+          <!-- Populated by app.js -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     VIEW: MENU ENGINEERING (هندسة القائمة)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="view-section" id="view-menu-engineering">
+  <div class="content-card">
+    <div class="card-header">
+      <div>
+        <h2>🍽️ مصفوفة هندسة القائمة (Menu Engineering 2D Matrix)</h2>
+        <div class="card-subtitle">تصنيف الأصناف حسب مؤشري هامش الربح الإجمالي والشعبية لاتخاذ قرارات التسعير</div>
+      </div>
+      <div style="display:flex;gap:0.6rem;">
+        <button onclick="openMenuModal()" class="btn btn-primary" style="font-size:12px;">
+          <span>➕</span> إضافة صنف جديد
+        </button>
+        <button onclick="exportToCSV(menuItems, 'هندسة_منيو_RoR')" class="btn btn-secondary" style="font-size:12px;">
+          <span>📥</span> تصدير CSV
+        </button>
+      </div>
+    </div>
+
+    <!-- 2x2 Menu Matrix Grid -->
+    <div class="menu-matrix">
+      <div class="matrix-grid">
+        
+        <!-- Stars -->
+        <div class="quadrant stars">
+          <div class="quadrant-header">
+            <h3 style="color:#15803D;">⭐ النجوم / Stars</h3>
+            <p>شعبية عالية + ربحية عالية (حافظ على الجودة وثبات الوصفة)</p>
+          </div>
+          <div class="items-list" id="starsItems"></div>
+        </div>
+
+        <!-- Puzzles -->
+        <div class="quadrant puzzles">
+          <div class="quadrant-header">
+            <h3 style="color:#0066FF;">🧩 الألغاز / Puzzles</h3>
+            <p>شعبية منخفضة + ربحية عالية (ركز على الترويج وإعادة التموضع)</p>
+          </div>
+          <div class="items-list" id="puzzlesItems"></div>
+        </div>
+
+        <!-- Plowhorses -->
+        <div class="quadrant plowhorses">
+          <div class="quadrant-header">
+            <h3 style="color:#D97706;">🐴 أحصنة المحراث / Plowhorses</h3>
+            <p>شعبية عالية + ربحية منخفضة (أعد هندسة التكلفة أو ارفع السعر تدريجياً)</p>
+          </div>
+          <div class="items-list" id="plowhorsesItems"></div>
+        </div>
+
+        <!-- Dogs -->
+        <div class="quadrant dogs">
+          <div class="quadrant-header">
+            <h3 style="color:#DC2626;">🐕 الأصناف الضعيفة / Dogs</h3>
+            <p>شعبية منخفضة + ربحية منخفضة (مرشحة للإلغاء أو الاستبدال)</p>
+          </div>
+          <div class="items-list" id="dogsItems"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     VIEW: BREAK-EVEN ANALYSIS (حاسبة نقطة التعادل)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="view-section" id="view-breakeven">
+  <div class="content-card">
+    <div class="card-header">
+      <div>
+        <h2>💰 حاسبة نقطة التعادل الشهرية لـ RoR</h2>
+        <div class="card-subtitle">نموذج مالي تفاعلي لحساب حجم المبيعات المطلوب لتغطية التكاليف التشغيلية الثابتة</div>
+      </div>
+      <span class="badge badge-blue">تحديث تفاعلي فوري</span>
+    </div>
+
+    <div class="breakeven-calculator">
+      <!-- Controls Sliders -->
+      <div class="calculator-inputs">
+        <div class="input-group">
+          <label for="fixedCosts">التكاليف الثابتة الشهرية (إيجار، رواتب، اشتراكات) ر.س</label>
+          <div class="slider-row">
+            <input type="range" id="fixedCosts" min="5000" max="80000" step="1000" value="30000">
+            <input type="number" id="fixedCostsValue" class="value-display" value="30000">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="avgTicket">متوسط قيمة الفاتورة (متوسط المشروب + الحلى) ر.س</label>
+          <div class="slider-row">
+            <input type="range" id="avgTicket" min="10" max="100" step="1" value="35">
+            <input type="number" id="avgTicketValue" class="value-display" value="35">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="cogsPercent">نسبة تكلفة البضاعة المباعة COGS (بن، حليب، أكواب) %</label>
+          <div class="slider-row">
+            <input type="range" id="cogsPercent" min="15" max="60" step="1" value="30">
+            <input type="number" id="cogsPercentValue" class="value-display" value="30">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="variablePercent">نسبة المصاريف المتغيرة الأخرى (كهرباء، هدر، عمولات) %</label>
+          <div class="slider-row">
+            <input type="range" id="variablePercent" min="5" max="30" step="1" value="15">
+            <input type="number" id="variablePercentValue" class="value-display" value="15">
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Grid -->
+      <div class="breakeven-results">
+        <div class="result-card primary">
+          <div class="result-label">فواتير التعادل شهرياً</div>
+          <div class="result-value" id="breakevenInvoices">0</div>
+        </div>
+        <div class="result-card">
+          <div class="result-label">إيراد التعادل الشهري</div>
+          <div class="result-value" id="breakevenRevenue">0 ر.س</div>
+        </div>
+        <div class="result-card">
+          <div class="result-label">المستهدف اليومي (فواتير/يوم)</div>
+          <div class="result-value" id="breakevenDaily">0</div>
+        </div>
+        <div class="result-card">
+          <div class="result-label">هامش المساهمة لكل فاتورة</div>
+          <div class="result-value" id="contributionMargin">0 ر.س</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div style="margin-top:2rem;height:280px;position:relative;">
+      <canvas id="breakevenChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     VIEW: RACI MATRIX (مصفوفة المسؤوليات)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="view-section" id="view-raci-matrix">
+  <div class="content-card">
+    <div class="card-header">
+      <div>
+        <h2>👥 مصفوفة المسؤوليات والصلاحيات (RACI Matrix)</h2>
+        <div class="card-subtitle">تحديد أصحاب القرار والتنفيذ والاستشارة والإحاطة للعمليات المحورية</div>
+      </div>
+      <div style="display:flex;gap:8px;font-size:11px;">
+        <span class="badge badge-green">R: منفذ Responsible</span>
+        <span class="badge badge-blue">A: معتمد Accountable</span>
+        <span class="badge badge-orange">C: مستشار Consulted</span>
+        <span class="badge badge-oxford">I: محاط Informed</span>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>العملية / القرار التشغيلي</th>
+            <th width="140">علاء (CEO)</th>
+            <th width="140">عبدالله (COO)</th>
+            <th width="140">جود (CMO)</th>
+            <th width="140">أنس (CFO)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:700;">بروفايلات التحميص ومعايير جودة البن</td>
+            <td><span class="badge badge-blue">A (معتمد نهائي)</span></td>
+            <td><span class="badge badge-green">R (منفذ)</span></td>
+            <td><span class="badge badge-oxford">I (محاط)</span></td>
+            <td><span class="badge badge-orange">C (مستشار تكلفة)</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;">إدارة الورديات وضبط كفاءة البار اليومية</td>
+            <td><span class="badge badge-oxford">I (محاط)</span></td>
+            <td><span class="badge badge-blue">A (معتمد ومسؤول)</span></td>
+            <td><span class="badge badge-orange">C (مستشار عروض)</span></td>
+            <td><span class="badge badge-oxford">I (محاط)</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;">تسعير أصناف المنيو وتعديل الهوامش</td>
+            <td><span class="badge badge-blue">A (معتمد)</span></td>
+            <td><span class="badge badge-orange">C (مستشار تشغيل)</span></td>
+            <td><span class="badge badge-green">R (منفذ دراسة)</span></td>
+            <td><span class="badge badge-green">R (حساب تكاليف)</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;">عقود التوريد والجملة لحماصة جيسن</td>
+            <td><span class="badge badge-green">R (مفاوض رئيسي)</span></td>
+            <td><span class="badge badge-orange">C (جدولة الإنتاج)</span></td>
+            <td><span class="badge badge-green">R (استقطاب B2B)</span></td>
+            <td><span class="badge badge-blue">A (اعتماد شروط دفع)</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;">الميزانية التقديرية وإقرارات الزكاة والضريبة</td>
+            <td><span class="badge badge-orange">C (مستشار)</span></td>
+            <td><span class="badge badge-oxford">I (محاط)</span></td>
+            <td><span class="badge badge-oxford">I (محاط)</span></td>
+            <td><span class="badge badge-blue">A (معتمد ومنفذ)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     VIEW: WASTE & CASH FLOW (الهدر والسيولة)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="view-section" id="view-waste-cashflow">
+  <div class="content-card">
+    <div class="card-header">
+      <div>
+        <h2>💧 سجل تتبع الهدر وإدارة التدفق النقدي</h2>
+        <div class="card-subtitle">الرقابة اليومية على الفواقد في البار والمحمصة لضبط التكاليف بصفر تكلفة</div>
+      </div>
+      <button onclick="exportToCSV(wasteLogs.bar, 'سجل_الهدر_RoR')" class="btn btn-secondary" style="font-size:12px;">
+        <span>📥</span> تصدير CSV
+      </button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>التاريخ</th>
+            <th>الصنف / المادة</th>
+            <th>الكمية التالفة</th>
+            <th>القيمة التقديرية</th>
+            <th>سبب الهدر / الإجراء الوقائي</th>
+          </tr>
+        </thead>
+        <tbody id="wasteTableBody">
+          <!-- Populated by app.js -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     VIEW: WEEKLY PLANS (خطة الأسابيع 1-8)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="view-section" id="view-weekly-plans">
+  <div class="content-card">
+    <div class="card-header">
+      <div>
+        <h2>📅 خارطة طريق خطة الأسابيع (Roadmap Weeks 1 - 8)</h2>
+        <div class="card-subtitle">المعالم الرئيسية والأهداف المنجزة للمرحلة الانتقالية لـ RoR</div>
+      </div>
+      <span class="badge badge-green">8 محطات عمل</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:1rem;margin-top:1rem;">
+      <div style="background:var(--bg-cream);border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span class="badge badge-oxford">أسبوع 1</span>
+          <span class="badge badge-green">مكتمل 5/5</span>
+        </div>
+        <h4 style="font-size:0.92rem;font-weight:700;">حصر الأصول وتكاليف الوصفات</h4>
+        <p style="font-size:0.78rem;color:var(--text-secondary);margin-top:4px;">توثيق الأصول الثابتة، وأسعار الوصفات المعيارية، ورصيد المخزون الافتتاحي.</p>
+      </div>
+
+      <div style="background:var(--bg-cream);border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span class="badge badge-oxford">أسبوع 2</span>
+          <span class="badge badge-green">مكتمل 5/5</span>
+        </div>
+        <h4 style="font-size:0.92rem;font-weight:700;">تنظيم الورديات ومصفوفة RACI</h4>
+        <p style="font-size:0.78rem;color:var(--text-secondary);margin-top:4px;">توزيع مهام البار، تفعيل مصفوفة المسؤوليات، وكتيب الموظف الداخلي.</p>
+      </div>
+
+      <div style="background:var(--bg-cream);border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span class="badge badge-oxford">أسبوع 3</span>
+          <span class="badge badge-green">مكتمل 5/5</span>
+        </div>
+        <h4 style="font-size:0.92rem;font-weight:700;">سجل الهدر ومعايرة المكائن</h4>
+        <p style="font-size:0.78rem;color:var(--text-secondary);margin-top:4px;">إطلاق سجل تتبع الهدر اليومي وتحديد الحد الأدنى والحد الأعلى للطلب.</p>
+      </div>
+
+      <div style="background:var(--bg-cream);border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span class="badge badge-oxford">أسبوع 4</span>
+          <span class="badge badge-green">مكتمل 5/5</span>
+        </div>
+        <h4 style="font-size:0.92rem;font-weight:700;">هندسة المنيو وتحليل POS</h4>
+        <p style="font-size:0.78rem;color:var(--text-secondary);margin-top:4px;">تصنيف المشروبات في مصفوفة الربحية والشعبية ومراجعة أسعار المنافسين.</p>
+      </div>
+
+      <div style="background:var(--bg-cream);border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span class="badge badge-oxford">أسبوع 5</span>
+          <span class="badge badge-green">مكتمل 5/5</span>
+        </div>
+        <h4 style="font-size:0.92rem;font-weight:700;">إدارة التدفق النقدي والالتزامات</h4>
+        <p style="font-size:0.78rem;color:var(--text-secondary);margin-top:4px;">جدولة فواتير الموردين، حصر الذمم المدينة، وضبط المصاريف الثابتة.</p>
+      </div>
+
+      <div style="background:var(--bg-cream);border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span class="badge badge-oxford">أسبوع 6</span>
+          <span class="badge badge-green">مكتمل 5/5</span>
+        </div>
+        <h4 style="font-size:0.92rem;font-weight:700;">التدقيق الصحي وتقييم العملاء</h4>
+        <p style="font-size:0.78rem;color:var(--text-secondary);margin-top:4px;">قائمة التدقيق الصحي، تجديد التراخيص، ومراجعة تقييمات قوقل ماب.</p>
+      </div>
+
+      <div style="background:var(--primary-tint);border:1.5px solid var(--primary-light);border-radius:var(--radius-md);padding:1.25rem;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span class="badge badge-blue">أسبوع 7 🔥</span>
+          <span class="badge badge-orange">قيد الإنجاز 3/5</span>
+        </div>
+        <h4 style="font-size:0.92rem;font-weight:700;color:var(--primary-dark);">التكلفة الأساسية ومعالجة الفروقات</h4>
+        <p style="font-size:0.78rem;color:var(--text-secondary);margin-top:4px;">حساب الـ Prime Cost ونسبة تكلفة العمالة وخطة ضبط الفروقات.</p>
+      </div>
+
+      <div style="background:var(--bg-cream);border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span class="badge badge-oxford">أسبوع 8</span>
+          <span class="badge badge-gray">مجدول</span>
+        </div>
+        <h4 style="font-size:0.92rem;font-weight:700;">لوحة الأداء وخطة التوسع</h4>
+        <p style="font-size:0.78rem;color:var(--text-secondary);margin-top:4px;">اعتماد التقرير المالي النهائي، تسليم أدلة SOPs، وخطة التوسع.</p>
+      </div>
+    </div>
+  </div>
+</div>

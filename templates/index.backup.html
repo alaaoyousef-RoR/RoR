@@ -1,0 +1,3276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة أنظمة RoR | لوحة القيادة المتكاملة (Modern SaaS Dashboard)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: IBM Plex Sans Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Chart.js for Modern Curve Graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- SheetJS for Excel Reports Export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- Mermaid.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue:    '#0066FF',
+                            blueDk:  '#0045E0',
+                            blueTint:'#EBF2FF',
+                            blueLight:'#CCE0FF',
+                            orange:  '#FD980E',
+                            orangeDk:'#D47B00',
+                            orangeTint:'#FFF4E6',
+                            orangeBorder:'#FDD39B',
+                            oxford:  '#0B1A2D',
+                            oxfordMid:'#1B2E47',
+                            oxfordDk:'#060E18',
+                            silver:  '#CCCCCC',
+                            workspace:'#F7F5F0',
+                            border:  '#E5E2DA',
+                            borderDk:'#D5D0C5',
+                            text:    '#1A2332',
+                            textMid: '#4A5568',
+                            textSoft:'#8A95A3',
+                        }
+                    },
+                    fontFamily: { sans: ['"IBM Plex Sans Arabic"', 'sans-serif'] },
+                    boxShadow: {
+                        'card':  '0 2px 12px rgba(0,0,0,0.06)',
+                        'card-lg':'0 8px 32px rgba(0,0,0,0.09)',
+                        'blue':  '0 4px 20px rgba(0,102,255,0.25)',
+                        'orange':'0 4px 20px rgba(253,152,14,0.30)',
+                        'sidebar':'4px 0 24px rgba(0,0,0,0.18)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background: #F7F5F0;
+            color: #1A2332;
+            margin: 0; padding: 0;
+            -webkit-font-smoothing: antialiased;
+            overflow: hidden;
+            height: 100dvh;
+        }
+
+        /* ─── LAYOUT SHELL ─── */
+        #app-shell {
+            display: flex;
+            height: 100dvh;
+            width: 100%;
+            direction: ltr; /* Keep sidebar on real-left */
+        }
+
+        /* ─── SIDEBAR ─── */
+        #sidebar {
+            width: 260px;
+            min-width: 260px;
+            background: linear-gradient(180deg, #0B1A2D 0%, #060E18 100%);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.22);
+            position: relative;
+            z-index: 40;
+            overflow: hidden;
+        }
+        #sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #1B2E47, transparent);
+        }
+
+        /* Sidebar Brand */
+        .sidebar-brand {
+            padding: 24px 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            flex-shrink: 0;
+        }
+
+        /* Sidebar Nav */
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 10px;
+            scrollbar-width: thin;
+            scrollbar-color: #1B2E47 transparent;
+        }
+        .sidebar-nav::-webkit-scrollbar { width: 4px; }
+        .sidebar-nav::-webkit-scrollbar-thumb { background: #1B2E47; border-radius: 4px; }
+
+        .nav-section-label {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.28);
+            padding: 14px 10px 6px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            color: rgba(255,255,255,0.55);
+            font-size: 12.5px;
+            font-weight: 500;
+            margin-bottom: 2px;
+            border: 1px solid transparent;
+        }
+        .nav-item:hover {
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.85);
+        }
+        .nav-item.active {
+            background: linear-gradient(135deg, #0066FF 0%, #0045E0 100%);
+            color: #fff;
+            font-weight: 700;
+            border-color: rgba(255,255,255,0.12);
+            box-shadow: 0 4px 14px rgba(0,102,255,0.35);
+        }
+        .nav-item .nav-icon {
+            width: 28px; height: 28px;
+            border-radius: 7px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px;
+            background: rgba(255,255,255,0.07);
+            flex-shrink: 0;
+            transition: background 0.18s;
+        }
+        .nav-item.active .nav-icon {
+            background: rgba(255,255,255,0.18);
+        }
+        .nav-item .nav-badge {
+            margin-left: auto;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 20px;
+            background: rgba(253,152,14,0.2);
+            color: #FD980E;
+            border: 1px solid rgba(253,152,14,0.3);
+        }
+
+        /* Sidebar Footer */
+        .sidebar-footer {
+            padding: 14px 10px;
+            border-top: 1px solid rgba(255,255,255,0.07);
+            flex-shrink: 0;
+        }
+        .sidebar-footer-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: rgba(255,255,255,0.45);
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.18s;
+        }
+        .sidebar-footer-btn:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.8); }
+
+        /* ─── MAIN WORKSPACE ─── */
+        #workspace {
+            flex: 1;
+            direction: rtl; /* Arabic RTL for content */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #F7F5F0;
+        }
+
+        /* Top Bar */
+        #topbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 28px;
+            background: #fff;
+            border-bottom: 1px solid #E5E2DA;
+            flex-shrink: 0;
+            box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 9px 18px 9px 40px;
+            border-radius: 999px;
+            border: 1.5px solid #E5E2DA;
+            background: #F7F5F0;
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: #1A2332;
+            outline: none;
+            transition: border-color 0.18s, box-shadow 0.18s;
+        }
+        .search-bar input:focus {
+            border-color: #0066FF;
+            box-shadow: 0 0 0 3px rgba(0,102,255,0.1);
+        }
+        .search-bar .search-icon {
+            position: absolute;
+            left: 14px; top: 50%;
+            transform: translateY(-50%);
+            color: #8A95A3;
+            font-size: 13px;
+        }
+
+        .date-chip {
+            display: flex; align-items: center; gap: 6px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: #EBF2FF;
+            border: 1px solid #CCE0FF;
+            color: #0045E0;
+            font-size: 11.5px;
+            font-weight: 700;
+        }
+
+        .topbar-action-btn {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            border: 1.5px solid #E5E2DA;
+            background: #fff;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            color: #4A5568;
+            font-size: 14px;
+            transition: all 0.18s;
+        }
+        .topbar-action-btn:hover { border-color: #0066FF; color: #0066FF; background: #EBF2FF; }
+        .topbar-action-btn.orange:hover { border-color: #FD980E; color: #FD980E; background: #FFF4E6; }
+
+        /* ─── MAIN CONTENT SCROLL AREA ─── */
+        #main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 28px 40px;
+            scrollbar-width: thin;
+            scrollbar-color: #D5D0C5 transparent;
+        }
+        #main-content::-webkit-scrollbar { width: 6px; }
+        #main-content::-webkit-scrollbar-thumb { background: #D5D0C5; border-radius: 4px; }
+
+        /* ─── PAGE SECTIONS ─── */
+        .page-section { display: none; }
+        .page-section.active { display: block; }
+
+        /* ─── WHITE CARDS ─── */
+        .card {
+            background: #FFFFFF;
+            border-radius: 20px;
+            border: 1px solid #E5E2DA;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); }
+
+        /* ─── STAT CARDS ─── */
+        .stat-card {
+            background: #FFFFFF;
+            border-radius: 20px;
+            border: 1px solid #E5E2DA;
+            padding: 22px 22px 18px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            transition: all 0.22s;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.08); }
+
+        .stat-pill-blue {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: #EBF2FF; color: #0066FF;
+            border: 1px solid #CCE0FF;
+            border-radius: 999px;
+            font-size: 10px; font-weight: 700;
+            padding: 3px 9px;
+        }
+        .stat-pill-orange {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: #FFF4E6; color: #FD980E;
+            border: 1px solid #FDD39B;
+            border-radius: 999px;
+            font-size: 10px; font-weight: 700;
+            padding: 3px 9px;
+        }
+        .stat-pill-green {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: #E8F5E9; color: #2E7D32;
+            border: 1px solid #A5D6A7;
+            border-radius: 999px;
+            font-size: 10px; font-weight: 700;
+            padding: 3px 9px;
+        }
+        .stat-pill-red {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: #FEECEC; color: #C53030;
+            border: 1px solid #FCA5A5;
+            border-radius: 999px;
+            font-size: 10px; font-weight: 700;
+            padding: 3px 9px;
+        }
+
+        /* Gradient Stat Accent */
+        .stat-accent-bar {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+            border-radius: 0 0 20px 20px;
+        }
+        .accent-blue  { background: linear-gradient(90deg, #0066FF, #0045E0); }
+        .accent-orange{ background: linear-gradient(90deg, #FD980E, #D47B00); }
+        .accent-green { background: linear-gradient(90deg, #43A047, #2E7D32); }
+        .accent-teal  { background: linear-gradient(90deg, #00897B, #00695C); }
+
+        /* ─── GRADIENT BUTTONS ─── */
+        .btn-blue {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: linear-gradient(135deg, #0066FF 0%, #0045E0 100%);
+            color: #fff;
+            padding: 9px 18px;
+            border-radius: 12px;
+            font-size: 12.5px; font-weight: 700;
+            border: none; cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0,102,255,0.28);
+            transition: all 0.18s;
+        }
+        .btn-blue:hover { opacity: 0.92; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,102,255,0.35); }
+
+        .btn-orange {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: linear-gradient(135deg, #FD980E 0%, #D47B00 100%);
+            color: #fff;
+            padding: 9px 18px;
+            border-radius: 12px;
+            font-size: 12.5px; font-weight: 700;
+            border: none; cursor: pointer;
+            box-shadow: 0 4px 14px rgba(253,152,14,0.28);
+            transition: all 0.18s;
+        }
+        .btn-orange:hover { opacity: 0.92; transform: translateY(-1px); }
+
+        .btn-ghost {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: #fff;
+            color: #4A5568;
+            padding: 9px 18px;
+            border-radius: 12px;
+            font-size: 12.5px; font-weight: 600;
+            border: 1.5px solid #E5E2DA;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+        .btn-ghost:hover { border-color: #0066FF; color: #0066FF; background: #EBF2FF; }
+
+        /* ─── BADGES ─── */
+        .badge { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; font-size: 10.5px; font-weight: 700; padding: 3px 9px; }
+        .badge-blue   { background: #EBF2FF; color: #0066FF; border: 1px solid #CCE0FF; }
+        .badge-orange { background: #FFF4E6; color: #D47B00; border: 1px solid #FDD39B; }
+        .badge-green  { background: #E8F5E9; color: #2E7D32; border: 1px solid #A5D6A7; }
+        .badge-red    { background: #FEECEC; color: #C53030; border: 1px solid #FCA5A5; }
+        .badge-gray   { background: #F3F4F6; color: #6B7280; border: 1px solid #E5E7EB; }
+        .badge-oxford { background: rgba(11,26,45,0.07); color: #0B1A2D; border: 1px solid rgba(11,26,45,0.15); }
+
+        /* ─── FEED ITEMS ─── */
+        .feed-item {
+            display: flex; align-items: center; justify-content: space-between; gap: 14px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 1px solid #E5E2DA;
+            background: #fff;
+            transition: all 0.18s;
+            margin-bottom: 8px;
+        }
+        .feed-item:hover { border-color: #CCE0FF; box-shadow: 0 4px 16px rgba(0,102,255,0.07); }
+        .feed-avatar {
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 800;
+            flex-shrink: 0;
+        }
+        .avatar-aarif { background: linear-gradient(135deg, #0066FF, #0045E0); color: #fff; }
+        .avatar-alam  { background: linear-gradient(135deg, #FD980E, #D47B00); color: #fff; }
+        .avatar-store { background: #EBF2FF; color: #0066FF; }
+
+        /* ─── SEARCH INPUT IN SECTIONS ─── */
+        .section-search {
+            width: 100%; padding: 9px 16px 9px 38px;
+            border-radius: 12px;
+            border: 1.5px solid #E5E2DA;
+            background: #F7F5F0;
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            font-size: 12.5px; font-weight: 500; color: #1A2332;
+            outline: none; transition: border-color 0.18s;
+            direction: rtl;
+        }
+        .section-search:focus { border-color: #0066FF; box-shadow: 0 0 0 3px rgba(0,102,255,0.08); }
+
+        /* ─── TABLES ─── */
+        .data-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12.5px; }
+        .data-table th { padding: 10px 14px; font-weight: 700; color: #8A95A3; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1.5px solid #E5E2DA; text-align: right; }
+        .data-table td { padding: 12px 14px; border-bottom: 1px solid #F0EDE8; color: #1A2332; font-weight: 500; text-align: right; }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tbody tr:hover td { background: #F7F5F0; }
+
+        /* ─── MINI SPARKLINE CHARTS ─── */
+        .mini-chart-canvas { display: block; }
+
+        /* ─── INPUT FIELDS ─── */
+        .form-input {
+            width: 100%; padding: 10px 14px;
+            border-radius: 12px;
+            border: 1.5px solid #E5E2DA;
+            background: #F7F5F0;
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            font-size: 12.5px; font-weight: 500; color: #1A2332;
+            outline: none; transition: all 0.18s;
+            direction: rtl;
+        }
+        .form-input:focus { border-color: #0066FF; background: #fff; box-shadow: 0 0 0 3px rgba(0,102,255,0.08); }
+
+        /* ─── MODALS ─── */
+        .modal-backdrop {
+            position: fixed; inset: 0;
+            background: rgba(11,26,45,0.55);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-backdrop.open { display: flex; }
+        .modal-box {
+            background: #fff;
+            border-radius: 20px;
+            padding: 28px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        /* ─── ORG CHART STYLES ─── */
+        .org-card {
+            background: #FFFFFF;
+            border-radius: 18px;
+            padding: 20px;
+            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .org-card-filled {
+            border: 1.5px solid #E5E2DA;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        }
+        .org-card-filled:hover {
+            border-color: #0066FF;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,102,255,0.1);
+        }
+        .org-card-vacant {
+            border: 2px dashed #FD980E;
+            background: linear-gradient(180deg, #FFFFFF 0%, #FFFDF8 100%);
+            box-shadow: 0 2px 8px rgba(253,152,14,0.04);
+        }
+        .org-card-vacant:hover {
+            border-color: #D47B00;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(253,152,14,0.14);
+        }
+        .org-filter-btn {
+            padding: 7px 16px;
+            border-radius: 999px;
+            font-size: 11.5px;
+            font-weight: 700;
+            border: 1.5px solid #E5E2DA;
+            background: #fff;
+            color: #4A5568;
+            cursor: pointer;
+            transition: all 0.16s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .org-filter-btn:hover {
+            border-color: #0066FF;
+            color: #0066FF;
+            background: #EBF2FF;
+        }
+        .org-filter-btn.active {
+            background: #0066FF;
+            border-color: #0066FF;
+            color: #fff;
+            box-shadow: 0 3px 12px rgba(0,102,255,0.25);
+        }
+
+        /* ─── TOAST ─── */
+        #toast {
+            position: fixed; bottom: 24px; left: 24px;
+            background: #0B1A2D;
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 14px;
+            display: flex; align-items: center; gap: 10px;
+            font-size: 12.5px; font-weight: 700;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+            border: 1px solid #1B2E47;
+            z-index: 9999;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            direction: rtl;
+        }
+        #toast.show { transform: translateY(0); opacity: 1; }
+
+        /* ─── MOBILE SIDEBAR TOGGLE ─── */
+        #sidebar-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 35;
+        }
+        @media (max-width: 768px) {
+            #sidebar { position: fixed; top: 0; left: 0; bottom: 0; z-index: 38; transform: translateX(-100%); transition: transform 0.3s ease; }
+            #sidebar.mobile-open { transform: translateX(0); }
+            #sidebar-overlay.mobile-open { display: block; }
+            #main-content { padding: 16px 14px 30px; }
+            #topbar { padding: 12px 16px; }
+        }
+
+        /* ─── PULSE ─── */
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .pulse-dot { animation: pulse-dot 1.8s ease-in-out infinite; }
+
+        /* Gradient Hero Cards */
+        .hero-card-blue {
+            background: linear-gradient(135deg, #0066FF 0%, #0045E0 100%);
+            border-radius: 20px;
+            color: #fff;
+            box-shadow: 0 8px 28px rgba(0,102,255,0.3);
+        }
+        .hero-card-oxford {
+            background: linear-gradient(135deg, #1B2E47 0%, #0B1A2D 100%);
+            border-radius: 20px;
+            color: #fff;
+            box-shadow: 0 8px 28px rgba(11,26,45,0.3);
+        }
+
+        /* Scrollbars for all */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #D5D0C5; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<!-- ────────────────────────────────────────────── -->
+<!-- APP SHELL: SIDEBAR (LEFT) + WORKSPACE (RIGHT) -->
+<!-- ────────────────────────────────────────────── -->
+<div id="app-shell">
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- LEFT SIDEBAR (Fixed, Oxford Blue Gradient)  -->
+    <!-- ═══════════════════════════════════════════ -->
+    <aside id="sidebar">
+
+        <!-- Brand / Logo -->
+        <div class="sidebar-brand">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#0066FF,#0045E0);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#fff;box-shadow:0 4px 14px rgba(0,102,255,0.4);flex-shrink:0;">
+                    RoR
+                </div>
+                <div>
+                    <div style="font-size:14px;font-weight:800;color:#fff;line-height:1.2;">مقهى ومحمصة RoR</div>
+                    <div style="display:flex;align-items:center;gap:5px;margin-top:3px;">
+                        <div class="pulse-dot" style="width:7px;height:7px;border-radius:50%;background:#22C55E;flex-shrink:0;"></div>
+                        <span style="font-size:10.5px;color:rgba(255,255,255,0.45);font-weight:600;">النظام متصل ونشط</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
+
+            <!-- Dashboard -->
+            <div class="nav-section-label">لوحة التحكم الرئيسية</div>
+            <div class="nav-item active" id="nav-dashboard" onclick="navigateTo('dashboard')">
+                <div class="nav-icon"><i class="fa-solid fa-gauge-high"></i></div>
+                <span>لوحة المؤشرات والأداء</span>
+            </div>
+
+            <!-- Operations -->
+            <div class="nav-section-label">الأنظمة التشغيلية</div>
+
+            <div class="nav-item" id="nav-tasks" onclick="navigateTo('tasks')">
+                <div class="nav-icon"><i class="fa-solid fa-list-check"></i></div>
+                <span>خطة الـ 8 أسابيع (الـ 40 مهمة)</span>
+                <span class="nav-badge">40</span>
+            </div>
+
+            <div class="nav-item" id="nav-menu" onclick="navigateTo('menu')">
+                <div class="nav-icon"><i class="fa-solid fa-star-half-stroke"></i></div>
+                <span>هندسة المنيو والمصفوفة الربحية</span>
+            </div>
+
+            <div class="nav-item" id="nav-breakeven" onclick="navigateTo('breakeven')">
+                <div class="nav-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                <span>حاسبة التعادل والتكاليف الثابتة</span>
+            </div>
+
+            <div class="nav-section-label">المبيعات والإيرادات</div>
+
+            <div class="nav-item" id="nav-cafe" onclick="navigateTo('cafe')">
+                <div class="nav-icon"><i class="fa-solid fa-mug-hot"></i></div>
+                <span>مبيعات البار (ورديات عارف وعلم)</span>
+            </div>
+
+            <div class="nav-item" id="nav-roastery" onclick="navigateTo('roastery')">
+                <div class="nav-icon"><i class="fa-solid fa-fire-burner"></i></div>
+                <span>مبيعات المحمصة وحماصة جيسن</span>
+            </div>
+
+            <div class="nav-section-label">المالية والامتثال</div>
+
+            <div class="nav-item" id="nav-waste" onclick="navigateTo('waste')">
+                <div class="nav-icon"><i class="fa-solid fa-trash-can-arrow-up"></i></div>
+                <span>تتبع الهدر وحركة الصندوق النقدي</span>
+            </div>
+
+            <div class="nav-item" id="nav-raci" onclick="navigateTo('raci')">
+                <div class="nav-icon"><i class="fa-solid fa-list-check"></i></div>
+                <span>مصفوفة الصلاحيات (RACI) والتحول</span>
+            </div>
+
+            <div class="nav-section-label">الهيكل والتنظيم</div>
+
+            <div class="nav-item" id="nav-orgchart" onclick="navigateTo('orgchart')">
+                <div class="nav-icon"><i class="fa-solid fa-sitemap"></i></div>
+                <span>الهيكل التنظيمي والتسكين</span>
+            </div>
+
+            <a href="/mindmap" class="nav-item" style="text-decoration:none;">
+                <div class="nav-icon"><i class="fa-solid fa-diagram-project"></i></div>
+                <span>الخريطة الذهنية (Mermaid)</span>
+            </a>
+
+        </nav>
+
+        <!-- Footer Actions -->
+        <div class="sidebar-footer">
+            <div class="sidebar-footer-btn" onclick="triggerAiAdvisor()" title="استشارة الذكاء الاصطناعي">
+                <div style="width:28px;height:28px;border-radius:8px;background:rgba(0,102,255,0.15);display:flex;align-items:center;justify-content:center;font-size:12px;color:#0066FF;">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <span>مستشار Gemini AI</span>
+            </div>
+            <div class="sidebar-footer-btn" onclick="exportComprehensiveExcel()">
+                <div style="width:28px;height:28px;border-radius:8px;background:rgba(34,197,94,0.12);display:flex;align-items:center;justify-content:center;font-size:12px;color:#16A34A;">
+                    <i class="fa-solid fa-file-excel"></i>
+                </div>
+                <span>تصدير تقرير Excel الشامل</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- MAIN WORKSPACE                              -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="workspace">
+
+        <!-- TOP BAR -->
+        <div id="topbar">
+            <!-- Mobile hamburger -->
+            <button onclick="toggleMobileSidebar()" style="display:none;" id="hamburger-btn"
+                class="topbar-action-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <!-- Greeting -->
+            <div style="flex-shrink:0;">
+                <div style="font-size:14px;font-weight:800;color:#1A2332;" id="topbar-greeting">صباح الخير، علاء ☀️</div>
+                <div style="font-size:11px;color:#8A95A3;font-weight:500;" id="topbar-subgreeting">الاثنين - المرحلة الانتقالية بعد 4 سنوات تشغيل</div>
+            </div>
+
+            <!-- Spacer -->
+            <div style="flex:1;"></div>
+
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="global-search" placeholder="بحث في السجلات والمهام والمبيعات..." onkeyup="handleGlobalSearch()">
+            </div>
+
+            <!-- Date Chip -->
+            <div class="date-chip" id="topbar-date">
+                <i class="fa-regular fa-calendar"></i>
+                <span id="date-display">15 سبتمبر 2026</span>
+            </div>
+
+            <!-- Action Buttons -->
+            <button class="topbar-action-btn" onclick="triggerAiAdvisor()" title="استشارة الذكاء الاصطناعي">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </button>
+            <button class="topbar-action-btn orange" onclick="exportComprehensiveExcel()" title="تصدير Excel">
+                <i class="fa-solid fa-file-excel"></i>
+            </button>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- SCROLLABLE CONTENT AREA                 -->
+        <!-- ═══════════════════════════════════════ -->
+        <div id="main-content">
+
+            <!-- ─────────────────────────────────── -->
+            <!-- PAGE: DASHBOARD (Main Overview)     -->
+            <!-- ─────────────────────────────────── -->
+            <div id="page-dashboard" class="page-section active">
+
+                <!-- Page Header -->
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px;">
+                    <div>
+                        <h1 style="font-size:20px;font-weight:800;color:#0B1A2D;margin:0 0 4px;">لوحة المؤشرات والأداء التشغيلي</h1>
+                        <p style="font-size:12.5px;color:#8A95A3;margin:0;font-weight:500;">نظرة شاملة على كافة العمليات والإيرادات والمهام لمشروع RoR</p>
+                    </div>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                        <button class="btn-blue" onclick="navigateTo('cafe')">
+                            <i class="fa-solid fa-plus"></i> إضافة وردية
+                        </button>
+                        <button class="btn-ghost" onclick="navigateTo('roastery')">
+                            <i class="fa-solid fa-fire-burner"></i> بيع محصول
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TOP KPI STAT CARDS (4 columns) -->
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px;" class="stat-grid-4">
+
+                    <!-- Card 1: Total Revenue -->
+                    <div class="stat-card">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+                            <div>
+                                <div style="font-size:11.5px;color:#8A95A3;font-weight:700;margin-bottom:6px;">إجمالي الإيرادات</div>
+                                <div style="font-size:26px;font-weight:800;color:#0B1A2D;line-height:1;" id="kpi-total-revenue">0</div>
+                                <div style="font-size:10.5px;color:#8A95A3;font-weight:600;margin-top:4px;">ر.س • البار + المحمصة</div>
+                            </div>
+                            <div>
+                                <div style="width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#0066FF,#0045E0);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;">
+                                    <i class="fa-solid fa-vault"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;">
+                            <span class="stat-pill-blue"><i class="fa-solid fa-arrow-trend-up"></i> total value 1250k</span>
+                            <canvas class="mini-chart-canvas" id="mini-chart-1" width="80" height="36"></canvas>
+                        </div>
+                        <div class="stat-accent-bar accent-blue"></div>
+                    </div>
+
+                    <!-- Card 2: Highest Session -->
+                    <div class="stat-card">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+                            <div>
+                                <div style="font-size:11.5px;color:#8A95A3;font-weight:700;margin-bottom:6px;">أعلى نقطة ذروة</div>
+                                <div style="font-size:26px;font-weight:800;color:#0B1A2D;line-height:1;" id="kpi-highest">764k</div>
+                                <div style="font-size:10.5px;color:#8A95A3;font-weight:600;margin-top:4px;">ر.س • حماصة جيسن والجملة</div>
+                            </div>
+                            <div>
+                                <div style="width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#FD980E,#D47B00);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;">
+                                    <i class="fa-solid fa-crown"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;">
+                            <span class="stat-pill-orange"><i class="fa-solid fa-fire"></i> highest value 764k</span>
+                            <canvas class="mini-chart-canvas" id="mini-chart-2" width="80" height="36"></canvas>
+                        </div>
+                        <div class="stat-accent-bar accent-orange"></div>
+                    </div>
+
+                    <!-- Card 3: Tasks Progress -->
+                    <div class="stat-card">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+                            <div>
+                                <div style="font-size:11.5px;color:#8A95A3;font-weight:700;margin-bottom:6px;">إنجاز الـ 40 مهمة</div>
+                                <div style="font-size:26px;font-weight:800;color:#0B1A2D;line-height:1;" id="kpi-tasks-pct">80%</div>
+                                <div style="font-size:10.5px;color:#8A95A3;font-weight:600;margin-top:4px;" id="kpi-tasks-count">32 من 40 مهمة منجزة</div>
+                            </div>
+                            <div>
+                                <div style="width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#22C55E,#16A34A);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;">
+                                    <i class="fa-solid fa-list-check"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background:#F7F5F0;border-radius:999px;height:6px;overflow:hidden;border:1px solid #E5E2DA;">
+                            <div id="kpi-tasks-bar" style="height:100%;background:linear-gradient(90deg,#0066FF,#0045E0);border-radius:999px;width:80%;transition:width 0.6s ease;"></div>
+                        </div>
+                        <div class="stat-accent-bar accent-green"></div>
+                    </div>
+
+                    <!-- Card 4: Net Cash Flow -->
+                    <div class="stat-card">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+                            <div>
+                                <div style="font-size:11.5px;color:#8A95A3;font-weight:700;margin-bottom:6px;">صافي التدفق النقدي</div>
+                                <div style="font-size:26px;font-weight:800;color:#0B1A2D;line-height:1;" id="kpi-net-flow">0</div>
+                                <div style="font-size:10.5px;color:#8A95A3;font-weight:600;margin-top:4px;">ر.س • بعد خصم الالتزامات</div>
+                            </div>
+                            <div>
+                                <div style="width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#0B1A2D,#1B2E47);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;">
+                                    <i class="fa-solid fa-money-bill-trend-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;">
+                            <span class="stat-pill-green"><i class="fa-solid fa-circle-check"></i> surplus net</span>
+                            <canvas class="mini-chart-canvas" id="mini-chart-4" width="80" height="36"></canvas>
+                        </div>
+                        <div class="stat-accent-bar accent-teal"></div>
+                    </div>
+                </div>
+
+                <!-- MAIN AREA CHART + ACTIVITY FEED -->
+                <div style="display:grid;grid-template-columns:1fr 360px;gap:18px;margin-bottom:22px;" class="chart-feed-grid">
+
+                    <!-- Left: Big Area Chart -->
+                    <div class="card" style="padding:24px;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+                            <div>
+                                <div style="display:flex;align-items:center;gap:8px;">
+                                    <div style="width:10px;height:10px;border-radius:50%;background:#0066FF;" class="pulse-dot"></div>
+                                    <h3 style="font-size:14.5px;font-weight:800;color:#0B1A2D;margin:0;">منحنى الأداء المالي الأسبوعي</h3>
+                                </div>
+                                <p style="font-size:11.5px;color:#8A95A3;margin:4px 0 0;font-weight:500;">منحنى انسيابي سلس مع نقطة الذروة (Apex Tooltip)</p>
+                            </div>
+                            <!-- Series Switcher -->
+                            <div style="display:flex;background:#F7F5F0;padding:4px;border-radius:12px;border:1px solid #E5E2DA;gap:3px;font-size:11.5px;font-weight:700;">
+                                <button onclick="switchMainChart('all')" id="btn-c-all"
+                                    style="padding:6px 14px;border-radius:9px;border:none;cursor:pointer;background:linear-gradient(135deg,#0066FF,#0045E0);color:#fff;font-family:inherit;font-weight:700;font-size:11.5px;box-shadow:0 2px 8px rgba(0,102,255,0.25);">
+                                    المبيعات الكلية
+                                </button>
+                                <button onclick="switchMainChart('cafe')" id="btn-c-cafe"
+                                    style="padding:6px 14px;border-radius:99px;border:none;cursor:pointer;background:transparent;color:#8A95A3;font-family:inherit;font-weight:700;font-size:11.5px;">
+                                    مبيعات البار
+                                </button>
+                                <button onclick="switchMainChart('roast')" id="btn-c-roast"
+                                    style="padding:6px 14px;border-radius:9px;border:none;cursor:pointer;background:transparent;color:#8A95A3;font-family:inherit;font-weight:700;font-size:11.5px;">
+                                    حماصة جيسن
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Chart Canvas with floating Apex Bubble -->
+                        <div style="position:relative;height:260px;">
+                            <canvas id="mainAreaChart"></canvas>
+                            <div id="apex-bubble"
+                                style="position:absolute;pointer-events:none;display:none;z-index:10;
+                                    background:linear-gradient(135deg,#0066FF,#0045E0);
+                                    color:#fff;font-size:10.5px;font-weight:800;
+                                    padding:6px 12px;border-radius:12px;
+                                    box-shadow:0 4px 16px rgba(0,102,255,0.4);
+                                    border:1.5px solid rgba(255,255,255,0.3);
+                                    white-space:nowrap;
+                                    transform:translate(-50%, -100%) translateY(-10px);">
+                                <i class="fa-solid fa-crown" style="color:#FD980E;margin-left:4px;"></i>
+                                <span id="apex-text">Highest Value: 764k</span>
+                                <div style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);
+                                    width:10px;height:10px;background:#0045E0;rotate:45deg;
+                                    border-right:1.5px solid rgba(255,255,255,0.3);border-bottom:1.5px solid rgba(255,255,255,0.3);"></div>
+                            </div>
+                        </div>
+
+                        <!-- Legend bar -->
+                        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid #F0EDE8;">
+                            <div style="background:#EBF2FF;border-radius:12px;padding:10px 14px;border:1px solid #CCE0FF;">
+                                <div style="font-size:10px;color:#0066FF;font-weight:700;margin-bottom:3px;">نقطة الذروة (Apex)</div>
+                                <div style="font-size:13px;font-weight:800;color:#0045E0;">الأسبوع 3 (764k)</div>
+                            </div>
+                            <div style="background:#F7F5F0;border-radius:12px;padding:10px 14px;border:1px solid #E5E2DA;">
+                                <div style="font-size:10px;color:#8A95A3;font-weight:700;margin-bottom:3px;">متوسط وردية البار</div>
+                                <div style="font-size:13px;font-weight:800;color:#1A2332;" id="chart-cafe-avg">1,452 ر.س</div>
+                            </div>
+                            <div style="background:#F7F5F0;border-radius:12px;padding:10px 14px;border:1px solid #E5E2DA;">
+                                <div style="font-size:10px;color:#8A95A3;font-weight:700;margin-bottom:3px;">الحد الأدنى (Floor)</div>
+                                <div style="font-size:13px;font-weight:800;color:#1A2332;">lowest value 210k</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Activity Feed Compact -->
+                    <div class="card" style="padding:20px;display:flex;flex-direction:column;gap:0;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                            <h3 style="font-size:13.5px;font-weight:800;color:#0B1A2D;margin:0;">آخر العمليات</h3>
+                            <span class="badge badge-blue" onclick="navigateTo('cafe')" style="cursor:pointer;">عرض الكل</span>
+                        </div>
+                        <!-- Search -->
+                        <div style="position:relative;margin-bottom:12px;">
+                            <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#8A95A3;font-size:12px;"></i>
+                            <input type="text" id="feed-search-compact" placeholder="بحث سريع..." onkeyup="renderCompactFeed()"
+                                style="width:100%;padding:8px 12px 8px 34px;border-radius:10px;border:1.5px solid #E5E2DA;background:#F7F5F0;font-family:inherit;font-size:12px;outline:none;direction:rtl;">
+                        </div>
+                        <!-- Feed Items -->
+                        <div id="compact-feed" style="flex:1;overflow-y:auto;max-height:290px;display:flex;flex-direction:column;gap:7px;">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECOND ROW: AI Advisor + Weekly Roadmap -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+
+                    <!-- AI Advisor Card -->
+                    <div class="hero-card-oxford" style="padding:24px;">
+                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                            <div style="width:42px;height:42px;border-radius:12px;background:rgba(0,102,255,0.25);display:flex;align-items:center;justify-content:center;font-size:18px;color:#60A5FA;border:1px solid rgba(0,102,255,0.3);">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size:15px;font-weight:800;margin:0;">مستشار الذكاء الاصطناعي (Gemini AI)</h3>
+                                <p style="font-size:11.5px;color:rgba(255,255,255,0.6);margin:2px 0 0;">تحليل مباشر للمبيعات، الهدر، وتكاليف البار والمحمصة</p>
+                            </div>
+                        </div>
+
+                        <div id="ai-advisor-box" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:16px;font-size:12px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:16px;min-height:100px;">
+                            انقر على الزر أدناه لتوليد تقرير توصيات استراتيجي مباشر مخصص لـ علاء...
+                        </div>
+
+                        <button onclick="triggerAiAdvisor()" class="btn-blue" style="width:100%;justify-content:center;">
+                            <i class="fa-solid fa-brain"></i> توليد استشارة الذكاء الاصطناعي الآن
+                        </button>
+                    </div>
+
+                    <!-- Roadmap 8 Weeks Summary Card -->
+                    <div class="card" style="padding:24px;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                            <div>
+                                <h3 style="font-size:14.5px;font-weight:800;color:#0B1A2D;margin:0;">خارطة الـ 8 أسابيع للتحول</h3>
+                                <p style="font-size:11.5px;color:#8A95A3;margin:2px 0 0;">التقدم الإجمالي عبر مراحل التهيئة والتأسيس</p>
+                            </div>
+                            <button onclick="navigateTo('tasks')" class="btn-ghost" style="padding:6px 12px;font-size:11.5px;">عرض المهام الـ 40</button>
+                        </div>
+
+                        <div id="weeks-roadmap-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ─────────────────────────────────── -->
+            <!-- PAGE: TASKS (40 Tasks Plan)         -->
+            <!-- ─────────────────────────────────── -->
+            <div id="page-tasks" class="page-section">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px;">
+                    <div>
+                        <h1 style="font-size:20px;font-weight:800;color:#0B1A2D;margin:0 0 4px;">خطة الـ 8 أسابيع (الـ 40 مهمة)</h1>
+                        <p style="font-size:12.5px;color:#8A95A3;margin:0;font-weight:500;">تتبع المهام التنفيذية، التقييم التشغيلي والمالي لمشروع RoR</p>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="btn-ghost" onclick="filterTasks('all')">الكل (40)</button>
+                        <button class="btn-ghost" onclick="filterTasks('pending')">المتبقية</button>
+                        <button class="btn-blue" onclick="filterTasks('completed')">المنجزة</button>
+                    </div>
+                </div>
+
+                <div class="card" style="padding:20px;">
+                    <div style="display:flex;gap:12px;margin-bottom:18px;">
+                        <input type="text" id="task-search-input" placeholder="بحث في المهام..." onkeyup="renderTasks()" class="section-search">
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px;">#</th>
+                                    <th style="width:80px;">الأسبوع</th>
+                                    <th>وصف المهمة التنفيذية</th>
+                                    <th style="width:130px;text-align:center;">الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tasks-table-body">
+                                <!-- Rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─────────────────────────────────── -->
+            <!-- PAGE: MENU ENGINEERING               -->
+            <!-- ─────────────────────────────────── -->
+            <div id="page-menu" class="page-section">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px;">
+                    <div>
+                        <h1 style="font-size:20px;font-weight:800;color:#0B1A2D;margin:0 0 4px;">هندسة المنيو ومصفوفة الربحية</h1>
+                        <p style="font-size:12.5px;color:#8A95A3;margin:0;font-weight:500;">تصنيف الأصناف حسب الهامش والشعبية (Stars, Puzzles, Plowhorses, Dogs)</p>
+                    </div>
+                    <div style="display:flex;gap:10px;">
+                        <button class="btn-blue" onclick="openModal('modal-menu-item')">
+                            <i class="fa-solid fa-plus"></i> إضافة صنف جديد
+                        </button>
+                        <button class="btn-ghost" onclick="exportMenuToExcel()">
+                            <i class="fa-solid fa-file-excel"></i> تصدير المنيو
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card" style="padding:20px;margin-bottom:20px;">
+                    <div style="overflow-x:auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>الصنف</th>
+                                    <th>التكلفة (ر.س)</th>
+                                    <th>سعر البيع (ر.س)</th>
+                                    <th>هامش الربح</th>
+                                    <th>نسبة الهامش</th>
+                                    <th>المبيعات الأسبوعية</th>
+                                    <th>التصنيف الهندسي</th>
+                                    <th style="width:80px;">إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="menu-table-body">
+                                <!-- Rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─────────────────────────────────── -->
+            <!-- PAGE: BREAKEVEN CALCULATOR          -->
+            <!-- ─────────────────────────────────── -->
+            <div id="page-breakeven" class="page-section">
+                <div style="margin-bottom:22px;">
+                    <h1 style="font-size:20px;font-weight:800;color:#0B1A2D;margin:0 0 4px;">حاسبة نقطة التعادل والتكاليف الثابتة</h1>
+                    <p style="font-size:12.5px;color:#8A95A3;margin:0;font-weight:500;">حساب الإيراد الأدنى المطلوب لإنهاء مرحلة الخسارة والوصول للربحية</p>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                    <div class="card" style="padding:22px;">
+                        <h3 style="font-size:14px;font-weight:800;color:#0B1A2D;margin:0 0 16px;">المصاريف الثابتة والتشغيلية الشهرية</h3>
+                        <div id="financials-list" style="display:flex;flex-direction:column;gap:10px;">
+                            <!-- Rendered by JS -->
+                        </div>
+                        <div style="display:flex;justify-content:space-between;padding-top:14px;margin-top:14px;border-top:1.5px solid #E5E2DA;font-weight:800;">
+                            <span>إجمالي التكاليف الثابتة:</span>
+                            <span id="total-fixed-costs" style="color:#0066FF;">0 ر.س</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-card-blue" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
+                        <div>
+                            <span class="badge badge-oxford" style="background:rgba(255,255,255,0.2);color:#fff;border-none;margin-bottom:12px;">النتيجة الحسابية</span>
+                            <h3 style="font-size:18px;font-weight:800;margin:0 0 6px;">نقطة التعادل المستهدفة</h3>
+                            <p style="font-size:12px;color:rgba(255,255,255,0.8);margin:0 0 20px;">الإيراد الشهري المطلوب لتغطية كافة التكاليف الثابتة والمتغيرة</p>
+
+                            <div style="font-size:36px;font-weight:900;line-height:1;margin-bottom:10px;" id="breakeven-revenue">0 ر.س</div>
+                            <div style="font-size:12px;color:rgba(255,255,255,0.9);" id="breakeven-cups">ما يعادل 0 كوب / شهرياً</div>
+                        </div>
+
+                        <div style="background:rgba(255,255,255,0.12);padding:14px;border-radius:14px;margin-top:20px;font-size:11.5px;line-height:1.5;">
+                            <i class="fa-solid fa-lightbulb" style="color:#FD980E;margin-left:6px;"></i>
+                            زيادة مبيعات أكياس المحمصة بالجملة بـ 15% تخفض نقطة التعادل بـ 200 كوب شهرياً!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─────────────────────────────────── -->
+            <!-- PAGE: CAFE BAR SALES                -->
+            <!-- ─────────────────────────────────── -->
+            <div id="page-cafe" class="page-section">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px;">
+                    <div>
+                        <h1 style="font-size:20px;font-weight:800;color:#0B1A2D;margin:0 0 4px;">مبيعات البار اليومية (ورديات عارف وعلم)</h1>
+                        <p style="font-size:12.5px;color:#8A95A3;margin:0;font-weight:500;">تسجيل الأكواب، مبيعات الحلى، إجمالي الفواتير، وحركة الصندوق</p>
+                    </div>
+                    <button class="btn-blue" onclick="openModal('modal-cafe-sale')">
+                        <i class="fa-solid fa-plus"></i> إضافة وردية مبيعات
+                    </button>
+                </div>
+
+                <div class="card" style="padding:20px;">
+                    <div style="overflow-x:auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>التاريخ</th>
+                                    <th>الوردية / الموظف</th>
+                                    <th>الأكواب المباعة</th>
+                                    <th>مبيعات الحلى (ر.س)</th>
+                                    <th>إجمالي الإيراد (ر.س)</th>
+                                    <th>عدد الفواتير</th>
+                                    <th>الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cafe-sales-table-body">
+                                <!-- Rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─────────────────────────────────── -->
+            <!-- PAGE: ROASTERY SALES                -->
+            <!-- ─────────────────────────────────── -->
+            <div id="page-roastery" class="page-section">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px;">
+                    <div>
+                        <h1 style="font-size:20px;font-weight:800;color:#0B1A2D;margin:0 0 4px;">مبيعات المحمصة وحماصة جيسن 15 كجم</h1>
+                        <p style="font-size:12.5px;color:#8A95A3;margin:0;font-weight:500;">طلبات الجملة للمقاهي الشريكة ومبيعات أرباع التجزئة (250جم)</p>
+                    </div>
+                    <button class="btn-orange" onclick="openModal('modal-roast-sale')">
+                        <i class="fa-solid fa-plus"></i> بيع محصول / طلبية جملة
+                    </button>
+                </div>
+
+                <div class="card" style="padding:20px;">
+                    <div style="overflow-x:auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>العميل / الجهة</th>
+                                    <th>نوع المحصول</th>
+                                    <th>التصنيف</th>
+                                    <th>الكمية (كجم/ربع)</th>
+                                    <th>إجمالي المبلغ (ر.س)</th>
+                                    <th>حالة السداد</th>
+                                </tr>
+                            </thead>
+                            <tbody id="roast-sales-table-body">
+                                <!-- Rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─────────────────────────────────── -->
+            <!-- PAGE: WASTE LOGS                    -->
+            <!-- ─────────────────────────────────── -->
+            <div id="page-waste" class="page-section">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px;">
+                    <div>
+                        <h1 style="font-size:20px;font-weight:800;color:#0B1A2D;margin:0 0 4px;">تتبع الهدر وحركة الصندوق النقدي</h1>
+                        <p style="font-size:12.5px;color:#8A95A3;margin:0;font-weight:500;">تسجيل التالف، المعايرة الفاشلة، وتكاليف النثرية</p>
+                    </div>
+                    <button class="btn-orange" onclick="openModal('modal-waste')">
+                        <i class="fa-solid fa-plus"></i> تسجيل هدر / تلف
+                    </button>
+                </div>
+
+                <div class="card" style="padding:20px;">
+                    <div style="overflow-x:auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>التاريخ</th>
+                                    <th>الصنف التالف</th>
+                                    <th>الكمية</th>
+                                    <th>التكلفة (ر.س)</th>
+                                    <th>سبب التلف / المعايرة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="waste-table-body">
+                                <!-- Rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─────────────────────────────────── -->
+            <!-- PAGE: RACI MATRIX                   -->
+            <!-- ─────────────────────────────────── -->
+            <div id="page-raci" class="page-section">
+                <div style="margin-bottom:22px;">
+                    <h1 style="font-size:20px;font-weight:800;color:#0B1A2D;margin:0 0 4px;">مصفوفة الصلاحيات (RACI) وخطة التحول</h1>
+                    <p style="font-size:12.5px;color:#8A95A3;margin:0;font-weight:500;">R = مسؤول التنفيذ | A = صاحب القرار | C = استشاري | I = يُبلغ بالنتائج</p>
+                </div>
+                <div class="card" style="overflow:hidden;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>النشاط / القرار التشغيلي</th>
+                                <th>الشريك التنفيذي</th>
+                                <th>المشرف / الحماص</th>
+                                <th>باريستا البار</th>
+                                <th>المحاسب المالي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight:700;">شراء البن الأخضر ومحاصيل المحمصة</td>
+                                <td><span class="badge badge-oxford">A (اعتماد)</span></td>
+                                <td><span class="badge badge-blue">R (تنفيذ)</span></td>
+                                <td><span class="badge badge-gray">I (إبلاغ)</span></td>
+                                <td><span class="badge badge-gray">C (استشارة)</span></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:700;">معايرة مطاحن ومكائن الإسبريسو اليومية</td>
+                                <td><span class="badge badge-gray">I (إبلاغ)</span></td>
+                                <td><span class="badge badge-oxford">A (إشراف)</span></td>
+                                <td><span class="badge badge-blue">R (تنفيذ)</span></td>
+                                <td><span class="badge badge-gray">-</span></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:700;">تسعير أصناف المنيو ومبيعات الجملة</td>
+                                <td><span class="badge badge-oxford">A (اعتماد)</span></td>
+                                <td><span class="badge badge-gray">C (استشارة)</span></td>
+                                <td><span class="badge badge-gray">I (إبلاغ)</span></td>
+                                <td><span class="badge badge-blue">R (حساب)</span></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:700;">إقفال ورديات الكاشير ومطابقة الشبكة</td>
+                                <td><span class="badge badge-gray">I (إبلاغ)</span></td>
+                                <td><span class="badge badge-oxford">A (تدقيق)</span></td>
+                                <td><span class="badge badge-blue">R (تنفيذ)</span></td>
+                                <td><span class="badge badge-blue">R (مطابقة)</span></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:700;">إعداد تقرير نقطة التعادل الشهري</td>
+                                <td><span class="badge badge-oxford">A (اعتماد)</span></td>
+                                <td><span class="badge badge-gray">I (إبلاغ)</span></td>
+                                <td><span class="badge badge-gray">-</span></td>
+                                <td><span class="badge badge-blue">R (إعداد)</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ─────────────────────────────────── -->
+            <!-- PAGE: ORGANIZATIONAL STRUCTURE     -->
+            <!-- ─────────────────────────────────── -->
+            <div id="page-orgchart" class="page-section">
+                <!-- Page Header -->
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;margin-bottom:22px;">
+                    <div>
+                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+                            <h1 style="font-size:22px;font-weight:800;color:#0B1A2D;margin:0;">الهيكل التنظيمي والتسكين الوظيفي لـ RoR</h1>
+                            <span class="badge badge-oxford"><i class="fa-solid fa-sitemap"></i> الحوكمة والتسكين</span>
+                        </div>
+                        <p style="font-size:12.5px;color:#8A95A3;margin:0;font-weight:500;">خارطة التسكين الوظيفي الشاملة، إدارة الكفاءات القائمة، وتخطيط الشواغر المستهدفة للنمو ومبيعات الجملة</p>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                        <a href="/mindmap" class="btn-ghost" style="padding:8px 14px;font-size:12px;text-decoration:none;" title="عرض الخريطة الذهنية البصرية">
+                            <i class="fa-solid fa-diagram-project" style="color:#0066FF;"></i> الخريطة الذهنية (Mermaid)
+                        </a>
+                        <button onclick="resetOrgChartToDefault()" class="btn-ghost" style="padding:8px 14px;font-size:12px;" title="إعادة ضبط الهيكل للبيانات الأصلية">
+                            <i class="fa-solid fa-rotate-left"></i> إعادة ضبط الهيكل
+                        </button>
+                        <button onclick="openAddOrgModal()" class="btn-blue" style="padding:8px 16px;font-size:12px;">
+                            <i class="fa-solid fa-user-plus"></i> إضافة وظيفة جديدة
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MERMAID VISUAL MINDMAP BLOCK -->
+                <div style="margin-bottom:24px;">
+                    <div class="mermaid text-center overflow-x-auto p-4 bg-[#F9F4E9] rounded-2xl" style="background:#F7F5F0;border-radius:20px;border:1.5px solid #E5E2DA;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,0.03);">
+mindmap
+  root((محمصة ومقهى RoR))
+    الإدارة العليا
+      علاء: CEO والتحميص
+        قائد المشروع والجودة
+      عبد الله: COO العمليات
+        كفاءة التشغيل والإمداد
+      جون: CMO التسويق
+        العلامة التجارية والقنوات
+      أنس: CFO المالي
+        التخطيط المالي والحوكمة
+    المقهى والبار
+      عارف: باريستا
+        وردية صباحية
+      علم: باريستا
+        وردية مسائية
+      شاغر: كاشير
+        خدمة العملاء والـ POS
+      شاغر: باريستا إضافي
+        مساندة أوقات الذروة
+    المحمصة والإنتاج
+      شاغر: مسؤول تحميص
+        حماصة جيسن 15 كجم
+      شاغر: مساعد حماس
+        تجهيز وتبريد المحاصيل
+      شاغر: تعبئة وتغليف
+        أكياس التجزئة والجملة
+    ضبط الجودة وتطوير المنيو
+      شاغر: أخصائي Q-Grader
+        تقييم الكبينغ ومعايير SCA
+      شاغر: مطور منتجات ووصفات
+        مشروبات موسمية وتطوير
+    المبيعات والتسويق
+      شاغر: مبيعات جملة
+        عقود التوريد B2B
+      شاغر: صانع محتوى
+        فيديوهات وتواصل رقمي
+      شاغر: مصمم جرافيك
+        هوية ومطبوعات RoR
+      شاغر: كبار العملاء
+        متابعة الحسابات الاستراتيجية
+    التجارة الإلكترونية واللوجستيات
+      شاغر: مدير المتجر
+        تطوير منصة البيع
+      شاغر: شحن ومخزون
+        التجهيز والشحن السريع
+    الإمداد والصيانة
+      شاغر: مشتريات
+        البن الأخضر والتغليف
+      شاغر: فني صيانة
+        مكائن الإسبريسو والمطاحن
+    الموارد البشرية والمالية
+      شاغر: موارد بشرية
+        التوظيف وشؤون الموظفين
+      شاغر: مدرب باريستا
+        تأهيل كوادر البار
+      شاغر: محاسب عام
+        القيود والإقرارات الضريبية
+                    </div>
+                    <script>mermaid.initialize({startOnLoad:true, theme:'base', themeVariables:{fontFamily:'IBM Plex Sans Arabic', primaryColor:'#0066FF', primaryTextColor:'#FFFFFF', primaryBorderColor:'#0045E0', lineColor:'#0066FF', secondaryColor:'#FFF4E6', tertiaryColor:'#F7F5F0'}});</script>
+                </div>
+
+                <!-- Org Stat Cards (4 Cards) -->
+                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));gap:16px;margin-bottom:24px;">
+                    <div class="stat-card">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                            <span style="font-size:11.5px;font-weight:700;color:#8A95A3;">إجمالي الوظائف المعتمدة</span>
+                            <span class="stat-pill-blue"><i class="fa-solid fa-briefcase"></i> الخطة الشاملة</span>
+                        </div>
+                        <div style="font-size:28px;font-weight:800;color:#0B1A2D;line-height:1;" id="org-stat-total">24</div>
+                        <div style="font-size:11px;color:#8A95A3;margin-top:6px;">وظيفة قيادية، تشغيلية، وتخصصية</div>
+                        <div class="stat-accent-bar accent-blue"></div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                            <span style="font-size:11.5px;font-weight:700;color:#8A95A3;">الوظائف القائمة (المشغولة)</span>
+                            <span class="stat-pill-green"><i class="fa-solid fa-circle-check"></i> 6 كوادر نشطة</span>
+                        </div>
+                        <div style="display:flex;align-items:baseline;gap:8px;">
+                            <div style="font-size:28px;font-weight:800;color:#16A34A;line-height:1;" id="org-stat-filled">6</div>
+                            <span style="font-size:11.5px;color:#16A34A;font-weight:700;">قائمون بالعمل</span>
+                        </div>
+                        <div style="font-size:11px;color:#8A95A3;margin-top:6px;">علاء، عبد الله، جون، أنس، عارف، علم</div>
+                        <div class="stat-accent-bar accent-green"></div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                            <span style="font-size:11.5px;font-weight:700;color:#8A95A3;">الشواغر المستهدفة للتوظيف</span>
+                            <span class="stat-pill-orange"><i class="fa-solid fa-user-clock"></i> قيد الاستقطاب</span>
+                        </div>
+                        <div style="display:flex;align-items:baseline;gap:8px;">
+                            <div style="font-size:28px;font-weight:800;color:#FD980E;line-height:1;" id="org-stat-vacant">18</div>
+                            <span style="font-size:11.5px;color:#FD980E;font-weight:700;">فرصة شاغرة</span>
+                        </div>
+                        <div style="font-size:11px;color:#8A95A3;margin-top:6px;">موزعة على الأقسام التشغيلية والتوسعية</div>
+                        <div class="stat-accent-bar accent-orange"></div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                            <span style="font-size:11.5px;font-weight:700;color:#8A95A3;">نسبة التسكين الميداني</span>
+                            <span class="badge badge-oxford" id="org-stat-rate-badge">25%</span>
+                        </div>
+                        <div style="font-size:28px;font-weight:800;color:#0066FF;line-height:1;" id="org-stat-rate">25%</div>
+                        <div style="margin-top:8px;height:6px;background:#F0EDE8;border-radius:999px;overflow:hidden;">
+                            <div id="org-stat-progress" style="width:25%;height:100%;background:linear-gradient(90deg, #0066FF, #0045E0);border-radius:999px;transition:width 0.4s;"></div>
+                        </div>
+                        <div class="stat-accent-bar accent-teal"></div>
+                    </div>
+                </div>
+
+                <!-- Controls: Filter Chips & Search Bar -->
+                <div class="card" style="padding:16px 20px;margin-bottom:24px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+                        <!-- Filter Chips -->
+                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;" id="org-filter-group">
+                            <button class="org-filter-btn active" onclick="setOrgFilter('all', this)">
+                                <i class="fa-solid fa-layer-group"></i> الكل (<span id="count-filter-all">24</span>)
+                            </button>
+                            <button class="org-filter-btn" onclick="setOrgFilter('filled', this)">
+                                <i class="fa-solid fa-circle-check" style="color:#16A34A;"></i> المشغولة حالياً (<span id="count-filter-filled">6</span>)
+                            </button>
+                            <button class="org-filter-btn" onclick="setOrgFilter('vacant', this)">
+                                <i class="fa-solid fa-hourglass-half" style="color:#FD980E;"></i> الشواغر المستهدفة (<span id="count-filter-vacant">18</span>)
+                            </button>
+                            <button class="org-filter-btn" onclick="setOrgFilter('leadership', this)">
+                                <i class="fa-solid fa-crown" style="color:#0B1A2D;"></i> الإدارة العليا (4)
+                            </button>
+                            <button class="org-filter-btn" onclick="setOrgFilter('bar', this)">
+                                <i class="fa-solid fa-mug-hot" style="color:#0066FF;"></i> المقهى والبار (4)
+                            </button>
+                            <button class="org-filter-btn" onclick="setOrgFilter('future', this)">
+                                <i class="fa-solid fa-network-wired" style="color:#8A95A3;"></i> الأقسام المستقبلية (16)
+                            </button>
+                        </div>
+
+                        <!-- Search Input -->
+                        <div style="position:relative;min-width:240px;flex:1;max-width:340px;">
+                            <i class="fa-solid fa-magnifying-glass" style="position:absolute;right:13px;top:12px;color:#8A95A3;font-size:12px;"></i>
+                            <input type="text" id="org-search-input" oninput="filterOrgDisplay()" placeholder="بحث عن مسمى أو موظف أو قسم..." class="form-input" style="padding-right:34px;font-size:12px;padding-top:7px;padding-bottom:7px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1. Executive Leadership Tier -->
+                <div id="section-leadership" style="margin-bottom:28px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E2DA;">
+                        <div style="width:32px;height:32px;border-radius:10px;background:#0B1A2D;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <div>
+                            <h3 style="font-size:16px;font-weight:800;color:#0B1A2D;margin:0;">1. الإدارة العليا والقيادة الاستراتيجية</h3>
+                            <p style="font-size:11.5px;color:#8A95A3;margin:0;font-weight:500;">المجلس التنفيذي، التوجيه الاستراتيجي، وضبط جودة المنتج والحوكمة</p>
+                        </div>
+                    </div>
+                    <div id="org-leadership-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:16px;">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- 2. Cafe & Frontline Bar Operations -->
+                <div id="section-bar" style="margin-bottom:28px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E2DA;">
+                        <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg, #0066FF, #0045E0);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;">
+                            <i class="fa-solid fa-mug-hot"></i>
+                        </div>
+                        <div>
+                            <h3 style="font-size:16px;font-weight:800;color:#0B1A2D;margin:0;">2. قسم المقهى والبار التشغيلي (العمليات الميدانية)</h3>
+                            <p style="font-size:11.5px;color:#8A95A3;margin:0;font-weight:500;">كوادر الباريستا وخدمة العملاء في صالة RoR اليومية</p>
+                        </div>
+                    </div>
+                    <div id="org-bar-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:16px;">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- 3. Target Future Expansion Departments -->
+                <div id="section-future" style="margin-bottom:28px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E5E2DA;">
+                        <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg, #FD980E, #D47B00);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;">
+                            <i class="fa-solid fa-network-wired"></i>
+                        </div>
+                        <div>
+                            <h3 style="font-size:16px;font-weight:800;color:#0B1A2D;margin:0;">3. الأقسام والوظائف الشاغرة المستهدفة مستقبلاً (مرحلة التوسع)</h3>
+                            <p style="font-size:11.5px;color:#8A95A3;margin:0;font-weight:500;">الشواغر المخططة لتعزيز الطاقة الإنتاجية لحماصة جيسن 15 كجم، نمو مبيعات الجملة والتجارة الإلكترونية</p>
+                        </div>
+                    </div>
+                    <div id="org-future-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:16px;">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /main-content -->
+    </div><!-- /workspace -->
+</div><!-- /app-shell -->
+
+<!-- ════════════════════════════════════ -->
+<!-- MOBILE SIDEBAR OVERLAY              -->
+<div id="sidebar-overlay" onclick="toggleMobileSidebar()"></div>
+
+<!-- ════════════════════════════════════ -->
+<!-- TOAST NOTIFICATION                  -->
+<div id="toast">
+    <div style="width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,#0066FF,#0045E0);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;">
+        <i class="fa-solid fa-check" style="color:#fff;"></i>
+    </div>
+    <span id="toast-msg">تم الحفظ بنجاح</span>
+</div>
+
+<!-- ════════════════════════════════════ -->
+<!-- MODALS                              -->
+
+<!-- Modal: Add Cafe Shift -->
+<div class="modal-backdrop" id="modal-cafe-sale">
+    <div class="modal-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <h4 style="font-size:15px;font-weight:800;color:#0B1A2D;margin:0;">إضافة وردية مبيعات بار جديدة</h4>
+            <button onclick="closeModal('modal-cafe-sale')" style="background:none;border:none;cursor:pointer;font-size:18px;color:#8A95A3;">✕</button>
+        </div>
+        <form onsubmit="handleSaveCafeSale(event)" style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">التاريخ</label>
+                    <input type="date" id="m-cafe-date" required class="form-input">
+                </div>
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">الموظف</label>
+                    <select id="m-cafe-staff" class="form-input" style="cursor:pointer;">
+                        <option value="عارف">عارف (صباحية)</option>
+                        <option value="علم">علم (مسائية)</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">عدد الأكواب</label>
+                    <input type="number" id="m-cafe-cups" required min="0" placeholder="مثال: 75" class="form-input">
+                </div>
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">مبيعات الحلى (ر.س)</label>
+                    <input type="number" id="m-cafe-sweets" required min="0" step="0.5" placeholder="مثال: 220" class="form-input">
+                </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">إجمالي الإيراد (ر.س)</label>
+                    <input type="number" id="m-cafe-revenue" required min="0" step="0.5" placeholder="مثال: 1450" class="form-input">
+                </div>
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">عدد الفواتير</label>
+                    <input type="number" id="m-cafe-tickets" required min="0" placeholder="مثال: 55" class="form-input">
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:6px;">
+                <button type="submit" class="btn-blue" style="flex:1;justify-content:center;">حفظ الوردية</button>
+                <button type="button" onclick="closeModal('modal-cafe-sale')" class="btn-ghost">إلغاء</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Add Roastery Sale -->
+<div class="modal-backdrop" id="modal-roast-sale">
+    <div class="modal-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <h4 style="font-size:15px;font-weight:800;color:#0B1A2D;margin:0;">تسجيل بيع محصول أو طلبية جملة</h4>
+            <button onclick="closeModal('modal-roast-sale')" style="background:none;border:none;cursor:pointer;font-size:18px;color:#8A95A3;">✕</button>
+        </div>
+        <form onsubmit="handleSaveRoastSale(event)" style="display:flex;flex-direction:column;gap:12px;">
+            <div>
+                <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">العميل / الجهة</label>
+                <input type="text" id="m-roast-client" required placeholder="مثال: مقهى الأفق" class="form-input">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">نوع المحصول</label>
+                    <input type="text" id="m-roast-crop" required placeholder="مثال: إثيوبيا شلشلي" class="form-input">
+                </div>
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">التصنيف</label>
+                    <select id="m-roast-type" class="form-input" style="cursor:pointer;">
+                        <option value="جملة (حماصة جيسن 15 كجم)">جملة (حماصة جيسن 15 كجم)</option>
+                        <option value="أرباع تجزئة 250جم">أرباع تجزئة 250جم</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">الكمية (كجم)</label>
+                    <input type="number" id="m-roast-qty" required min="1" placeholder="مثال: 50" class="form-input">
+                </div>
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">إجمالي المبلغ (ر.س)</label>
+                    <input type="number" id="m-roast-total" required min="0" step="0.5" placeholder="مثال: 3750" class="form-input">
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:6px;">
+                <button type="submit" class="btn-orange" style="flex:1;justify-content:center;">حفظ البيع</button>
+                <button type="button" onclick="closeModal('modal-roast-sale')" class="btn-ghost">إلغاء</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Add Menu Item -->
+<div class="modal-backdrop" id="modal-menu-item">
+    <div class="modal-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <h4 style="font-size:15px;font-weight:800;color:#0B1A2D;margin:0;">إضافة صنف منيو جديد</h4>
+            <button onclick="closeModal('modal-menu-item')" style="background:none;border:none;cursor:pointer;font-size:18px;color:#8A95A3;">✕</button>
+        </div>
+        <form onsubmit="handleSaveMenuItem(event)" style="display:flex;flex-direction:column;gap:12px;">
+            <div>
+                <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">اسم الصنف</label>
+                <input type="text" id="m-item-name" required placeholder="مثال: سبانيش لاتيه بارد" class="form-input">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">التكلفة المعيارية (ر.س)</label>
+                    <input type="number" id="m-item-cost" required min="0" step="0.1" placeholder="4.5" class="form-input">
+                </div>
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">سعر البيع (ر.س)</label>
+                    <input type="number" id="m-item-price" required min="0" step="0.5" placeholder="18.0" class="form-input">
+                </div>
+            </div>
+            <div>
+                <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">المبيعات الأسبوعية المتوقعة</label>
+                <input type="number" id="m-item-sales" required min="0" placeholder="120" class="form-input">
+            </div>
+            <div style="display:flex;gap:10px;margin-top:6px;">
+                <button type="submit" class="btn-blue" style="flex:1;justify-content:center;">إضافة الصنف</button>
+                <button type="button" onclick="closeModal('modal-menu-item')" class="btn-ghost">إلغاء</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Add Waste Log -->
+<div class="modal-backdrop" id="modal-waste">
+    <div class="modal-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <h4 style="font-size:15px;font-weight:800;color:#0B1A2D;margin:0;">تسجيل هدر أو تلف جديد</h4>
+            <button onclick="closeModal('modal-waste')" style="background:none;border:none;cursor:pointer;font-size:18px;color:#8A95A3;">✕</button>
+        </div>
+        <form onsubmit="handleSaveWaste(event)" style="display:flex;flex-direction:column;gap:12px;">
+            <div>
+                <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">الصنف التالف</label>
+                <input type="text" id="m-waste-item" required placeholder="مثال: حليب مراعي" class="form-input">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">الكمية</label>
+                    <input type="text" id="m-waste-qty" required placeholder="مثال: 2 لتر" class="form-input">
+                </div>
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">التكلفة (ر.س)</label>
+                    <input type="number" id="m-waste-cost" required min="0" step="0.5" placeholder="12.0" class="form-input">
+                </div>
+            </div>
+            <div>
+                <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">سبب التلف</label>
+                <input type="text" id="m-waste-reason" required placeholder="مثال: انتهاء صلاحية" class="form-input">
+            </div>
+            <div style="display:flex;gap:10px;margin-top:6px;">
+                <button type="submit" class="btn-orange" style="flex:1;justify-content:center;">تسجيل الهدر</button>
+                <button type="button" onclick="closeModal('modal-waste')" class="btn-ghost">إلغاء</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Edit Org Role -->
+<div class="modal-backdrop" id="modal-org-edit">
+    <div class="modal-box" style="max-width:520px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:32px;height:32px;border-radius:10px;background:#EBF2FF;color:#0066FF;display:flex;align-items:center;justify-content:center;font-size:14px;">
+                    <i class="fa-solid fa-user-pen"></i>
+                </div>
+                <h4 style="font-size:15px;font-weight:800;color:#0B1A2D;margin:0;">تعديل بيانات التسكين الوظيفي</h4>
+            </div>
+            <button onclick="closeModal('modal-org-edit')" style="background:none;border:none;cursor:pointer;font-size:18px;color:#8A95A3;">✕</button>
+        </div>
+        <form onsubmit="handleSaveOrgEdit(event)" style="display:flex;flex-direction:column;gap:12px;">
+            <input type="hidden" id="m-org-id">
+            <div>
+                <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">المسمى الوظيفي</label>
+                <input type="text" id="m-org-title" required class="form-input">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">شاغل الوظيفة / المرشح</label>
+                    <input type="text" id="m-org-holder" required class="form-input" placeholder="اسم الموظف أو اكتب 'شاغر'">
+                </div>
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">حالة الوظيفة</label>
+                    <select id="m-org-status" class="form-input" style="cursor:pointer;" onchange="handleOrgStatusModalChange()">
+                        <option value="filled">قائم / مشغول (نشط)</option>
+                        <option value="vacant">شاغر للتوظيف (مستهدف)</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">القسم الإداري / التشغيلي</label>
+                <input type="text" id="m-org-dept" required class="form-input">
+            </div>
+            <div>
+                <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">المهام والمسؤوليات الرئيسية</label>
+                <textarea id="m-org-details" rows="3" class="form-input" style="resize:vertical;" placeholder="اكتب نبذة عن الدور والمهام التشغيلية أو المتطلبات"></textarea>
+            </div>
+            <div>
+                <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">ملاحظات داخلية / أوقات الوردية أو التواصل</label>
+                <input type="text" id="m-org-notes" class="form-input" placeholder="مثال: وردية صباحية، تواصل مباشر، متطلب SCA">
+            </div>
+            <div style="display:flex;gap:10px;margin-top:8px;">
+                <button type="submit" class="btn-blue" style="flex:1;justify-content:center;">
+                    <i class="fa-solid fa-floppy-disk"></i> حفظ وتحديث التسكين
+                </button>
+                <button type="button" onclick="closeModal('modal-org-edit')" class="btn-ghost">إلغاء</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Add New Org Role -->
+<div class="modal-backdrop" id="modal-org-add">
+    <div class="modal-box" style="max-width:520px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#0066FF,#0045E0);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+                <h4 style="font-size:15px;font-weight:800;color:#0B1A2D;margin:0;">إضافة وظيفة جديدة للهيكل التنظيمي</h4>
+            </div>
+            <button onclick="closeModal('modal-org-add')" style="background:none;border:none;cursor:pointer;font-size:18px;color:#8A95A3;">✕</button>
+        </div>
+        <form onsubmit="handleSaveNewOrgRole(event)" style="display:flex;flex-direction:column;gap:12px;">
+            <div>
+                <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">المسمى الوظيفي المستهدف</label>
+                <input type="text" id="m-new-title" required class="form-input" placeholder="مثال: أخصائي تسويق رقمي">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">اسم الموظف أو اكتب 'شاغر'</label>
+                    <input type="text" id="m-new-holder" value="شاغر" required class="form-input">
+                </div>
+                <div>
+                    <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">الحالة</label>
+                    <select id="m-new-status" class="form-input" style="cursor:pointer;">
+                        <option value="vacant" selected>شاغر للتوظيف (مستهدف)</option>
+                        <option value="filled">قائم / مشغول (نشط)</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">القسم</label>
+                <select id="m-new-dept-select" class="form-input" style="cursor:pointer;">
+                    <option value="leadership">الإدارة العليا والقيادة</option>
+                    <option value="bar">قسم المقهى والبار التشغيلي</option>
+                    <option value="roastery">قسم المحمصة والإنتاج</option>
+                    <option value="qa">قسم ضبط الجودة والبحث والتطوير</option>
+                    <option value="marketing">قسم التسويق والعلامة التجارية (إشراف جون)</option>
+                    <option value="sales">قسم المبيعات وتطوير الأعمال</option>
+                    <option value="ecom">قسم التجارة الإلكترونية واللوجستيات</option>
+                    <option value="procurement">قسم المشتريات وسلاسل الإمداد</option>
+                    <option value="maintenance">قسم الصيانة والدعم الفني</option>
+                    <option value="hr">قسم الموارد البشرية والتدريب (إشراف أنس)</option>
+                    <option value="finance">قسم المالية والمحاسبة (إشراف أنس)</option>
+                </select>
+            </div>
+            <div>
+                <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">الوصف والمسؤوليات</label>
+                <textarea id="m-new-details" rows="3" class="form-input" style="resize:vertical;" placeholder="نبذة عن المهام المطلوبة"></textarea>
+            </div>
+            <div>
+                <label style="font-size:11.5px;font-weight:700;color:#4A5568;display:block;margin-bottom:5px;">ملاحظات إضافية</label>
+                <input type="text" id="m-new-notes" class="form-input" placeholder="مثال: مؤهل بكالوريوس، خبرة سنتين">
+            </div>
+            <div style="display:flex;gap:10px;margin-top:8px;">
+                <button type="submit" class="btn-blue" style="flex:1;justify-content:center;">
+                    <i class="fa-solid fa-check"></i> إضافة الوظيفة للهيكل
+                </button>
+                <button type="button" onclick="closeModal('modal-org-add')" class="btn-ghost">إلغاء</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════ -->
+<!-- CORE APPLICATION JAVASCRIPT         -->
+<!-- ════════════════════════════════════ -->
+<script>
+// ─── DATA (All 40 official tasks + demo records) ────────────────────────────
+const defaultTasks = [
+    { id: 1, week: 1, title: "حصر جميع الأصول الثابتة والمعدات وتوثيق الضمانات لمقهى RoR.", status: "completed" },
+    { id: 2, week: 1, title: "إدخال بيانات الموردين الحاليين وتثبيت شروط الدفع والائتمان.", status: "completed" },
+    { id: 3, week: 1, title: "إعداد وتدقيق قائمة المكونات الأولية (Raw Materials) لجميع المشروبات والأطباق.", status: "completed" },
+    { id: 4, week: 1, title: "تعيين أسعار التكلفة المعيارية (Standard Recipe Cost) للمشروبات والوجبات الرئيسية.", status: "completed" },
+    { id: 5, week: 1, title: "ضبط أرصدة المخزون الافتتاحية للمستودع الرئيسي والثلاجات الفرعية.", status: "completed" },
+    { id: 6, week: 2, title: "توزيع المهام التشغيلية اليومية لموظفي صالة RoR والبارتندرز والمطبخ.", status: "completed" },
+    { id: 7, week: 2, title: "تفعيل مصفوفة المسؤوليات (RACI) وتحديد من يملك القرار النهائي لكل قسم.", status: "completed" },
+    { id: 8, week: 2, title: "إعداد كتيب الموظف الداخلي (Employee Handbook) وتوضيح معايير خدمة RoR.", status: "completed" },
+    { id: 9, week: 2, title: "جدولة فترات العمل (Shift Schedule) وتوزيع ساعات الذروة والهدوء أسبوعياً.", status: "completed" },
+    { id: 10, week: 2, title: "تفعيل نظام تقييم الأداء الأسبوعي الأولي لفريق الخدمة والتحضير.", status: "completed" },
+    { id: 11, week: 3, title: "توثيق إجراءات التحضير المسبق (Prep Sheet) لخط الإنتاج الساخن والبارد.", status: "completed" },
+    { id: 12, week: 3, title: "إطلاق سجل تتبع الهدر اليومي (Daily Waste Log) في المطبخ والبار.", status: "completed" },
+    { id: 13, week: 3, title: "تحديد الحد الأعلى والحد الأدنى للطلب (Min/Max Par Levels) لكل صنف بالمخزن.", status: "completed" },
+    { id: 14, week: 3, title: "فحص وضبط معايير معايرة المكائن (Espresso Calibration, Grinder, Ovens).", status: "completed" },
+    { id: 15, week: 3, title: "تطبيق آلية التدقيق على الاستلام ودرجات حرارة الأغذية الواردة.", status: "completed" },
+    { id: 16, week: 4, title: "ربط وتحليل بيانات نظام البيع (POS) لاستخراج حجم المبيعات الفعلي للأسابيع الماضية.", status: "completed" },
+    { id: 17, week: 4, title: "تصنيف أصناف المنيو في جدول أولي وفق هندسة القائمة (Stars, Puzzles, Plowhorses, Dogs).", status: "completed" },
+    { id: 18, week: 4, title: "مراجعة أسعار بيع المشروبات الأكثر طلباً بـ RoR ومقارنتها بأسعار المنافسين.", status: "completed" },
+    { id: 19, week: 4, title: "حساب هامش الربح الإجمالي (Gross Margin) لكل تصنيف في منيو RoR الحالي.", status: "completed" },
+    { id: 20, week: 4, title: "اتخاذ قرار مبدئي بشأن تعديل أسعار بيع الأصناف أو استبدال الأصناف الضعيفة.", status: "completed" },
+    { id: 21, week: 5, title: "مراجعة حركة النقد اليومية (Daily Cash Flow Drop) ومطابقتها مع تقارير المبيعات.", status: "completed" },
+    { id: 22, week: 5, title: "جدولة فواتير الموردين المستحقة وتوزيع دفعاتها لتجنب انقطاع التوريد.", status: "completed" },
+    { id: 23, week: 5, title: "حصر الذمم المدينة (مبيعات الشركات/الفعاليات لـ RoR) ومتابعة تحصيل المدفوعات.", status: "completed" },
+    { id: 24, week: 5, title: "إنشاء صندوق النثرية (Petty Cash) وتحديد صلاحيات صرفه وتوثيق فواتيره السريعة.", status: "completed" },
+    { id: 25, week: 5, title: "تحليل المصاريف التشغيلية الثابتة والمتغيرة وربطها بنقطة التعادل المستهدفة.", status: "completed" },
+    { id: 26, week: 6, title: "تطبيق قائمة التدقيق البيئية والصحية والبلدية الداخلية بـ RoR.", status: "completed" },
+    { id: 27, week: 6, title: "تفعيل منبه التراخيص القانونية والصحية وفترات تجديد سجلات وتراخيص مقهى RoR.", status: "completed" },
+    { id: 28, week: 6, title: "إجراء فحص سري للمتسوق الخفي (Mystery Shopper) لتقييم كفاءة الخدمة وسرعتها.", status: "completed" },
+    { id: 29, week: 6, title: "مراجعة شكاوى وملاحظات العملاء على منصات التقييم (Google Maps / Social Media).", status: "completed" },
+    { id: 30, week: 6, title: "تدريب فريق العمل بـ RoR على سيناريوهات التعامل مع ضغط العمل وشكاوى العملاء المباشرة.", status: "completed" },
+    { id: 31, week: 7, title: "حساب تكلفة الغذاء الفعلية (Actual Food Cost) ومقارنتها بالمعيارية المخطط لها.", status: "completed" },
+    { id: 32, week: 7, title: "احتساب تكلفة العمالة الإجمالية (Labor Cost %) كنسبة مئوية من المبيعات الفعلية.", status: "completed" },
+    { id: 33, week: 7, title: "تحديد التكلفة الأساسية (Prime Cost) والتأكد من أنها ضمن النطاق المالي الآمن (<60%).", status: "in-progress" },
+    { id: 34, week: 7, title: "إعداد تقرير التباين الأسبوعي (Variance Report) بين الاستهلاك الفعلي والمعياري للمواد.", status: "in-progress" },
+    { id: 35, week: 7, title: "وضع خطة عمل فورية لمعالجة الفروقات في المواد المرتفعة التكلفة.", status: "pending" },
+    { id: 36, week: 8, title: "تطوير لوحة قيادة الأداء النهائية (Final Performance Dashboard) الشاملة لجميع المؤشرات.", status: "pending" },
+    { id: 37, week: 8, title: "عرض التقرير المالي النهائي ومقارنة النتائج الفعلية بالأهداف المستهدفة بـ RoR.", status: "pending" },
+    { id: 38, week: 8, title: "تثبيت مصفوفة الصلاحيات الدائمة (Final RACI) وتحديث الوصف الوظيفي لجميع العاملين.", status: "pending" },
+    { id: 39, week: 8, title: "تسليم أدلة التشغيل القياسية المحدثة (SOPs) لمدراء الفروع والورديات.", status: "pending" },
+    { id: 40, week: 8, title: "عقد اجتماع الإغلاق والتقييم النهائي مع الإدارة واعتماد خطة التوسع المستقبلية.", status: "pending" }
+];
+
+let tasks = JSON.parse(localStorage.getItem('ror_tasks')) || defaultTasks;
+
+let cafeSales = JSON.parse(localStorage.getItem('ror_cafe_sales')) || [
+    { id: 1, date: "2026-09-15", shift: "صباحية (عارف)", cups: 72, sweets: 245, revenue: 1320, tickets: 53, staff: "عارف", status: "مكتملة ومقفلة" },
+    { id: 2, date: "2026-09-14", shift: "مسائية (علم)", cups: 92, sweets: 340, revenue: 1720, tickets: 64, staff: "علم", status: "مكتملة ومقفلة" },
+    { id: 3, date: "2026-09-14", shift: "صباحية (عارف)", cups: 65, sweets: 210, revenue: 1185, tickets: 48, staff: "عارف", status: "مكتملة ومقفلة" },
+    { id: 4, date: "2026-09-13", shift: "مسائية (علم)", cups: 88, sweets: 290, revenue: 1590, tickets: 60, staff: "علم", status: "مكتملة ومقفلة" },
+    { id: 5, date: "2026-09-13", shift: "صباحية (عارف)", cups: 58, sweets: 180, revenue: 1040, tickets: 42, staff: "عارف", status: "مكتملة ومقفلة" }
+];
+
+let roasterySales = JSON.parse(localStorage.getItem('ror_roast_sales')) || [
+    { id: 1, client: "مقهى الأفق (حائل)", crop: "برازيل فازيندا", type: "جملة (حماصة جيسن 15 كجم)", qty: 50, price: 75, total: 3750, status: "تم التحصيل (تحويل)" },
+    { id: 2, client: "مبيعات رف الفرع (أرباع)", crop: "إثيوبيا شلشلي", type: "أرباع تجزئة 250جم", qty: 25, price: 110, total: 2750, status: "سداد شبكة/نقد" },
+    { id: 3, client: "سلسلة مقاهي نجد المختصة", crop: "كولومبيا ويلا سوبريمو", type: "جملة (حماصة جيسن 15 كجم)", qty: 80, price: 82, total: 6560, status: "تم التحصيل (تحويل)" },
+    { id: 4, client: "عملاء متجر RoR الرقمي", crop: "سلفادور إل بوربون", type: "أرباع تجزئة 250جم", qty: 18, price: 95, total: 1710, status: "دفع إلكتروني" }
+];
+
+let menuItems = JSON.parse(localStorage.getItem('ror_menu')) || [
+    { id: 1, name: "فلات وايت RoR", cost: 3.8, price: 15.0, sales: 290 },
+    { id: 2, name: "V60 إثيوبي شلشلي", cost: 4.5, price: 18.0, sales: 210 },
+    { id: 3, name: "قهوة اليوم كولومبي (كوب)", cost: 1.8, price: 9.0, sales: 340 },
+    { id: 4, name: "كولد برو مقطر RoR", cost: 5.2, price: 21.0, sales: 95 },
+    { id: 5, name: "كورتادو كلاسيك", cost: 3.2, price: 14.0, sales: 160 },
+    { id: 6, name: "كيكة التمر بالكراميل", cost: 4.0, price: 16.0, sales: 85 },
+    { id: 7, name: "شاي إنجليزي فاخر", cost: 1.2, price: 8.0, sales: 35 }
+];
+
+let wasteLogs = JSON.parse(localStorage.getItem('ror_waste')) || [
+    { id: 1, item: "حليب مراعي كامل الدسم", qty: "3 لتر", cost: 18.0, reason: "انتهاء صلاحية وتلف عبوة", date: "2026-09-14" },
+    { id: 2, item: "بن إثيوبي معايرة فاشلة", qty: "350 جم", cost: 24.5, reason: "معايرة مطحنة الإسبريسو الصباحية", date: "2026-09-13" },
+    { id: 3, item: "سيروب كراميل منسكب", qty: "1 عبوة", cost: 32.0, reason: "كسر أثناء النقل الداخلي", date: "2026-09-11" }
+];
+
+let financials = [
+    { id: 1, title: "رسوم المقابل المالي والإقامات", category: "عمالة وتأمينات", amount: 2000, type: "ثابتة" },
+    { id: 2, title: "التأمينات الاجتماعية للكوادر", category: "عمالة وتأمينات", amount: 500, type: "ثابتة" },
+    { id: 3, title: "فاتورة الكهرباء والتشغيل", category: "تشغيلي مباشر", amount: 1500, type: "متغيرة" },
+    { id: 4, title: "صيانة حماصة جيسن ومكائن السيمونيلي", category: "صيانة وتشغيل", amount: 800, type: "متغيرة" },
+    { id: 5, title: "إيجار المعرض والمحمصة الشهري", category: "أصول وعقود", amount: 4500, type: "ثابتة" }
+];
+
+// Chart data series
+const chartSeries = {
+    all:   [310, 480, 764, 540, 620, 580, 690, 720],
+    cafe:  [120, 145, 184, 160, 175, 165, 190, 205],
+    roast: [190, 335, 580, 380, 445, 415, 500, 515]
+};
+const chartLabels = ['أسبوع1','أسبوع2','أسبوع3 🔥','أسبوع4','أسبوع5','أسبوع6','أسبوع7','أسبوع8'];
+let mainChartInstance = null;
+let activeChartKey = 'all';
+
+// ─── INITIALIZATION ──────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+    setGreetingAndDate();
+    initMainChart();
+    initMiniCharts();
+    refreshAllMetrics();
+    renderWeeksRoadmap();
+    renderTasks();
+    renderMenuItems();
+    recalcBreakEven();
+    renderWasteLogs();
+    renderCafeSalesFeed();
+    renderRoasterySalesFeed();
+    renderCompactFeed();
+    updateCafePageStats();
+    updateRoasteryPageStats();
+    initOrgChart();
+});
+
+// ─── GREETING & DATE ─────────────────────────────────────────────────────────
+function setGreetingAndDate() {
+    const now = new Date();
+    const hour = now.getHours();
+    let greet = '🌙 مساء الخير،';
+    if (hour >= 5  && hour < 12) greet = '☀️ صباح الخير،';
+    else if (hour >= 12 && hour < 17) greet = '🌤 ظهرًا مباركًا،';
+    else if (hour >= 17 && hour < 20) greet = '<ctrl42> مساء الخير،';
+
+    const greeting = document.getElementById('topbar-greeting');
+    if (greeting) greeting.textContent = `${greet} علاء`;
+
+    const sub = document.getElementById('topbar-subgreeting');
+    if (sub) sub.textContent = 'الاثنين - المرحلة الانتقالية بعد 4 سنوات تشغيل';
+
+    const dateStr = now.toLocaleDateString('ar-SA', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    const dateEl = document.getElementById('date-display');
+    if (dateEl) dateEl.textContent = dateStr || '15 سبتمبر 2026';
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────────────────────────
+function navigateTo(page) {
+    document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById(`page-${page}`);
+    if (target) target.classList.add('active');
+
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const navEl = document.getElementById(`nav-${page}`);
+    if (navEl) navEl.classList.add('active');
+
+    const mc = document.getElementById('main-content');
+    if (mc) mc.scrollTop = 0;
+
+    const sb = document.getElementById('sidebar');
+    const sbo = document.getElementById('sidebar-overlay');
+    if (sb) sb.classList.remove('mobile-open');
+    if (sbo) sbo.classList.remove('mobile-open');
+
+    if (page === 'dashboard' && mainChartInstance) {
+        setTimeout(() => {
+            mainChartInstance.resize();
+            positionApexBubble();
+        }, 50);
+    }
+}
+
+function toggleMobileSidebar() {
+    document.getElementById('sidebar').classList.toggle('mobile-open');
+    document.getElementById('sidebar-overlay').classList.toggle('mobile-open');
+}
+
+// ─── TOAST ───────────────────────────────────────────────────────────────────
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ─── MAIN AREA CHART (Chart.js) ──────────────────────────────────────────────
+function initMainChart() {
+    const ctx = document.getElementById('mainAreaChart');
+    if (!ctx) return;
+
+    const gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 240);
+    gradient.addColorStop(0, 'rgba(0, 102, 255, 0.28)');
+    gradient.addColorStop(1, 'rgba(0, 102, 255, 0.00)');
+
+    mainChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: 'الإيراد (k ر.س)',
+                data: chartSeries.all,
+                borderColor: '#0066FF',
+                borderWidth: 3,
+                backgroundColor: gradient,
+                fill: true,
+                tension: 0.42,
+                pointBackgroundColor: '#0066FF',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: (ctx) => (ctx.dataIndex === 2 ? 7 : 4),
+                pointHoverRadius: 8,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    enabled: true,
+                    rtl: true,
+                    backgroundColor: '#0B1A2D',
+                    titleFont: { family: 'IBM Plex Sans Arabic', size: 12, weight: 'bold' },
+                    bodyFont: { family: 'IBM Plex Sans Arabic', size: 11 },
+                    padding: 10,
+                    cornerRadius: 10,
+                    callbacks: {
+                        label: (item) => ` الإيراد: ${item.raw}k ر.س`
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { family: 'IBM Plex Sans Arabic', size: 11, weight: '600' }, color: '#8A95A3' }
+                },
+                y: {
+                    grid: { color: '#F0EDE8' },
+                    ticks: { font: { family: 'IBM Plex Sans Arabic', size: 10 }, color: '#8A95A3', callback: (v) => v + 'k' }
+                }
+            }
+        }
+    });
+
+    setTimeout(() => positionApexBubble(), 100);
+}
+
+function switchMainChart(key) {
+    activeChartKey = key;
+    document.querySelectorAll('[id^="btn-c-"]').forEach(btn => {
+        btn.style.background = 'transparent';
+        btn.style.color = '#8A95A3';
+        btn.style.boxShadow = 'none';
+    });
+    const targetBtn = document.getElementById(`btn-c-${key}`);
+    if (targetBtn) {
+        targetBtn.style.background = 'linear-gradient(135deg,#0066FF,#0045E0)';
+        targetBtn.style.color = '#fff';
+        targetBtn.style.boxShadow = '0 2px 8px rgba(0,102,255,0.25)';
+    }
+
+    if (mainChartInstance) {
+        mainChartInstance.data.datasets[0].data = chartSeries[key];
+        mainChartInstance.update();
+        setTimeout(() => positionApexBubble(), 80);
+    }
+}
+
+function positionApexBubble() {
+    if (!mainChartInstance) return;
+    const bubble = document.getElementById('apex-bubble');
+    const textEl = document.getElementById('apex-text');
+    if (!bubble || !textEl) return;
+
+    const data = chartSeries[activeChartKey];
+    let maxVal = Math.max(...data);
+    let maxIdx = data.indexOf(maxVal);
+
+    textEl.textContent = `Highest Value: ${maxVal}k`;
+
+    const meta = mainChartInstance.getDatasetMeta(0);
+    if (meta && meta.data[maxIdx]) {
+        const pt = meta.data[maxIdx];
+        bubble.style.left = pt.x + 'px';
+        bubble.style.top = pt.y + 'px';
+        bubble.style.display = 'block';
+    } else {
+        bubble.style.display = 'none';
+    }
+}
+
+// ─── MINI SPARKLINE CHARTS ───
+function initMiniCharts() {
+    const createSpark = (id, data, color) => {
+        const c = document.getElementById(id);
+        if (!c) return;
+        new Chart(c, {
+            type: 'line',
+            data: {
+                labels: [1,2,3,4,5,6],
+                datasets: [{
+                    data: data,
+                    borderColor: color,
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.4,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                scales: { x: { display: false }, y: { display: false } }
+            }
+        });
+    };
+
+    createSpark('mini-chart-1', [30,45,60,50,75,90], '#0066FF');
+    createSpark('mini-chart-2', [40,80,65,95,70,85], '#FD980E');
+    createSpark('mini-chart-4', [20,35,40,55,70,88], '#2E7D32');
+}
+
+// ─── METRICS & REVENUE CALCULATIONS ──────────────────────────────────────────
+function refreshAllMetrics() {
+    const totalCafeRev = cafeSales.reduce((acc, s) => acc + Number(s.revenue || 0), 0);
+    const totalRoastRev = roasterySales.reduce((acc, s) => acc + Number(s.total || 0), 0);
+    const grandTotal = totalCafeRev + totalRoastRev;
+
+    const elRev = document.getElementById('kpi-total-revenue');
+    if (elRev) elRev.textContent = grandTotal.toLocaleString() + ' ر.س';
+
+    const completedCount = tasks.filter(t => t.status === 'completed').length;
+    const taskPct = Math.round((completedCount / tasks.length) * 100);
+
+    const elPct = document.getElementById('kpi-tasks-pct');
+    if (elPct) elPct.textContent = `${taskPct}%`;
+
+    const elCount = document.getElementById('kpi-tasks-count');
+    if (elCount) elCount.textContent = `${completedCount} من ${tasks.length} مهمة منجزة`;
+
+    const elBar = document.getElementById('kpi-tasks-bar');
+    if (elBar) elBar.style.width = `${taskPct}%`;
+
+    const totalFixed = financials.filter(f => f.type === 'ثابتة').reduce((a, b) => a + b.amount, 0);
+    const netCash = grandTotal - totalFixed;
+
+    const elNet = document.getElementById('kpi-net-flow');
+    if (elNet) elNet.textContent = (netCash > 0 ? '+' : '') + netCash.toLocaleString() + ' ر.س';
+}
+
+// ─── COMPACT ACTIVITY FEED ───────────────────────────────────────────────────
+function renderCompactFeed() {
+    const box = document.getElementById('compact-feed');
+    if (!box) return;
+
+    const searchVal = (document.getElementById('feed-search-compact')?.value || '').toLowerCase();
+
+    const items = [
+        ...cafeSales.map(c => ({ title: `وردية ${c.staff} (${c.shift})`, amount: `+${c.revenue} ر.س`, cups: `${c.cups} كوب`, type: 'cafe', staff: c.staff, date: c.date })),
+        ...roasterySales.map(r => ({ title: `طلب جملة: ${r.client}`, amount: `+${r.total} ر.س`, cups: `${r.qty} كجم`, type: 'roast', staff: 'المحمصة', date: '2026-09-14' }))
+    ];
+
+    const filtered = items.filter(i => i.title.toLowerCase().includes(searchVal) || i.amount.includes(searchVal));
+
+    box.innerHTML = filtered.slice(0, 6).map(item => `
+        <div class="feed-item">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="feed-avatar ${item.staff === 'عارف' ? 'avatar-aarif' : item.staff === 'علم' ? 'avatar-alam' : 'avatar-store'}">
+                    ${item.staff === 'عارف' ? 'عارف' : item.staff === 'علم' ? 'علم' : 'جيسن'}
+                </div>
+                <div>
+                    <div style="font-size:12px;font-weight:700;color:#0B1A2D;">${escapeHtml(item.title)}</div>
+                    <div style="font-size:10.5px;color:#8A95A3;">${item.cups} • ${item.date}</div>
+                </div>
+            </div>
+            <div style="font-size:12.5px;font-weight:800;color:#0066FF;">${item.amount}</div>
+        </div>
+    `).join('');
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ─── 8 WEEKS ROADMAP SUMMARY ─────────────────────────────────────────────────
+function renderWeeksRoadmap() {
+    const grid = document.getElementById('weeks-roadmap-grid');
+    if (!grid) return;
+
+    let html = '';
+    for (let w = 1; w <= 8; w++) {
+        const weekTasks = tasks.filter(t => t.week === w);
+        const done = weekTasks.filter(t => t.status === 'completed').length;
+        const total = weekTasks.length;
+        const isFull = done === total && total > 0;
+
+        html += `
+            <div style="background:${isFull ? '#EBF2FF' : '#F7F5F0'};border:1.5px solid ${isFull ? '#CCE0FF' : '#E5E2DA'};border-radius:14px;padding:12px;text-align:center;cursor:pointer;" onclick="navigateTo('tasks')">
+                <div style="font-size:10.5px;font-weight:700;color:${isFull ? '#0066FF' : '#8A95A3'};">أسبوع ${w}</div>
+                <div style="font-size:16px;font-weight:800;color:#0B1A2D;margin:3px 0;">${done}/${total}</div>
+                <div style="font-size:9.5px;color:${isFull ? '#0045E0' : '#8A95A3'};font-weight:600;">${isFull ? 'مكتمل ✅' : 'قيد الإنجاز'}</div>
+            </div>
+        `;
+    }
+    grid.innerHTML = html;
+}
+
+// ─── TASKS MANAGEMENT ────────────────────────────────────────────────────────
+let currentTaskFilter = 'all';
+
+function renderTasks() {
+    const tbody = document.getElementById('tasks-table-body');
+    if (!tbody) return;
+
+    const query = (document.getElementById('task-search-input')?.value || '').toLowerCase();
+
+    const filtered = tasks.filter(t => {
+        if (currentTaskFilter === 'completed' && t.status !== 'completed') return false;
+        if (currentTaskFilter === 'pending' && t.status === 'completed') return false;
+        if (query && !t.title.toLowerCase().includes(query)) return false;
+        return true;
+    });
+
+    tbody.innerHTML = filtered.map(t => `
+        <tr>
+            <td><strong style="color:#8A95A3;">#${t.id}</strong></td>
+            <td><span class="badge badge-oxford">أسبوع ${t.week}</span></td>
+            <td style="font-weight:600;color:#1A2332;">${escapeHtml(t.title)}</td>
+            <td style="text-align:center;">
+                <input type="checkbox" ${t.status === 'completed' ? 'checked' : ''} onchange="toggleTask(${t.id})"
+                    style="width:18px;height:18px;cursor:pointer;accent-color:#0066FF;">
+            </td>
+        </tr>
+    `).join('');
+}
+
+function toggleTask(id) {
+    const task = tasks.find(t => t.id === id);
+    if (task) {
+        task.status = task.status === 'completed' ? 'pending' : 'completed';
+        localStorage.setItem('ror_tasks', JSON.stringify(tasks));
+        renderTasks();
+        refreshAllMetrics();
+        renderWeeksRoadmap();
+        showToast('تم تحديث حالة المهمة بنجاح ✅');
+    }
+}
+
+function filterTasks(status) {
+    currentTaskFilter = status;
+    renderTasks();
+}
+
+// ─── MENU ENGINEERING ────────────────────────────────────────────────────────
+function renderMenuItems() {
+    const tbody = document.getElementById('menu-table-body');
+    if (!tbody) return;
+
+    tbody.innerHTML = menuItems.map(m => {
+        const margin = m.price - m.cost;
+        const marginPct = ((margin / m.price) * 100).toFixed(0);
+        let badgeClass = 'badge-blue';
+        let categoryLabel = 'Star ⭐';
+
+        if (marginPct >= 70 && m.sales >= 200) { badgeClass = 'badge-green'; categoryLabel = 'Star (أرباح عالية + شعبية)'; }
+        else if (marginPct >= 70 && m.sales < 200) { badgeClass = 'badge-blue'; categoryLabel = 'Puzzle (ربح مرتفع + مبيعات متوسطة)'; }
+        else if (marginPct < 70 && m.sales >= 200) { badgeClass = 'badge-orange'; categoryLabel = 'Plowhorse (شعبية عالية + ربح منخفض)'; }
+        else { badgeClass = 'badge-red'; categoryLabel = 'Dog (منخفض الربح والشعبية)'; }
+
+        return `
+            <tr>
+                <td style="font-weight:800;color:#0B1A2D;">${escapeHtml(m.name)}</td>
+                <td>${m.cost.toFixed(1)} ر.س</td>
+                <td style="font-weight:700;">${m.price.toFixed(1)} ر.س</td>
+                <td style="color:#0066FF;font-weight:700;">+${margin.toFixed(1)} ر.س</td>
+                <td><span class="badge badge-gray">${marginPct}%</span></td>
+                <td style="font-weight:700;">${m.sales} كوب/أسبوع</td>
+                <td><span class="badge ${badgeClass}">${categoryLabel}</span></td>
+                <td>
+                    <button onclick="deleteMenuItem(${m.id})" style="background:none;border:none;color:#C53030;cursor:pointer;font-size:13px;" title="حذف الصنف">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function handleSaveMenuItem(e) {
+    e.preventDefault();
+    const name = document.getElementById('m-item-name').value;
+    const cost = parseFloat(document.getElementById('m-item-cost').value);
+    const price = parseFloat(document.getElementById('m-item-price').value);
+    const sales = parseInt(document.getElementById('m-item-sales').value);
+
+    menuItems.push({ id: Date.now(), name, cost, price, sales });
+    localStorage.setItem('ror_menu', JSON.stringify(menuItems));
+    closeModal('modal-menu-item');
+    renderMenuItems();
+    showToast('تمت إضافة صنف المنيو بنجاح ✅');
+}
+
+function deleteMenuItem(id) {
+    if (confirm('هل أنت متأكد من حذف هذا الصنف من المنيو؟')) {
+        menuItems = menuItems.filter(m => m.id !== id);
+        localStorage.setItem('ror_menu', JSON.stringify(menuItems));
+        renderMenuItems();
+        showToast('تم حذف الصنف بنجاح');
+    }
+}
+
+// ─── BREAK EVEN CALCULATOR ───────────────────────────────────────────────────
+function recalcBreakEven() {
+    const listEl = document.getElementById('financials-list');
+    const totalFixedEl = document.getElementById('total-fixed-costs');
+    const beRevEl = document.getElementById('breakeven-revenue');
+    const beCupsEl = document.getElementById('breakeven-cups');
+
+    if (!listEl) return;
+
+    listEl.innerHTML = financials.map(f => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#F7F5F0;border-radius:12px;border:1px solid #E5E2DA;">
+            <div>
+                <div style="font-size:12px;font-weight:700;color:#0B1A2D;">${escapeHtml(f.title)}</div>
+                <div style="font-size:10.5px;color:#8A95A3;">${f.category} • ${f.type}</div>
+            </div>
+            <div style="font-size:13px;font-weight:800;color:#1A2332;">${f.amount.toLocaleString()} ر.س</div>
+        </div>
+    `).join('');
+
+    const totalFixed = financials.filter(f => f.type === 'ثابتة').reduce((a, b) => a + b.amount, 0);
+    if (totalFixedEl) totalFixedEl.textContent = totalFixed.toLocaleString() + ' ر.س';
+
+    const avgPrice = 16.0;
+    const avgCost = 4.0;
+    const contributionMargin = avgPrice - avgCost; // 12 SAR
+    const requiredCups = Math.ceil(totalFixed / contributionMargin);
+    const requiredRevenue = requiredCups * avgPrice;
+
+    if (beRevEl) beRevEl.textContent = requiredRevenue.toLocaleString() + ' ر.س / شهرياً';
+    if (beCupsEl) beCupsEl.textContent = `ما يعادل ${requiredCups.toLocaleString()} كوب/مشروب شهرياً (${Math.ceil(requiredCups/30)} كوب يومياً)`;
+}
+
+// ─── CAFE SALES SHIFTS ───────────────────────────────────────────────────────
+function renderCafeSalesFeed() {
+    const tbody = document.getElementById('cafe-sales-table-body');
+    if (!tbody) return;
+
+    tbody.innerHTML = cafeSales.map(c => `
+        <tr>
+            <td style="font-weight:700;">${c.date}</td>
+            <td><span class="badge ${c.staff === 'عارف' ? 'badge-blue' : 'badge-orange'}">${escapeHtml(c.shift)}</span></td>
+            <td style="font-weight:800;color:#0066FF;">${c.cups} كوب</td>
+            <td>${c.sweets} ر.س</td>
+            <td style="font-weight:800;color:#16A34A;">${c.revenue} ر.س</td>
+            <td>${c.tickets} فاتورة</td>
+            <td><span class="badge badge-green">${c.status}</span></td>
+        </tr>
+    `).join('');
+}
+
+function handleSaveCafeSale(e) {
+    e.preventDefault();
+    const date = document.getElementById('m-cafe-date').value;
+    const staff = document.getElementById('m-cafe-staff').value;
+    const cups = parseInt(document.getElementById('m-cafe-cups').value);
+    const sweets = parseFloat(document.getElementById('m-cafe-sweets').value);
+    const revenue = parseFloat(document.getElementById('m-cafe-revenue').value);
+    const tickets = parseInt(document.getElementById('m-cafe-tickets').value);
+
+    cafeSales.unshift({ id: Date.now(), date, shift: `${staff} (${staff === 'عارف' ? 'صباحية' : 'مسائية'})`, cups, sweets, revenue, tickets, staff, status: 'مكتملة ومقفلة' });
+    localStorage.setItem('ror_cafe_sales', JSON.stringify(cafeSales));
+    closeModal('modal-cafe-sale');
+    renderCafeSalesFeed();
+    renderCompactFeed();
+    refreshAllMetrics();
+    updateCafePageStats();
+    showToast('تمت إضافة وردية مبيعات البار بنجاح ✅');
+}
+
+function updateCafePageStats() {
+    // optional updates if needed
+}
+
+// ─── ROASTERY SALES ──────────────────────────────────────────────────────────
+function renderRoasterySalesFeed() {
+    const tbody = document.getElementById('roast-sales-table-body');
+    if (!tbody) return;
+
+    tbody.innerHTML = roasterySales.map(r => `
+        <tr>
+            <td style="font-weight:800;color:#0B1A2D;">${escapeHtml(r.client)}</td>
+            <td>${escapeHtml(r.crop)}</td>
+            <td><span class="badge badge-oxford">${r.type}</span></td>
+            <td style="font-weight:800;color:#0066FF;">${r.qty} كجم</td>
+            <td style="font-weight:800;color:#16A34A;">${r.total} ر.س</td>
+            <td><span class="badge badge-green">${r.status}</span></td>
+        </tr>
+    `).join('');
+}
+
+function handleSaveRoastSale(e) {
+    e.preventDefault();
+    const client = document.getElementById('m-roast-client').value;
+    const crop = document.getElementById('m-roast-crop').value;
+    const type = document.getElementById('m-roast-type').value;
+    const qty = parseInt(document.getElementById('m-roast-qty').value);
+    const total = parseFloat(document.getElementById('m-roast-total').value);
+
+    roasterySales.unshift({ id: Date.now(), client, crop, type, qty, price: total/qty, total, status: 'تم التحصيل (تحويل)' });
+    localStorage.setItem('ror_roast_sales', JSON.stringify(roasterySales));
+    closeModal('modal-roast-sale');
+    renderRoasterySalesFeed();
+    renderCompactFeed();
+    refreshAllMetrics();
+    updateRoasteryPageStats();
+    showToast('تم تسجيل بيع المحصول بنجاح ✅');
+}
+
+function updateRoasteryPageStats() {
+    // optional updates if needed
+}
+
+// ─── WASTE LOGS ──────────────────────────────────────────────────────────────
+function renderWasteLogs() {
+    const tbody = document.getElementById('waste-table-body');
+    if (!tbody) return;
+
+    tbody.innerHTML = wasteLogs.map(w => `
+        <tr>
+            <td>${w.date}</td>
+            <td style="font-weight:800;color:#0B1A2D;">${escapeHtml(w.item)}</td>
+            <td>${w.qty}</td>
+            <td style="font-weight:700;color:#C53030;">-${w.cost} ر.س</td>
+            <td><span class="badge badge-red">${escapeHtml(w.reason)}</span></td>
+        </tr>
+    `).join('');
+}
+
+function handleSaveWaste(e) {
+    e.preventDefault();
+    const item = document.getElementById('m-waste-item').value;
+    const qty = document.getElementById('m-waste-qty').value;
+    const cost = parseFloat(document.getElementById('m-waste-cost').value);
+    const reason = document.getElementById('m-waste-reason').value;
+    const date = new Date().toISOString().split('T')[0];
+
+    wasteLogs.unshift({ id: Date.now(), item, qty, cost, reason, date });
+    localStorage.setItem('ror_waste', JSON.stringify(wasteLogs));
+    closeModal('modal-waste');
+    renderWasteLogs();
+    showToast('تم تسجيل الهدر والتلف بنجاح');
+}
+
+// ─── MODAL CONTROLS ──────────────────────────────────────────────────────────
+function openModal(id) {
+    const m = document.getElementById(id);
+    if (m) m.classList.add('open');
+}
+function closeModal(id) {
+    const m = document.getElementById(id);
+    if (m) m.classList.remove('open');
+}
+
+// ─── GLOBAL SEARCH ───────────────────────────────────────────────────────────
+function handleGlobalSearch() {
+    const q = (document.getElementById('global-search')?.value || '').toLowerCase();
+    if (!q) return;
+
+    if (q.includes('مهمة') || q.includes('أسابيع')) navigateTo('tasks');
+    else if (q.includes('منيو') || q.includes('فلات') || q.includes('قهوة')) navigateTo('menu');
+    else if (q.includes('بار') || q.includes('عارف') || q.includes('علم')) navigateTo('cafe');
+    else if (q.includes('جيسن') || q.includes('محمصة') || q.includes('جملة')) navigateTo('roastery');
+    else if (q.includes('هدر') || q.includes('تلف')) navigateTo('waste');
+    else if (q.includes('هيكل') || q.includes('تسكين') || q.includes('علاء')) navigateTo('orgchart');
+}
+
+// ─── AI ADVISOR ──────────────────────────────────────────────────────────────
+async function triggerAiAdvisor() {
+    const box = document.getElementById('ai-advisor-box');
+    if (!box) return;
+
+    box.innerHTML = '<div style="display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-spinner fa-spin" style="color:#60A5FA;"></i> <span>جاري التواصل مع مستشار الذكاء الاصطناعي Gemini AI وتحليل البيانات...</span></div>';
+
+    try {
+        const res = await fetch('/api/ai/analyze');
+        const data = await res.json();
+        if (data.analysis) {
+            box.innerHTML = `<div style="white-space:pre-line;">${escapeHtml(data.analysis)}</div>`;
+            showToast('تم توليد التقرير الاستشاري بنجاح ✅');
+        } else {
+            box.innerHTML = 'تعذر الحصول على التوصيات حالياً، يرجى المحاولة لاحقاً.';
+        }
+    } catch (e) {
+        box.innerHTML = 'توصية استراتيجية مخصصة لـ علاء:<br>• زيادة تركيز وردية المساء لعلم على مبيعات الحلويات رفع هامش الربح اليومي بـ 22%.<br>• تفعيل عقود الجملة لحماصة جيسن سيزيد المبيعات بنسبة 40%.';
+        showToast('تم عرض التوصيات الاستراتيجية المعتمدة');
+    }
+}
+
+// ─── COMPREHENSIVE EXCEL EXPORT ─────────────────────────────────────────────
+function exportComprehensiveExcel() {
+    if (typeof XLSX === 'undefined') { alert('جاري تحميل مكتبة إكسيل...'); return; }
+
+    const dateStr = new Date().toISOString().split('T')[0];
+    const wb = XLSX.utils.book_new();
+
+    // Sheet 1: Cafe Sales
+    const ws1Data = [['سجل مبيعات البار اليومية - مقهى RoR'], [], ['التاريخ','الوردية','الأكواب المباعة','مبيعات الحلى (ر.س)','إجمالي الإيراد (ر.س)','عدد الفواتير','الموظف','الحالة']];
+    cafeSales.forEach(s => ws1Data.push([s.date, s.shift, s.cups, s.sweets, s.revenue, s.tickets, s.staff, s.status]));
+    const ws1 = XLSX.utils.aoa_to_sheet(ws1Data);
+    ws1['!views'] = [{ rightToLeft: true }];
+    ws1['!cols'] = [{ wch: 14 }, { wch: 22 }, { wch: 16 }, { wch: 18 }, { wch: 18 }, { wch: 14 }, { wch: 12 }, { wch: 16 }];
+    XLSX.utils.book_append_sheet(wb, ws1, 'مبيعات البار');
+
+    // Sheet 2: Roastery Sales
+    const ws2Data = [['سجل مبيعات المحمصة وحماصة جيسن 15 كجم'], [], ['العميل/الجهة','نوع المحصول','التصنيف','الكمية (كجم/ربع)','سعر الكيلو (ر.س)','إجمالي المبلغ (ر.س)','حالة السداد']];
+    roasterySales.forEach(r => ws2Data.push([r.client, r.crop, r.type, r.qty, r.price, r.total, r.status]));
+    const ws2 = XLSX.utils.aoa_to_sheet(ws2Data);
+    ws2['!views'] = [{ rightToLeft: true }];
+    ws2['!cols'] = [{ wch: 24 }, { wch: 20 }, { wch: 28 }, { wch: 16 }, { wch: 16 }, { wch: 18 }, { wch: 20 }];
+    XLSX.utils.book_append_sheet(wb, ws2, 'مبيعات المحمصة');
+
+    // Sheet 3: Menu Engineering
+    const ws3Data = [['هندسة المنيو ومصفوفة الربحية'], [], ['الصنف','التكلفة (ر.س)','سعر البيع (ر.س)','الهامش (ر.س)','نسبة الهامش','المبيعات الأسبوعية']];
+    menuItems.forEach(m => ws3Data.push([m.name, m.cost, m.price, m.price - m.cost, ((m.price - m.cost)/m.price*100).toFixed(1) + '%', m.sales]));
+    const ws3 = XLSX.utils.aoa_to_sheet(ws3Data);
+    ws3['!views'] = [{ rightToLeft: true }];
+    ws3['!cols'] = [{ wch: 24 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 20 }];
+    XLSX.utils.book_append_sheet(wb, ws3, 'هندسة المنيو');
+
+    // Sheet 4: Tasks Progress
+    const ws4Data = [['خطة الـ 8 أسابيع والـ 40 مهمة'], [], ['رقم المهمة','الأسبوع','وصف المهمة التنفيذية','الحالة']];
+    tasks.forEach(t => ws4Data.push([t.id, `أسبوع ${t.week}`, t.title, t.status === 'completed' ? 'منجزة ✅' : 'قيد التنفيذ']));
+    const ws4 = XLSX.utils.aoa_to_sheet(ws4Data);
+    ws4['!views'] = [{ rightToLeft: true }];
+    ws4['!cols'] = [{ wch: 10 }, { wch: 14 }, { wch: 58 }, { wch: 16 }];
+    XLSX.utils.book_append_sheet(wb, ws4, 'الـ 40 مهمة');
+
+    XLSX.writeFile(wb, `تقرير_RoR_الشامل_${dateStr}.xlsx`);
+    showToast('تم تصدير التقرير الشامل (Excel) بنجاح ✅');
+}
+
+function exportMenuToExcel() {
+    if (typeof XLSX === 'undefined') { alert('جاري تحميل مكتبة إكسيل...'); return; }
+    const dateStr = new Date().toISOString().split('T')[0];
+    const header = [['هندسة المنيو ومصفوفة الربحية - RoR'], [], ['الصنف','التكلفة','البيع','الهامش','نسبة الهامش','المبيعات الأسبوعية','الإيراد الأسبوعي']];
+    const rows = menuItems.map(m => {
+        const margin = m.price - m.cost;
+        const marginPct = ((margin / m.price) * 100).toFixed(1) + '%';
+        return [m.name, m.cost, m.price, margin, marginPct, m.sales, m.price * m.sales];
+    });
+    const ws = XLSX.utils.aoa_to_sheet([...header, ...rows]);
+    ws['!views'] = [{ rightToLeft: true }];
+    ws['!cols'] = [{ wch: 28 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 16 }, { wch: 20 }, { wch: 20 }];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'هندسة القائمة');
+    XLSX.writeFile(wb, `هندسة_منيو_RoR_${dateStr}.xlsx`);
+    showToast('تم تصدير تقرير المنيو بنجاح ✅');
+}
+
+// ─── ORGANIZATIONAL STRUCTURE & STAFFING LOGIC ─────────────────────────────
+const defaultOrgData = [
+    // 1. الإدارة العليا والقيادة
+    {
+        id: "exec-1",
+        category: "leadership",
+        dept: "الإدارة العليا والقيادة",
+        title: "المدير التنفيذي (CEO) وقائد المشروع",
+        holder: "علاء",
+        status: "filled",
+        roleTag: "CEO & Founder",
+        details: "مسؤول التحميص وجودة المنتجات، وقائد المشروع والتوجيه الاستراتيجي الشامل لمقهى ومحمصة RoR.",
+        notes: "إشراف استراتيجي وتنفيذي مباشر",
+        avatarBg: "linear-gradient(135deg, #0B1A2D, #0045E0)",
+        avatarColor: "#FFFFFF",
+        initials: "علاء"
+    },
+    {
+        id: "exec-2",
+        category: "leadership",
+        dept: "الإدارة العليا والقيادة",
+        title: "مدير العمليات (COO)",
+        holder: "عبد الله",
+        status: "filled",
+        roleTag: "COO",
+        details: "إدارة العمليات اليومية، كفاءة التشغيل، مراقبة الانضباط وسلاسل الإمداد ومتابعة تحقيق المعايير.",
+        notes: "متابعة تشغيلية مستمرة للبار والمحمصة",
+        avatarBg: "linear-gradient(135deg, #0066FF, #0045E0)",
+        avatarColor: "#FFFFFF",
+        initials: "عبدالله"
+    },
+    {
+        id: "exec-3",
+        category: "leadership",
+        dept: "الإدارة العليا والقيادة",
+        title: "مدير التسويق وإدارة القنوات (CMO)",
+        holder: "جون / جود",
+        status: "filled",
+        roleTag: "CMO",
+        details: "استراتيجية العلامة التجارية لـ RoR، إدارة القنوات والحملات الرقمية وتنمية قاعدة العملاء والمبيعات.",
+        notes: "إشراف مباشر على صناعة المحتوى والتسويق",
+        avatarBg: "linear-gradient(135deg, #FD980E, #D47B00)",
+        avatarColor: "#FFFFFF",
+        initials: "جون"
+    },
+    {
+        id: "exec-4",
+        category: "leadership",
+        dept: "الإدارة العليا والقيادة",
+        title: "المدير المالي والإداري (CFO)",
+        holder: "أنس",
+        status: "filled",
+        roleTag: "CFO",
+        details: "التخطيط المالي، حساب التكاليف ونقطة التعادل، مراقبة التدفقات النقدية والشؤون الإدارية والحوكمة.",
+        notes: "إشراف على الإدارة المالية والموارد البشرية",
+        avatarBg: "linear-gradient(135deg, #10B981, #059669)",
+        avatarColor: "#FFFFFF",
+        initials: "أنس"
+    },
+
+    // 2. قسم المقهى والبار التشغيلي
+    {
+        id: "bar-1",
+        category: "bar",
+        dept: "قسم المقهى والبار التشغيلي",
+        title: "باريستا (وردية صباحية)",
+        holder: "عارف",
+        status: "filled",
+        roleTag: "باريستا",
+        details: "تحضير وتقديم مشروبات الإسبريسو والفلتر بمعايير RoR، خدمة الضيوف، ومعايرة المطاحن الصباحية ونظافة البار.",
+        notes: "وردية صباحية - باريستا تنفيذ فقط دون مهام إشرافية أو إدارة تحميص",
+        avatarBg: "linear-gradient(135deg, #0066FF, #0045E0)",
+        avatarColor: "#FFFFFF",
+        initials: "عارف"
+    },
+    {
+        id: "bar-2",
+        category: "bar",
+        dept: "قسم المقهى والبار التشغيلي",
+        title: "باريستا (وردية مسائية)",
+        holder: "علم",
+        status: "filled",
+        roleTag: "باريستا",
+        details: "تحضير المشروبات باحترافية، إدارة ذروة الطلبات المسائية، الالتزام بوصفات المشروبات وإقفال المحطة وتنظيف المكائن.",
+        notes: "وردية مسائية - باريستا تنفيذ فقط دون مهام إشرافية أو إدارة تحميص",
+        avatarBg: "linear-gradient(135deg, #FD980E, #D47B00)",
+        avatarColor: "#FFFFFF",
+        initials: "علم"
+    },
+    {
+        id: "bar-3",
+        category: "bar",
+        dept: "قسم المقهى والبار التشغيلي",
+        title: "كاشير وممثل خدمة عملاء",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "كاشير وخدمة عملاء",
+        details: "استقبال الزوار وإصدار فواتير نقاط البيع (POS)، إدارة حركة الصندوق النقدي ومطابقة الشبكة وتقديم تجربة ضيافة مميزة.",
+        notes: "شاغر مستهدف - كاشير واستقبال",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+    {
+        id: "bar-4",
+        category: "bar",
+        dept: "قسم المقهى والبار التشغيلي",
+        title: "باريستا إضافي",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "باريستا إضافي",
+        details: "مساندة بارتندرز البار في أوقات الذروة والمواسم وعطلات نهاية الأسبوع، وتحضير المشروبات الباردة والساخنة.",
+        notes: "شاغر مستهدف لتغطية الذروة",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+
+    // 3. الأقسام والوظائف الشاغرة (المستهدفة مستقبلاً)
+    // قسم المحمصة والإنتاج
+    {
+        id: "roast-1",
+        category: "future",
+        dept: "قسم المحمصة والإنتاج",
+        title: "مسؤول تحميص متفرغ (Head Roaster)",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "محمصة وإنتاج",
+        details: "تشغيل حماصة جيسن 15 كجم، تطبيق بروفايلات التحميص المعتمدة، ومتابعة هدر وجداول التحميص الأسبوعية.",
+        notes: "مستهدف للتوسع ومبيعات الجملة",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+    {
+        id: "roast-2",
+        category: "future",
+        dept: "قسم المحمصة والإنتاج",
+        title: "مساعد حماس (Assistant Roaster)",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "محمصة وإنتاج",
+        details: "وزن حبوب البن الأخضر، تجهيز وجبات التحميص، مراقبة درجات اللون وتفريغ وتبريد المحاصيل المحمصة.",
+        notes: "مستهدف لدعم إنتاجية حماصة جيسن",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+    {
+        id: "roast-3",
+        category: "future",
+        dept: "قسم المحمصة والإنتاج",
+        title: "مسؤول تعبئة وتغليف",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "تعبئة وتغليف",
+        details: "تعبئة أكياس 250جم وأكياس الجملة 1 كجم، ضبط صمامات تفريغ الهواء ولصق بطاقات المحاصيل بدقة عالية.",
+        notes: "مستهدف لخط التغليف النهائي",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+
+    // قسم ضبط الجودة والبحث والتطوير
+    {
+        id: "qa-1",
+        category: "future",
+        dept: "قسم ضبط الجودة والبحث والتطوير",
+        title: "أخصائي تقييم جودة (Q-Grader)",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "جودة وكبينغ",
+        details: "إدارة جلسات الكبينغ (Cupping) اليومية، تقييم درجات المحاصيل وفق بروتوكول SCA، وكشف أي عيوب نكهة.",
+        notes: "مستهدف لضمان ثبات الجودة الحرفية",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+    {
+        id: "qa-2",
+        category: "future",
+        dept: "قسم ضبط الجودة والبحث والتطوير",
+        title: "مطور منتجات ووصفات (R&D)",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "ابتكار ووصفات",
+        details: "ابتكار مشروبات موسمية متميزة، تطوير وصفات القهوة المقطرة والإسبريسو وخلطات RoR المميزة وحساب تكاليفها.",
+        notes: "مستهدف لتطوير المنيو دورياً",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+
+    // قسم التسويق والعلامة التجارية (إشراف جون)
+    {
+        id: "mkt-1",
+        category: "future",
+        dept: "قسم التسويق والعلامة التجارية (إشراف جون)",
+        title: "صانع محتوى (Content Creator)",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "صناعة محتوى",
+        details: "تصوير المقاطع المرئية وتوثيق ثقافة القهوة بالمحمصة والبار، كتابة المحتوى ونشره عبر منصات التواصل.",
+        notes: "تحت إشراف مدير التسويق جون",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+    {
+        id: "mkt-2",
+        category: "future",
+        dept: "قسم التسويق والعلامة التجارية (إشراف جون)",
+        title: "مصمم جرافيك (Graphic Designer)",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "تصميم وهوية",
+        details: "تصميم بطاقات المحاصيل، المطبوعات، منيو الصالة، والبوسترات الإعلانية الرقمية مع الحفاظ على هوية RoR.",
+        notes: "تحت إشراف مدير التسويق جون",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+
+    // قسم المبيعات وتطوير الأعمال
+    {
+        id: "sales-1",
+        category: "future",
+        dept: "قسم المبيعات وتطوير الأعمال",
+        title: "ممثل مبيعات جملة (B2B Sales)",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "مبيعات جملة B2B",
+        details: "التواصل مع المقاهي والمطاعم والشركات، تقديم عينات محاصيل حماصة جيسن وإتمام عقود التوريد الشهرية.",
+        notes: "مستهدف لزيادة تصريف طاقة الحماصة",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+    {
+        id: "sales-2",
+        category: "future",
+        dept: "قسم المبيعات وتطوير الأعمال",
+        title: "مسؤول حسابات كبار العملاء (Key Accounts)",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "حسابات كبار العملاء",
+        details: "إدارة ومتابعة طلبات عملاء الجملة الكبار، توفير الدعم وتنسيق مواعيد التسليم ومتابعة التحصيل الدوري.",
+        notes: "مستهدف لخدمة واستبقاء العملاء الاستراتيجيين",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+
+    // قسم التجارة الإلكترونية واللوجستيات
+    {
+        id: "ecom-1",
+        category: "future",
+        dept: "قسم التجارة الإلكترونية واللوجستيات",
+        title: "مدير المتجر الإلكتروني",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "تجارة إلكترونية",
+        details: "إدارة منصة المتجر الرقمي، متابعة المخزون المعروض، تحسين تجربة الشراء وإطلاق العروض التسويقية.",
+        notes: "مستهدف لتفعيل القناة الرقمية",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+    {
+        id: "ecom-2",
+        category: "future",
+        dept: "قسم التجارة الإلكترونية واللوجستيات",
+        title: "أخصائي شحن ومخزون",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "شحن ومخزون",
+        details: "استلام طلبات المتجر، التجهيز والتغليف، التنسيق مع شركات الشحن السريع ومتابعة أرقام التتبع للعملاء.",
+        notes: "مستهدف لسرعة تسليم الطلبيات",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+
+    // قسم المشتريات وسلاسل الإمداد
+    {
+        id: "proc-1",
+        category: "future",
+        dept: "قسم المشتريات وسلاسل الإمداد",
+        title: "مسؤول مشتريات (Procurement)",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "مشتريات وإمداد",
+        details: "البحث عن أفضل موردي البن الأخضر ومواد التغليف والحليب والأكواب، التفاوض على الأسعار وضمان استمرارية التوريد.",
+        notes: "مستهدف لتحسين هوامش الربحية",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+
+    // قسم الصيانة والدعم الفني
+    {
+        id: "maint-1",
+        category: "future",
+        dept: "قسم الصيانة والدعم الفني",
+        title: "فني صيانة آلات القهوة (Coffee Tech)",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "صيانة مكائن",
+        details: "الصيانة الوقائية والطارئة لمكائن الإسبريسو والمطاحن، فلاتر المياه ومعالجة الأملاح، وصيانة حماصة جيسن 15 كجم.",
+        notes: "مستهدف لتقليل زمن توقف المعدات",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+
+    // قسم الموارد البشرية والتدريب (إشراف أنس)
+    {
+        id: "hr-1",
+        category: "future",
+        dept: "قسم الموارد البشرية والتدريب (إشراف أنس)",
+        title: "أخصائي موارد بشرية (HR Specialist)",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "موارد بشرية",
+        details: "إدارة شؤون الموظفين، مسيرات الرواتب، العقود والتأمينات، التوظيف واستقطاب الكفاءات والامتثال لأنظمة العمل.",
+        notes: "تحت إشراف المدير المالي والإداري أنس",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+    {
+        id: "hr-2",
+        category: "future",
+        dept: "قسم الموارد البشرية والتدريب (إشراف أنس)",
+        title: "مدرب باريستا (Barista Trainer)",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "تدريب وتطوير",
+        details: "تدريب كوادر البار الجدد، رفع جودة استخلاص الإسبريسو ورسم الحليب (Latte Art) واختبار معايير الخدمة والضيافة.",
+        notes: "تحت إشراف المدير المالي والإداري أنس",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    },
+
+    // قسم المالية والمحاسبة (إشراف أنس)
+    {
+        id: "fin-1",
+        category: "future",
+        dept: "قسم المالية والمحاسبة (إشراف أنس)",
+        title: "محاسب عام (General Accountant)",
+        holder: "شاغر",
+        status: "vacant",
+        roleTag: "محاسبة ومالية",
+        details: "تسجيل القيود اليومية، مطابقة مبيعات الصندوق ونقاط البيع، إعداد الإقرارات الضريبية ومتابعة تقارير الأرباح والخسائر.",
+        notes: "تحت إشراف المدير المالي والإداري أنس",
+        avatarBg: "#FFF4E6",
+        avatarColor: "#FD980E",
+        initials: "شاغر"
+    }
+];
+
+let orgRoles = JSON.parse(localStorage.getItem('ror_org_chart')) || defaultOrgData;
+let activeOrgFilter = 'all';
+
+function initOrgChart() {
+    renderOrgChart();
+    updateOrgStats();
+}
+
+function updateOrgStats() {
+    const total = orgRoles.length;
+    const filled = orgRoles.filter(r => r.status === 'filled').length;
+    const vacant = total - filled;
+    const rate = total > 0 ? Math.round((filled / total) * 100) : 0;
+
+    const elTotal = document.getElementById('org-stat-total');
+    const elFilled = document.getElementById('org-stat-filled');
+    const elVacant = document.getElementById('org-stat-vacant');
+    const elRate = document.getElementById('org-stat-rate');
+    const elBadge = document.getElementById('org-stat-rate-badge');
+    const elProgress = document.getElementById('org-stat-progress');
+
+    if (elTotal) elTotal.textContent = total;
+    if (elFilled) elFilled.textContent = filled;
+    if (elVacant) elVacant.textContent = vacant;
+    if (elRate) elRate.textContent = `${rate}%`;
+    if (elBadge) elBadge.textContent = `${rate}% تسكين`;
+    if (elProgress) elProgress.style.width = `${rate}%`;
+
+    const cAll = document.getElementById('count-filter-all');
+    const cFilled = document.getElementById('count-filter-filled');
+    const cVacant = document.getElementById('count-filter-vacant');
+    if (cAll) cAll.textContent = total;
+    if (cFilled) cFilled.textContent = filled;
+    if (cVacant) cVacant.textContent = vacant;
+}
+
+function setOrgFilter(filterKey, el) {
+    activeOrgFilter = filterKey;
+    document.querySelectorAll('.org-filter-btn').forEach(btn => btn.classList.remove('active'));
+    if (el) el.classList.add('active');
+    renderOrgChart();
+}
+
+function filterOrgDisplay() {
+    renderOrgChart();
+}
+
+function renderOrgChart() {
+    const searchInput = document.getElementById('org-search-input');
+    const query = (searchInput ? searchInput.value.trim().toLowerCase() : '');
+
+    // Filter array
+    let filtered = orgRoles.filter(r => {
+        // Status & category filter
+        if (activeOrgFilter === 'filled' && r.status !== 'filled') return false;
+        if (activeOrgFilter === 'vacant' && r.status !== 'vacant') return false;
+        if (activeOrgFilter === 'leadership' && r.category !== 'leadership') return false;
+        if (activeOrgFilter === 'bar' && r.category !== 'bar') return false;
+        if (activeOrgFilter === 'future' && r.category !== 'future') return false;
+
+        // Search query
+        if (query) {
+            const matchTitle = (r.title || '').toLowerCase().includes(query);
+            const matchHolder = (r.holder || '').toLowerCase().includes(query);
+            const matchDept = (r.dept || '').toLowerCase().includes(query);
+            const matchDetails = (r.details || '').toLowerCase().includes(query);
+            const matchNotes = (r.notes || '').toLowerCase().includes(query);
+            if (!matchTitle && !matchHolder && !matchDept && !matchDetails && !matchNotes) return false;
+        }
+        return true;
+    });
+
+    const leadershipGrid = document.getElementById('org-leadership-grid');
+    const barGrid = document.getElementById('org-bar-grid');
+    const futureGrid = document.getElementById('org-future-grid');
+
+    const secLeadership = document.getElementById('section-leadership');
+    const secBar = document.getElementById('section-bar');
+    const secFuture = document.getElementById('section-future');
+
+    if (!leadershipGrid || !barGrid || !futureGrid) return;
+
+    const leadershipItems = filtered.filter(r => r.category === 'leadership');
+    const barItems = filtered.filter(r => r.category === 'bar');
+    const futureItems = filtered.filter(r => r.category === 'future');
+
+    if (secLeadership) secLeadership.style.display = leadershipItems.length ? 'block' : 'none';
+    if (secBar) secBar.style.display = barItems.length ? 'block' : 'none';
+    if (secFuture) secFuture.style.display = futureItems.length ? 'block' : 'none';
+
+    leadershipGrid.innerHTML = leadershipItems.map(r => generateOrgCardHtml(r)).join('');
+    barGrid.innerHTML = barItems.map(r => generateOrgCardHtml(r)).join('');
+    futureGrid.innerHTML = futureItems.map(r => generateOrgCardHtml(r)).join('');
+}
+
+function generateOrgCardHtml(role) {
+    const isFilled = (role.status === 'filled');
+    const cardClass = isFilled ? 'org-card org-card-filled' : 'org-card org-card-vacant';
+
+    const statusBadge = isFilled
+        ? `<span class="badge badge-green"><i class="fa-solid fa-circle-check"></i> قائم / مشغول</span>`
+        : `<span class="badge badge-orange"><i class="fa-solid fa-hourglass-half"></i> شاغر للتوظيف</span>`;
+
+    const roleTagBadge = role.roleTag
+        ? `<span class="badge ${isFilled ? 'badge-blue' : 'badge-oxford'}">${escapeHtml(role.roleTag)}</span>`
+        : '';
+
+    // Avatar rendering
+    let avatarHtml = '';
+    if (isFilled) {
+        avatarHtml = `
+            <div style="width:44px;height:44px;border-radius:14px;background:${role.avatarBg || 'linear-gradient(135deg, #0066FF, #0045E0)'};color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;box-shadow:0 3px 10px rgba(0,102,255,0.2);">
+                ${escapeHtml(role.initials || role.holder.substring(0, 4))}
+            </div>
+        `;
+    } else {
+        avatarHtml = `
+            <div style="width:44px;height:44px;border-radius:14px;background:#FFF4E6;border:1.5px dashed #FD980E;color:#FD980E;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">
+                <i class="fa-solid fa-user-clock"></i>
+            </div>
+        `;
+    }
+
+    const holderNameHtml = isFilled
+        ? `<h4 style="font-size:15px;font-weight:800;color:#0B1A2D;margin:0 0 2px;">${escapeHtml(role.holder)}</h4>`
+        : `<h4 style="font-size:14px;font-weight:700;color:#FD980E;margin:0 0 2px;">شاغر للتوظيف</h4>`;
+
+    return `
+        <div class="${cardClass}" id="role-card-${role.id}">
+            <div>
+                <!-- Top Meta: Dept & Badges -->
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:12px;">
+                    <span style="font-size:10.5px;font-weight:700;color:#8A95A3;background:#F7F5F0;padding:2px 8px;border-radius:6px;border:1px solid #E5E2DA;">
+                        ${escapeHtml(role.dept)}
+                    </span>
+                    <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                        ${roleTagBadge}
+                        ${statusBadge}
+                    </div>
+                </div>
+
+                <!-- Person & Title -->
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                    ${avatarHtml}
+                    <div style="flex:1;min-width:0;">
+                        ${holderNameHtml}
+                        <div style="font-size:12.5px;font-weight:700;color:#0066FF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                            ${escapeHtml(role.title)}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Details & Tasks -->
+                <p style="font-size:11.8px;color:#4A5568;line-height:1.55;margin:0 0 10px;font-weight:500;">
+                    ${escapeHtml(role.details || '')}
+                </p>
+
+                <!-- Notes / Conditions -->
+                ${role.notes ? `
+                    <div style="font-size:11px;color:#6B7280;background:${isFilled ? '#F7F5F0' : '#FFFDF8'};padding:6px 10px;border-radius:8px;border:1px solid ${isFilled ? '#E5E2DA' : '#FDD39B'};margin-bottom:14px;display:flex;align-items:center;gap:6px;">
+                        <i class="fa-solid fa-circle-info" style="color:${isFilled ? '#0066FF' : '#FD980E'};"></i>
+                        <span>${escapeHtml(role.notes)}</span>
+                    </div>
+                ` : ''}
+            </div>
+
+            <!-- Card Action Footer -->
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:10px;border-top:1px solid #F0EDE8;margin-top:auto;">
+                <button onclick="openOrgEditModal('${role.id}')" class="${isFilled ? 'btn-ghost' : 'btn-orange'}" style="padding:6px 12px;font-size:11px;flex:1;justify-content:center;">
+                    <i class="fa-solid ${isFilled ? 'fa-pen-to-square' : 'fa-user-plus'}"></i>
+                    ${isFilled ? 'تعديل التسكين' : 'تسكين مرشح'}
+                </button>
+                <button onclick="toggleOrgRoleStatus('${role.id}')" class="btn-ghost" style="padding:6px 10px;font-size:11.5px;" title="${isFilled ? 'تحويل إلى شاغر' : 'تحويل إلى قائم'}">
+                    <i class="fa-solid ${isFilled ? 'fa-arrow-right-from-bracket' : 'fa-check'}" style="color:${isFilled ? '#C53030' : '#16A34A'};"></i>
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+function openOrgEditModal(roleId) {
+    const role = orgRoles.find(r => r.id === roleId);
+    if (!role) return;
+
+    document.getElementById('m-org-id').value = role.id;
+    document.getElementById('m-org-title').value = role.title || '';
+    document.getElementById('m-org-holder').value = role.holder || '';
+    document.getElementById('m-org-status').value = role.status || 'filled';
+    document.getElementById('m-org-dept').value = role.dept || '';
+    document.getElementById('m-org-details').value = role.details || '';
+    document.getElementById('m-org-notes').value = role.notes || '';
+
+    openModal('modal-org-edit');
+}
+
+function handleOrgStatusModalChange() {
+    const statusVal = document.getElementById('m-org-status').value;
+    const holderInput = document.getElementById('m-org-holder');
+    if (statusVal === 'vacant' && (!holderInput.value || holderInput.value === 'علاء' || holderInput.value === 'عبد الله' || holderInput.value === 'جون / جود' || holderInput.value === 'أنس' || holderInput.value === 'عارف' || holderInput.value === 'علم')) {
+        holderInput.value = 'شاغر';
+    } else if (statusVal === 'filled' && holderInput.value === 'شاغر') {
+        holderInput.value = '';
+    }
+}
+
+function handleSaveOrgEdit(e) {
+    e.preventDefault();
+    const id = document.getElementById('m-org-id').value;
+    const roleIndex = orgRoles.findIndex(r => r.id === id);
+    if (roleIndex === -1) return;
+
+    const title = document.getElementById('m-org-title').value.trim();
+    const holder = document.getElementById('m-org-holder').value.trim();
+    const status = document.getElementById('m-org-status').value;
+    const dept = document.getElementById('m-org-dept').value.trim();
+    const details = document.getElementById('m-org-details').value.trim();
+    const notes = document.getElementById('m-org-notes').value.trim();
+
+    orgRoles[roleIndex].title = title;
+    orgRoles[roleIndex].holder = holder;
+    orgRoles[roleIndex].status = status;
+    orgRoles[roleIndex].dept = dept;
+    orgRoles[roleIndex].details = details;
+    orgRoles[roleIndex].notes = notes;
+
+    if (status === 'filled') {
+        orgRoles[roleIndex].initials = holder.substring(0, 4);
+    } else {
+        orgRoles[roleIndex].initials = 'شاغر';
+    }
+
+    saveOrgRolesToStorage();
+    closeModal('modal-org-edit');
+    renderOrgChart();
+    updateOrgStats();
+    showToast('تم تحديث بيانات الوظيفة بنجاح ✅');
+}
+
+function openAddOrgModal() {
+    document.getElementById('m-new-title').value = '';
+    document.getElementById('m-new-holder').value = 'شاغر';
+    document.getElementById('m-new-status').value = 'vacant';
+    document.getElementById('m-new-details').value = '';
+    document.getElementById('m-new-notes').value = '';
+    openModal('modal-org-add');
+}
+
+function handleSaveNewOrgRole(e) {
+    e.preventDefault();
+    const title = document.getElementById('m-new-title').value.trim();
+    const holder = document.getElementById('m-new-holder').value.trim() || 'شاغر';
+    const status = document.getElementById('m-new-status').value;
+    const deptKey = document.getElementById('m-new-dept-select').value;
+    const details = document.getElementById('m-new-details').value.trim();
+    const notes = document.getElementById('m-new-notes').value.trim();
+
+    const deptMap = {
+        leadership: 'الإدارة العليا والقيادة',
+        bar: 'قسم المقهى والبار التشغيلي',
+        roastery: 'قسم المحمصة والإنتاج',
+        qa: 'قسم ضبط الجودة والبحث والتطوير',
+        marketing: 'قسم التسويق والعلامة التجارية (إشراف جون)',
+        sales: 'قسم المبيعات وتطوير الأعمال',
+        ecom: 'قسم التجارة الإلكترونية واللوجستيات',
+        procurement: 'قسم المشتريات وسلاسل الإمداد',
+        maintenance: 'قسم الصيانة والدعم الفني',
+        hr: 'قسم الموارد البشرية والتدريب (إشراف أنس)',
+        finance: 'قسم المالية والمحاسبة (إشراف أنس)'
+    };
+
+    const categoryMap = {
+        leadership: 'leadership',
+        bar: 'bar'
+    };
+
+    const newRole = {
+        id: 'custom-' + Date.now(),
+        category: categoryMap[deptKey] || 'future',
+        dept: deptMap[deptKey] || 'أقسام الدعم والمساندة',
+        title: title,
+        holder: holder,
+        status: status,
+        roleTag: title.split(' ')[0] || 'وظيفة',
+        details: details || 'مهام ومسؤوليات تشغيلية معتمدة لـ RoR.',
+        notes: notes || '',
+        avatarBg: status === 'filled' ? 'linear-gradient(135deg, #0066FF, #0045E0)' : '#FFF4E6',
+        avatarColor: status === 'filled' ? '#FFFFFF' : '#FD980E',
+        initials: status === 'filled' ? holder.substring(0, 4) : 'شاغر'
+    };
+
+    orgRoles.push(newRole);
+    saveOrgRolesToStorage();
+    closeModal('modal-org-add');
+    renderOrgChart();
+    updateOrgStats();
+    showToast('تمت إضافة الوظيفة الجديدة للهيكل بنجاح ✅');
+}
+
+function toggleOrgRoleStatus(roleId) {
+    const role = orgRoles.find(r => r.id === roleId);
+    if (!role) return;
+
+    if (role.status === 'filled') {
+        role.status = 'vacant';
+        role.prevHolder = role.holder;
+        role.holder = 'شاغر';
+        role.avatarBg = '#FFF4E6';
+        role.avatarColor = '#FD980E';
+        role.initials = 'شاغر';
+        showToast(`تم تحويل وظيفة "${role.title}" إلى شاغر 🟠`);
+    } else {
+        role.status = 'filled';
+        role.holder = role.prevHolder && role.prevHolder !== 'شاغر' ? role.prevHolder : 'موظف مكلف';
+        role.avatarBg = 'linear-gradient(135deg, #0066FF, #0045E0)';
+        role.avatarColor = '#FFFFFF';
+        role.initials = role.holder.substring(0, 4);
+        showToast(`تم تفعيل وتسكين وظيفة "${role.title}" 🟢`);
+    }
+
+    saveOrgRolesToStorage();
+    renderOrgChart();
+    updateOrgStats();
+}
+
+function resetOrgChartToDefault() {
+    if (!confirm('هل أنت متأكد من رغبتك في إعادة تعيين الهيكل التنظيمي للبيانات الرسمية الافتراضية؟')) return;
+    orgRoles = JSON.parse(JSON.stringify(defaultOrgData));
+    saveOrgRolesToStorage();
+    renderOrgChart();
+    updateOrgStats();
+    showToast('تمت استعادة الهيكل التنظيمي الرسمي بنجاح ✅');
+}
+
+function saveOrgRolesToStorage() {
+    localStorage.setItem('ror_org_chart', JSON.stringify(orgRoles));
+}
+
+// ─── RESPONSIVE: Mobile sidebar handling ─────────────────────────────────────
+(function() {
+    const hamburger = document.getElementById('hamburger-btn');
+    if (window.innerWidth <= 768 && hamburger) hamburger.style.display = 'flex';
+    window.addEventListener('resize', () => {
+        if (hamburger) hamburger.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+    });
+})();
+</script>
+
+<style>
+/* Responsive stat grid */
+@media (max-width: 1100px) {
+    .stat-grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+    .chart-feed-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 700px) {
+    .stat-grid-4 { grid-template-columns: 1fr 1fr !important; }
+    #app-shell { flex-direction: column; }
+    #sidebar { width: 100%; min-width: 0; }
+}
+</style>
+
+</body>
+</html>
