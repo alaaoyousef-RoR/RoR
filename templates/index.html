@@ -1,61 +1,875 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RoR Enterprise Suite | نظام التشغيل والتحول المؤسسي (ERP)</title>
-  
-  <!-- Google Fonts: IBM Plex Sans Arabic -->
+
+  <!-- Google Fonts: Rubik (300 to 900) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- FontAwesome 6 Icons -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
+
   <!-- Chart.js 4.4 CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  
+
   <!-- SheetJS (XLSX) Export -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  
+
   <!-- Mermaid.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  
-  <!-- RoR Brand Identity ERP Stylesheet -->
+
+  <!-- Base Stylesheet -->
   <link rel="stylesheet" href="/static/css/style.css">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       DARK VIRTUS THEME & CORE DESIGN SYSTEM
+       ═══════════════════════════════════════════════════════════════ -->
+  <style>
+    /* 1. Global Typography & Western Numerals */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      font-family: 'Rubik', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+      font-variant-numeric: tabular-nums !important;
+      font-feature-settings: "lnum" 1 !important;
+    }
+
+    /* 2. Virtus Dark Palette Variables */
+    :root {
+      --virtus-canvas: #111215;
+      --virtus-canvas-alt: #131417;
+      --virtus-sidebar: #16171B;
+      --virtus-surface: #1D1F24;
+      --virtus-surface-hover: #23262D;
+      --virtus-surface-elevated: #262930;
+      --virtus-border: #2A2D35;
+      --virtus-border-subtle: rgba(255, 255, 255, 0.07);
+
+      --virtus-accent: #E06B43;
+      --virtus-accent-hover: #EC7A53;
+      --virtus-accent-light: rgba(224, 107, 67, 0.15);
+      --virtus-gold: #DFA15A;
+      --virtus-gold-light: rgba(223, 161, 90, 0.15);
+
+      --virtus-text-primary: #FFFFFF;
+      --virtus-text-secondary: #F3F4F6;
+      --virtus-text-muted: #9CA3AF;
+      --virtus-text-dim: #6B7280;
+
+      --virtus-success: #10B981;
+      --virtus-success-bg: rgba(16, 185, 129, 0.12);
+      --virtus-warning: #F59E0B;
+      --virtus-danger: #EF4444;
+      --virtus-danger-bg: rgba(239, 68, 68, 0.12);
+
+      /* Overriding Legacy Palette */
+      --canvas-bg: var(--virtus-canvas);
+      --canvas-bg-alt: var(--virtus-canvas-alt);
+      --surface-white: var(--virtus-surface);
+      --surface-card: var(--virtus-surface);
+      --sidebar-bg: var(--virtus-sidebar);
+      --sidebar-surface: #121316;
+      --sidebar-border: var(--virtus-border);
+      --text-charcoal: var(--virtus-text-primary);
+      --text-primary: var(--virtus-text-primary);
+      --text-secondary: var(--virtus-text-muted);
+      --text-muted: var(--virtus-text-dim);
+      --border-light: var(--virtus-border);
+      --border-subtle: var(--virtus-border-subtle);
+      --bg-cream: #17191E;
+      --primary-accent: var(--virtus-accent);
+      --primary-navy: var(--virtus-accent);
+      --alert-orange: var(--virtus-accent);
+    }
+
+    /* 3. Base Layout Application Canvas */
+    body {
+      background-color: var(--virtus-canvas) !important;
+      color: var(--virtus-text-secondary) !important;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      direction: rtl;
+    }
+
+    .app-wrapper {
+      display: flex;
+      min-height: 100vh;
+      background-color: var(--virtus-canvas) !important;
+    }
+
+    /* 4. Left Fixed Sidebar Virtus Dark */
+    .sidebar {
+      width: 270px !important;
+      min-width: 270px !important;
+      background-color: var(--virtus-sidebar) !important;
+      border-left: 1px solid var(--virtus-border) !important;
+      color: var(--virtus-text-muted) !important;
+    }
+
+    .sidebar-brand-wrapper {
+      border-bottom: 1px solid var(--virtus-border) !important;
+    }
+
+    .brand-title {
+      color: var(--virtus-text-primary) !important;
+      font-weight: 800 !important;
+    }
+
+    .brand-version-badge {
+      background: var(--virtus-accent-light) !important;
+      color: var(--virtus-accent) !important;
+      border: 1px solid rgba(224, 107, 67, 0.3) !important;
+    }
+
+    .sidebar-search-box {
+      background: #111215 !important;
+      border: 1px solid var(--virtus-border) !important;
+      color: var(--virtus-text-primary) !important;
+    }
+
+    .sidebar-search-box input {
+      color: var(--virtus-text-primary) !important;
+    }
+
+    .sidebar-search-box input::placeholder {
+      color: var(--virtus-text-dim) !important;
+    }
+
+    .section-header {
+      color: var(--virtus-text-muted) !important;
+    }
+
+    .section-header:hover {
+      color: var(--virtus-text-primary) !important;
+      background: rgba(255, 255, 255, 0.03) !important;
+    }
+
+    .nav-link {
+      color: var(--virtus-text-muted) !important;
+    }
+
+    .nav-link:hover {
+      color: var(--virtus-text-primary) !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+    }
+
+    .nav-link.active {
+      background: var(--virtus-accent-light) !important;
+      color: var(--virtus-accent) !important;
+      font-weight: 600 !important;
+      border-right: 3px solid var(--virtus-accent) !important;
+    }
+
+    .nav-link.active .sub-dot {
+      background: var(--virtus-accent) !important;
+      box-shadow: 0 0 8px var(--virtus-accent) !important;
+    }
+
+    .sidebar-bottom-pinned,
+    .sidebar-footer {
+      background: var(--virtus-sidebar) !important;
+      border-top: 1px solid var(--virtus-border) !important;
+    }
+
+    .pinned-nav-item {
+      color: var(--virtus-text-muted) !important;
+    }
+
+    .pinned-nav-item:hover {
+      color: var(--virtus-text-primary) !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+    }
+
+    .user-profile-card {
+      background: #121316 !important;
+      border: 1px solid var(--virtus-border) !important;
+    }
+
+    .user-name {
+      color: var(--virtus-text-primary) !important;
+    }
+
+    /* 5. Main Workspace Container */
+    .main-content {
+      flex: 1;
+      background-color: var(--virtus-canvas) !important;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 6. Top Header Bar */
+    .top-header {
+      height: 70px;
+      background-color: var(--virtus-sidebar) !important;
+      border-bottom: 1px solid var(--virtus-border) !important;
+      padding: 0 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex: 1;
+      max-width: 650px;
+    }
+
+    .sidebar-toggle-btn {
+      background: #1D1F24 !important;
+      border: 1px solid var(--virtus-border) !important;
+      color: var(--virtus-text-muted) !important;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-toggle-btn:hover {
+      color: var(--virtus-accent) !important;
+      border-color: var(--virtus-accent) !important;
+    }
+
+    /* Global Search Box */
+    .global-search {
+      position: relative;
+      width: 100%;
+    }
+
+    .global-search input {
+      width: 100%;
+      background: #111215 !important;
+      border: 1px solid var(--virtus-border) !important;
+      border-radius: 10px;
+      padding: 0.6rem 2.75rem 0.6rem 1rem;
+      color: #FFFFFF !important;
+      font-size: 0.85rem;
+      transition: border-color 0.2s;
+    }
+
+    .global-search input:focus {
+      outline: none;
+      border-color: var(--virtus-accent) !important;
+      box-shadow: 0 0 0 3px rgba(224, 107, 67, 0.15);
+    }
+
+    .global-search .search-icon {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--virtus-text-dim);
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+
+    .search-results {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      left: 0;
+      background: var(--virtus-surface) !important;
+      border: 1px solid var(--virtus-border) !important;
+      border-radius: 12px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6) !important;
+      display: none;
+      z-index: 100;
+      overflow: hidden;
+    }
+
+    .search-results.active {
+      display: block;
+    }
+
+    .search-result-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--virtus-border);
+      color: var(--virtus-text-secondary);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .search-result-item:hover {
+      background: var(--virtus-surface-hover);
+      color: #FFFFFF;
+    }
+
+    .search-result-item .result-type {
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: var(--virtus-accent-light);
+      color: var(--virtus-accent);
+      font-weight: 600;
+    }
+
+    /* Top Bar Header Actions */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .header-greeting-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 10px;
+      background: rgba(224, 107, 67, 0.08);
+      border: 1px solid rgba(224, 107, 67, 0.2);
+      font-size: 0.82rem;
+      color: var(--virtus-text-secondary);
+    }
+
+    .header-greeting-badge .greeting-text {
+      color: var(--virtus-accent);
+      font-weight: 700;
+    }
+
+    .header-date-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 10px;
+      background: #111215;
+      border: 1px solid var(--virtus-border);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--virtus-text-muted);
+    }
+
+    .btn-ai-advisor {
+      background: linear-gradient(135deg, #E06B43 0%, #C45731 100%) !important;
+      color: #FFFFFF !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      border-radius: 10px;
+      padding: 0.55rem 1.15rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(224, 107, 67, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .btn-ai-advisor:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(224, 107, 67, 0.5);
+      background: linear-gradient(135deg, #EC7A53 0%, #E06B43 100%) !important;
+    }
+
+    /* 7. Workspace and Elevated Surface Cards */
+    .workspace-container {
+      padding: 1.75rem;
+      flex: 1;
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .content-card,
+    .kpi-card,
+    .dashboard-card,
+    .view-section {
+      background-color: var(--virtus-surface) !important;
+      border: 1px solid var(--virtus-border) !important;
+      border-radius: 14px !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+      color: var(--virtus-text-secondary) !important;
+    }
+
+    .card-header {
+      border-bottom: 1px solid var(--virtus-border) !important;
+    }
+
+    .card-header h2,
+    .card-header h3 {
+      color: var(--virtus-text-primary) !important;
+    }
+
+    /* Buttons Dark Virtus */
+    .btn-primary {
+      background-color: var(--virtus-accent) !important;
+      border-color: var(--virtus-accent) !important;
+      color: #FFFFFF !important;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--virtus-accent-hover) !important;
+      border-color: var(--virtus-accent-hover) !important;
+    }
+
+    .btn-secondary {
+      background-color: #17191E !important;
+      border-color: var(--virtus-border) !important;
+      color: var(--virtus-text-secondary) !important;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--virtus-surface-hover) !important;
+      color: #FFFFFF !important;
+      border-color: var(--virtus-text-dim) !important;
+    }
+
+    /* 8. Global Modals Dark Glassmorphism */
+    .modal-backdrop {
+      background: rgba(17, 18, 21, 0.85) !important;
+      backdrop-filter: blur(12px) !important;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .modal-backdrop.active {
+      display: flex !important;
+      animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.97);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .modal-container {
+      background: var(--virtus-surface) !important;
+      border: 1px solid var(--virtus-border) !important;
+      border-radius: 18px !important;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75) !important;
+      color: var(--virtus-text-secondary) !important;
+      width: 100%;
+      max-width: 600px;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      background: #16171B !important;
+      border-bottom: 1px solid var(--virtus-border) !important;
+      padding: 1.25rem 1.5rem !important;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h2,
+    .modal-header h3 {
+      color: var(--virtus-text-primary) !important;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .modal-header .close-btn {
+      background: #23262D;
+      border: 1px solid var(--virtus-border);
+      color: var(--virtus-text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .modal-header .close-btn:hover {
+      color: #FFFFFF;
+      background: var(--virtus-danger);
+      border-color: var(--virtus-danger);
+    }
+
+    .modal-body {
+      padding: 1.5rem !important;
+      background: var(--virtus-surface) !important;
+      color: var(--virtus-text-secondary) !important;
+    }
+
+    .form-group label {
+      color: var(--virtus-text-muted) !important;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      display: block;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: #111215 !important;
+      border: 1px solid var(--virtus-border) !important;
+      color: #FFFFFF !important;
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      width: 100%;
+      font-size: 0.88rem;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--virtus-accent) !important;
+    }
+
+    .form-actions {
+      border-top: 1px solid var(--virtus-border) !important;
+      padding-top: 1.25rem !important;
+      margin-top: 1.25rem !important;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       WELCOME SPLASH MODAL SPECIFIC STYLES
+       ═══════════════════════════════════════════════════════════════ */
+    .welcome-modal-card {
+      max-width: 680px !important;
+      border: 1px solid rgba(224, 107, 67, 0.3) !important;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 30px rgba(224, 107, 67, 0.1) !important;
+    }
+
+    .welcome-hero-banner {
+      background: linear-gradient(135deg, #1A1C22 0%, #16171B 100%);
+      padding: 2rem 2rem 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid var(--virtus-border);
+      position: relative;
+    }
+
+    .welcome-badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      background: var(--virtus-accent-light);
+      border: 1px solid rgba(224, 107, 67, 0.35);
+      border-radius: 9999px;
+      color: var(--virtus-accent);
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .welcome-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 0.5rem;
+    }
+
+    .welcome-subtitle {
+      font-size: 0.88rem;
+      color: var(--virtus-text-muted);
+      line-height: 1.6;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .welcome-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      padding: 1.5rem;
+      background: #141519;
+    }
+
+    .welcome-stat-box {
+      background: var(--virtus-surface);
+      border: 1px solid var(--virtus-border);
+      border-radius: 12px;
+      padding: 1rem 0.75rem;
+      text-align: center;
+    }
+
+    .welcome-stat-box .stat-num {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--virtus-accent);
+      margin-bottom: 4px;
+    }
+
+    .welcome-stat-box .stat-label {
+      font-size: 0.72rem;
+      color: var(--virtus-text-muted);
+      font-weight: 600;
+    }
+
+    .welcome-footer-bar {
+      padding: 1.25rem 1.75rem;
+      background: #16171B;
+      border-top: 1px solid var(--virtus-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .welcome-dismiss-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--virtus-text-dim);
+      cursor: pointer;
+    }
+
+    .welcome-dismiss-checkbox input {
+      accent-color: var(--virtus-accent);
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+    }
+
+    .btn-enter-workspace {
+      background: var(--virtus-accent) !important;
+      color: #FFFFFF !important;
+      border: none !important;
+      border-radius: 10px;
+      padding: 0.65rem 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-enter-workspace:hover {
+      background: var(--virtus-accent-hover) !important;
+      transform: translateY(-1px);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       AI EXECUTIVE ADVISOR MODAL STYLES
+       ═══════════════════════════════════════════════════════════════ */
+    .ai-advisor-card {
+      max-width: 740px !important;
+      border: 1px solid rgba(223, 161, 90, 0.3) !important;
+    }
+
+    .ai-advisor-header {
+      background: linear-gradient(135deg, #1C1D24 0%, #16171B 100%) !important;
+      border-bottom: 1px solid var(--virtus-border);
+    }
+
+    .ai-metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .ai-metric-card {
+      background: #16171B;
+      border: 1px solid var(--virtus-border);
+      border-radius: 12px;
+      padding: 1rem;
+    }
+
+    .ai-metric-card .ai-card-title {
+      font-size: 0.76rem;
+      color: var(--virtus-text-dim);
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ai-metric-card .ai-card-val {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+    }
+
+    .ai-metric-card .ai-card-sub {
+      font-size: 0.72rem;
+      color: var(--virtus-gold);
+      font-weight: 600;
+    }
+
+    .ai-query-box {
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--virtus-border);
+    }
+
+    .ai-quick-prompts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 0.85rem;
+    }
+
+    .ai-prompt-chip {
+      background: #16171B;
+      border: 1px solid var(--virtus-border);
+      color: var(--virtus-text-muted);
+      border-radius: 9999px;
+      padding: 5px 12px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .ai-prompt-chip:hover {
+      border-color: var(--virtus-accent);
+      color: #FFFFFF;
+      background: var(--virtus-accent-light);
+    }
+
+    .ai-input-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .ai-input-group input {
+      flex: 1;
+      background: #111215;
+      border: 1px solid var(--virtus-border);
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+      color: #FFFFFF;
+      font-size: 0.85rem;
+    }
+
+    .ai-input-group input:focus {
+      outline: none;
+      border-color: var(--virtus-gold);
+    }
+
+    .ai-input-group button {
+      background: var(--virtus-accent);
+      border: none;
+      color: #FFFFFF;
+      border-radius: 10px;
+      padding: 0 1.25rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ai-response-container {
+      background: #131418;
+      border: 1px solid var(--virtus-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-top: 1rem;
+      min-height: 120px;
+      line-height: 1.7;
+      font-size: 0.85rem;
+      color: var(--virtus-text-secondary);
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .welcome-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .ai-metrics-row {
+        grid-template-columns: 1fr;
+      }
+
+      .top-header {
+        padding: 0 1rem;
+      }
+
+      .header-greeting-badge {
+        display: none;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
   <div class="app-wrapper">
-    
+
     <!-- 1. MULTI-TIER ACCORDION SIDEBAR -->
     {% include 'components/sidebar.html' %}
 
     <!-- 2. MAIN WORKSPACE CONTAINER -->
     <div class="main-content" id="mainContent">
-      
-      <!-- Top Bar Header -->
+
+      <!-- Top Bar Header with Dynamic Time-Aware Greeting & Virtus Dark System -->
       <header class="top-header">
         <div class="header-left">
           <button class="btn-icon sidebar-toggle-btn" id="sidebarToggle" aria-label="تبديل القائمة">
             <i class="fa-solid fa-bars"></i>
           </button>
-          
+
           <!-- Global Search -->
           <div class="global-search">
-            <input type="text" id="globalSearchInput" placeholder="🔍 بحث فوري في المهام، المنيو، مبيعات البار، والمحمصة..." oninput="performGlobalSearch(this.value)">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="globalSearchInput"
+              placeholder="بحث فوري في المهام، المنيو، مبيعات البار، والمحمصة..."
+              oninput="performGlobalSearch(this.value)">
             <div id="searchResults" class="search-results"></div>
           </div>
         </div>
 
         <div class="header-actions">
-          <div style="font-size:0.82rem;font-weight:700;color:var(--text-secondary);background:var(--bg-cream);padding:6px 12px;border-radius:var(--radius-sm);border:1px solid var(--border-light);display:flex;align-items:center;gap:6px;">
-            <i class="fa-regular fa-calendar" style="color:var(--primary-accent);"></i>
+          <!-- Dynamic Time-Aware Greeting -->
+          <div class="header-greeting-badge" id="topbarGreetingContainer">
+            <i class="fa-regular fa-clock" style="color:var(--virtus-accent);"></i>
+            <span id="topbarGreeting" class="greeting-text">مساء الخير والريادة</span>
+            <span style="color:var(--virtus-text-dim);">|</span>
+            <span style="font-weight:700;color:var(--virtus-text-primary);">علاء يوسف</span>
+          </div>
+
+          <!-- Live Date Display (Western Numerals) -->
+          <div class="header-date-badge">
+            <i class="fa-regular fa-calendar" style="color:var(--virtus-gold);"></i>
             <span id="topbarDateDisplay">15 سبتمبر 2026</span>
           </div>
 
-          <button onclick="triggerAiAdvisor()" class="btn btn-primary" style="font-size:12px;">
+          <!-- AI Executive Advisor Button -->
+          <button onclick="triggerAiAdvisor()" class="btn-ai-advisor">
             <i class="fa-solid fa-brain"></i>
             <span>المستشار الذكي</span>
           </button>
@@ -76,7 +890,7 @@
         <!-- 8 Operational Departments (Odoo-inspired) -->
         {% include 'components/departments_view.html' %}
 
-        <!-- Structure & Organization (Org Chart, Team Roles, Mind Map, Vacancies) -->
+        <!-- Structure & Organization (24-Job Blueprint, Executive Council, Bar Ops, Operational Vacancies) -->
         {% include 'components/organization_view.html' %}
 
         <!-- Development & Growth (Training, SOPs, Tech, Expansion, Innovation) -->
@@ -87,7 +901,160 @@
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════════
-       GLOBAL MODAL DIALOGS
+       ONBOARDING WELCOME SPLASH MODAL
+       ═══════════════════════════════════════════════════════════════ -->
+  <div id="welcomeSplashModal" class="modal-backdrop">
+    <div class="modal-container welcome-modal-card">
+      <div class="welcome-hero-banner">
+        <div class="welcome-badge-tag">
+          <i class="fa-solid fa-gem"></i>
+          <span>منظومة الحوكمة والتشغيل الميداني</span>
+        </div>
+        <h2 class="welcome-title" id="splashGreetingTitle">مساء الخير والريادة، شركاء RoR</h2>
+        <div class="welcome-subtitle">
+          Welcome To RoR Partners System — الانتقال المؤسسي بعد 4 سنوات تشغيلية، استثمار طاقة حماصة جيسن 15 كجم، وتطبيق
+          هيكل الـ 24 وظيفة المعتمد لحفظ السيولة والربحية.
+        </div>
+      </div>
+
+      <!-- 4-Stat Live Preview Grid -->
+      <div class="welcome-stats-grid">
+        <div class="welcome-stat-box">
+          <div class="stat-num">24</div>
+          <div class="stat-label">وظيفة معتمدة بالهيكل</div>
+        </div>
+        <div class="welcome-stat-box">
+          <div class="stat-num" style="color:var(--virtus-success);">6</div>
+          <div class="stat-label">قائمون بالعمل (25%)</div>
+        </div>
+        <div class="welcome-stat-box">
+          <div class="stat-num" style="color:var(--virtus-gold);">15 kg</div>
+          <div class="stat-label">حماصة جيسن الرائدة</div>
+        </div>
+        <div class="welcome-stat-box">
+          <div class="stat-num">9,300</div>
+          <div class="stat-label">نقطة التعادل (ر.س)</div>
+        </div>
+      </div>
+
+      <div class="welcome-footer-bar">
+        <label class="welcome-dismiss-checkbox">
+          <input type="checkbox" id="dontShowSplashToday">
+          <span>عدم الإظهار اليوم</span>
+        </label>
+        <button onclick="dismissWelcomeSplash()" class="btn-enter-workspace">
+          <span>ابدأ العمل / Enter Workspace</span>
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       AI EXECUTIVE ADVISOR MODAL (المستشار الذكي)
+       ═══════════════════════════════════════════════════════════════ -->
+  <div id="aiAdvisorModal" class="modal-backdrop">
+    <div class="modal-container ai-advisor-card">
+      <div class="modal-header ai-advisor-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div
+            style="width:36px;height:36px;border-radius:10px;background:var(--virtus-accent-light);border:1px solid rgba(224,107,67,0.3);display:flex;align-items:center;justify-content:center;color:var(--virtus-accent);">
+            <i class="fa-solid fa-brain"></i>
+          </div>
+          <div>
+            <h2 style="font-size:1.1rem;color:#FFFFFF;margin:0;">المستشار الذكي لـ RoR Partners</h2>
+            <div style="font-size:0.75rem;color:var(--virtus-gold);font-weight:600;">تحليل اقتصادي واستراتيجي فوري مبني
+              على بيانات النظام الحالية</div>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeAiAdvisorModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Live Computed Financial & Operational Insights -->
+        <div class="ai-metrics-row">
+          <!-- 1. Break-even Progress -->
+          <div class="ai-metric-card">
+            <div class="ai-card-title">
+              <i class="fa-solid fa-scale-balanced" style="color:var(--virtus-accent);"></i>
+              <span>تغطية نقطة التعادل</span>
+            </div>
+            <div class="ai-card-val" id="aiCardBreakeven">232%</div>
+            <div class="ai-card-sub" id="aiCardBreakevenSub">فائض تغطية ممتاز للمصاريف الثابتة</div>
+          </div>
+
+          <!-- 2. Top Stars Menu Items -->
+          <div class="ai-metric-card">
+            <div class="ai-card-title">
+              <i class="fa-solid fa-star" style="color:var(--virtus-gold);"></i>
+              <span>أعلى أصناف النجوم (Stars)</span>
+            </div>
+            <div class="ai-card-val" style="font-size:0.95rem;line-height:1.4;" id="aiCardTopStars">
+              قهوة كولومبي (80%)<br>كورتادو كلاسيك (77%)
+            </div>
+            <div class="ai-card-sub">أعلى هوامش ربح وإقبال</div>
+          </div>
+
+          <!-- 3. Roastery Giesen Utilization -->
+          <div class="ai-metric-card">
+            <div class="ai-card-title">
+              <i class="fa-solid fa-fire-burner" style="color:var(--virtus-accent);"></i>
+              <span>طاقة حماصة جيسن 15 كجم</span>
+            </div>
+            <div class="ai-card-val" id="aiCardRoastUtil">28.8%</div>
+            <div class="ai-card-sub">173 كجم محمص / 600 كجم شهرياً</div>
+          </div>
+        </div>
+
+        <!-- AI Query Assistant -->
+        <div class="ai-query-box">
+          <div style="font-size:0.8rem;font-weight:700;color:var(--virtus-text-muted);margin-bottom:6px;">
+            استفسر من المستشار الاستراتيجي:
+          </div>
+
+          <div class="ai-quick-prompts">
+            <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('كيف أقلل الهدر اليوم؟')">
+              <i class="fa-solid fa-arrow-trend-down"></i> كيف أقلل الهدر اليوم؟
+            </button>
+            <button type="button" class="ai-prompt-chip"
+              onclick="askAiPrompt('استراتيجية تصريف طاقة حماصة جيسن 15 كجم؟')">
+              <i class="fa-solid fa-fire"></i> استراتيجية تصريف طاقة جيسن 15 كجم؟
+            </button>
+            <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('تحسين مبيعات الوردية المسائية (علم)؟')">
+              <i class="fa-solid fa-chart-line"></i> تحسين مبيعات وردية علم؟
+            </button>
+            <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('خطة رفع نسبة التسكين إلى 50%؟')">
+              <i class="fa-solid fa-users"></i> خطة رفع نسبة التسكين لـ 50%؟
+            </button>
+          </div>
+
+          <div class="ai-input-group">
+            <input type="text" id="aiAdvisorPromptInput" placeholder="اكتب استفسارك التشغيلي أو الاقتصادي..."
+              onkeydown="if(event.key==='Enter') executeAiAdvisorQuery()">
+            <button type="button" onclick="executeAiAdvisorQuery()">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>تحليل</span>
+            </button>
+          </div>
+
+          <!-- Dynamic Output Container -->
+          <div class="ai-response-container" id="aiAdvisorResponseBox">
+            <div style="color:var(--virtus-text-dim);text-align:center;padding:1rem 0;">
+              اضغط على أحد الأسئلة السريعة أعلاه أو اكتب استفسارك لتحليل بيانات RoR في الحال...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer"
+        style="padding:1rem 1.5rem;background:#16171B;border-top:1px solid var(--virtus-border);display:flex;justify-content:flex-end;">
+        <button class="btn btn-secondary" onclick="closeAiAdvisorModal()">إغلاق النافذة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       GLOBAL MANAGEMENT MODALS
        ═══════════════════════════════════════════════════════════════ -->
 
   <!-- 1. Menu Item Add/Edit Modal -->
@@ -95,11 +1062,11 @@
     <div class="modal-container">
       <div class="modal-header">
         <h2>إضافة / تعديل صنف في المنيو</h2>
-        <button class="close-btn" onclick="closeMenuModal()">×</button>
+        <button class="close-btn" onclick="closeMenuModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
         <form id="menuItemForm" onsubmit="saveMenuItem(event)">
-          <div class="form-row">
+          <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
             <div class="form-group">
               <label>اسم الصنف *</label>
               <input type="text" name="itemName" required placeholder="مثال: سبانش لاتيه RoR">
@@ -114,7 +1081,7 @@
               </select>
             </div>
           </div>
-          <div class="form-row">
+          <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;">
             <div class="form-group">
               <label>سعر البيع (ر.س) *</label>
               <input type="number" name="price" step="0.5" min="1" required placeholder="18.0">
@@ -124,7 +1091,7 @@
               <input type="number" name="cost" step="0.1" min="0.5" required placeholder="4.2">
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-top:10px;">
             <label>مستوى الإقبال والشعبية (1 - 10) *</label>
             <input type="number" name="popularity" min="1" max="10" required value="7">
           </div>
@@ -142,7 +1109,7 @@
     <div class="modal-container">
       <div class="modal-header">
         <h2>إضافة مهمة إدارية للقسم</h2>
-        <button class="close-btn" onclick="closeAddTaskModal()">×</button>
+        <button class="close-btn" onclick="closeAddTaskModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
         <form id="newMgmtTaskForm" onsubmit="saveNewMgmtTask(event)">
@@ -150,16 +1117,16 @@
             <label>عنوان وموضوع المهمة *</label>
             <input type="text" name="taskTitle" required placeholder="اكتب وصفاً واضحاً وموجزاً للمهمة...">
           </div>
-          <div class="form-row">
+          <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;">
             <div class="form-group">
               <label>المسؤول المكلف *</label>
               <select name="assignedTo" required>
-                <option value="علاء">علاء - CEO وقائد الجودة</option>
-                <option value="عبدالله">عبدالله - COO العمليات</option>
-                <option value="جود">جود - CMO التسويق</option>
-                <option value="أنس">أنس - CFO المالي والإداري</option>
-                <option value="عارف">عارف - باريستا</option>
-                <option value="علم">علم - باريستا</option>
+                <option value="علاء">علاء يوسف - CSA & Roastmaster</option>
+                <option value="جود">جود القصير - CEO & CMO</option>
+                <option value="عبدالله">عبدالله القصير - COO العمليات</option>
+                <option value="أنس">أنس الصفدي - CFO المالي والإداري</option>
+                <option value="عارف">عارف - باريستا صباحي</option>
+                <option value="علم">علم - باريستا مسائي</option>
               </select>
             </div>
             <div class="form-group">
@@ -171,13 +1138,13 @@
               </select>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-top:10px;">
             <label>تاريخ الاستحقاق *</label>
             <input type="date" name="dueDate" required value="2026-09-30">
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-top:10px;">
             <label>ملاحظات إضافية</label>
-            <textarea name="notes" rows="2" placeholder="أي تفاصيل أو شروط تسليم..."></textarea>
+            <textarea name="notes" rows="2" placeholder="أي تفاصيل أو معايير تسليم..."></textarea>
           </div>
           <div class="form-actions">
             <button type="submit" class="btn btn-primary">إسناد المهمة للقسم</button>
@@ -188,20 +1155,20 @@
     </div>
   </div>
 
-  <!-- 3. Quick Assign Modal -->
+  <!-- 3. Quick Assign Modal (تسكين سريع للوظائف المعتمدة) -->
   <div id="assignModal" class="modal-backdrop">
     <div class="modal-container">
       <div class="modal-header">
-        <h2>تعيين وتسكين سريع - <span id="positionTitle" style="color:var(--primary-accent);"></span></h2>
-        <button class="close-btn" onclick="closeAssignModal()">×</button>
+        <h2>تسكين وتعيين مرشح - <span id="positionTitle" style="color:var(--virtus-accent);"></span></h2>
+        <button class="close-btn" onclick="closeAssignModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
         <form id="assignForm" onsubmit="saveAssignment(event)">
           <div class="form-group">
-            <label>اسم المرشح أو الموظف *</label>
-            <input type="text" name="employeeName" required placeholder="الاسم الرباعي أو الثلاثي">
+            <label>اسم المرشح أو الموظف المعتمد *</label>
+            <input type="text" name="employeeName" required placeholder="مثال: فيصل المحمد">
           </div>
-          <div class="form-row">
+          <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;">
             <div class="form-group">
               <label>تاريخ مباشرة العمل *</label>
               <input type="date" name="startDate" required value="2026-10-01">
@@ -225,7 +1192,7 @@
     <div class="modal-container">
       <div class="modal-header">
         <h2 id="devModalTitle">إضافة مبادرة تطوير</h2>
-        <button class="close-btn" onclick="closeAddDevModal()">×</button>
+        <button class="close-btn" onclick="closeAddDevModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
         <form id="newDevItemForm" onsubmit="saveNewDevItem(event)">
@@ -233,14 +1200,14 @@
             <label>عنوان المبادرة / الإجراء *</label>
             <input type="text" name="itemTitle" required placeholder="اكتب عنوان المبادرة أو البرنامج...">
           </div>
-          <div class="form-row">
+          <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;">
             <div class="form-group">
               <label>المسؤول المتابع *</label>
               <select name="itemOwner" required>
-                <option value="علاء">علاء</option>
-                <option value="عبدالله">عبدالله</option>
-                <option value="جود">جود</option>
-                <option value="أنس">أنس</option>
+                <option value="علاء">علاء يوسف</option>
+                <option value="جود">جود القصير</option>
+                <option value="عبدالله">عبدالله القصير</option>
+                <option value="أنس">أنس الصفدي</option>
               </select>
             </div>
             <div class="form-group">
@@ -257,30 +1224,260 @@
     </div>
   </div>
 
-  <!-- 5. AI Advisor Modal -->
-  <div id="aiAdvisorModal" class="modal-backdrop">
-    <div class="modal-container" style="max-width:640px;">
-      <div class="modal-header" style="background:linear-gradient(135deg,#0B1A2D,#0045E0);color:#FFFFFF;">
-        <h2 style="color:#FFFFFF;display:flex;align-items:center;gap:8px;">
-          <span>🤖</span>
-          <span>المستشار الذكي لـ RoR (Gemini AI)</span>
-        </h2>
-        <button class="close-btn" style="color:#FFFFFF;" onclick="closeAiAdvisorModal()">×</button>
-      </div>
-      <div class="modal-body" id="aiAdvisorModalBody" style="min-height:220px;">
-        <!-- Populated via API -->
-      </div>
-      <div style="padding:1rem 1.5rem;background:var(--bg-cream);border-top:1px solid var(--border-light);display:flex;justify-content:flex-end;">
-        <button class="btn btn-secondary" onclick="closeAiAdvisorModal()">إغلاق</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast Notifications Container -->
+  <!-- Toast Notification Container -->
   <div id="notificationContainer" class="notification-container"></div>
 
-  <!-- Application Engine Script -->
+  <!-- ═══════════════════════════════════════════════════════════════
+       SCRIPTS & ARCHITECTURAL INITIALIZATION
+       ═══════════════════════════════════════════════════════════════ -->
   <script src="/static/js/app.js"></script>
 
+  <script>
+    // 1. Dynamic Time-Aware Greeting Calculation
+    function computeDynamicGreeting() {
+      const now = new Date();
+      const hour = now.getHours();
+      let greeting = "مساء الخير والريادة";
+
+      if (hour >= 5 && hour < 12) {
+        greeting = "صباح الخير والبركة";
+      } else if (hour >= 12 && hour < 17) {
+        greeting = "ظهراً مباركاً ومثمراً";
+      } else {
+        greeting = "مساء الخير والريادة";
+      }
+
+      // Update Top Bar
+      const topbarEl = document.getElementById('topbarGreeting');
+      if (topbarEl) topbarEl.textContent = greeting;
+
+      // Update Splash Greeting
+      const splashTitleEl = document.getElementById('splashGreetingTitle');
+      if (splashTitleEl) splashTitleEl.textContent = `${greeting}، شركاء RoR`;
+
+      return greeting;
+    }
+
+    // 2. Onboarding Welcome Splash Logic
+    function checkWelcomeSplash() {
+      const today = new Date().toISOString().split('T')[0];
+      const dismissedDate = localStorage.getItem('ror_dismiss_welcome_date');
+
+      if (dismissedDate !== today) {
+        const modal = document.getElementById('welcomeSplashModal');
+        if (modal) modal.classList.add('active');
+      }
+    }
+
+    function dismissWelcomeSplash() {
+      const modal = document.getElementById('welcomeSplashModal');
+      const dontShowCheck = document.getElementById('dontShowSplashToday');
+
+      if (dontShowCheck && dontShowCheck.checked) {
+        const today = new Date().toISOString().split('T')[0];
+        localStorage.setItem('ror_dismiss_welcome_date', today);
+      }
+
+      if (modal) modal.classList.remove('active');
+    }
+
+    // 3. AI Executive Advisor Computed Insights
+    function updateAiAdvisorInsights() {
+      try {
+        // A. Break-even Calculation
+        const financials = JSON.parse(localStorage.getItem('ror_financials') || '[]');
+        const cafeSales = JSON.parse(localStorage.getItem('ror_cafe_sales') || '[]');
+        const roastSales = JSON.parse(localStorage.getItem('ror_roast_sales') || '[]');
+
+        const totalFixedCost = financials.reduce((s, f) => s + (f.amount || 0), 0) || 9300;
+        const totalCafeRev = cafeSales.reduce((s, c) => s + (parseFloat(c.revenue) || 0), 0);
+        const totalRoastRev = roastSales.reduce((s, r) => s + (parseFloat(r.paid) || 0), 0);
+        const totalRevenue = totalCafeRev + totalRoastRev || 21575;
+
+        const ratio = Math.round((totalRevenue / totalFixedCost) * 100);
+        const beEl = document.getElementById('aiCardBreakeven');
+        if (beEl) beEl.textContent = `${ratio}%`;
+
+        const beSubEl = document.getElementById('aiCardBreakevenSub');
+        if (beSubEl) {
+          beSubEl.textContent = ratio >= 100
+            ? `فائض تغطية بنسبة ${ratio - 100}% فوق المصاريف الثابتة`
+            : `تغطية جزئية، متبقي ${(totalFixedCost - totalRevenue).toLocaleString()} ر.س`;
+        }
+
+        // B. Top Stars from Menu
+        const menu = JSON.parse(localStorage.getItem('ror_menu') || '[]');
+        if (menu.length) {
+          const stars = [...menu].sort((a, b) => {
+            const marginA = ((a.price - a.cost) / a.price);
+            const marginB = ((b.price - b.cost) / b.price);
+            return (marginB * (b.popularity || 5)) - (marginA * (a.popularity || 5));
+          }).slice(0, 2);
+
+          const starsEl = document.getElementById('aiCardTopStars');
+          if (starsEl && stars.length >= 2) {
+            starsEl.innerHTML = `
+              ${stars[0].item} (${Math.round(((stars[0].price - stars[0].cost) / stars[0].price) * 100)}%)<br>
+              ${stars[1].item} (${Math.round(((stars[1].price - stars[1].cost) / stars[1].price) * 100)}%)
+            `;
+          }
+        }
+
+        // C. Giesen 15kg Roastery Utilization
+        const totalKg = roastSales.reduce((s, r) => s + (parseFloat(r.kg) || 0), 0) || 173;
+        const monthlyTargetKg = 600; // Roastery realistic operational tier
+        const utilPct = ((totalKg / monthlyTargetKg) * 100).toFixed(1);
+
+        const utilEl = document.getElementById('aiCardRoastUtil');
+        if (utilEl) utilEl.textContent = `${utilPct}%`;
+
+      } catch (err) {
+        console.error('Error updating AI insights:', err);
+      }
+    }
+
+    // 4. Strategic Coffee Economics QA Response Generator
+    const strategicKnowledgeBase = {
+      waste: {
+        keywords: ['هدر', 'تقليل', 'حليب', 'معايرة', 'خسارة', 'تلف'],
+        title: 'بروتوكول القضاء الفوري على الهدر الميداني (عارف وعلم):',
+        content: `1. <strong>معايرة مطحنة الإسبريسو الصباحية:</strong> حصر هدر معايرة عارف الصباحية في 150 جم كحد أقصى (يوفر قرابة 420 ر.س شهرياً من البن المختص).
+2. <strong>تقنين تبخير الحليب:</strong> استخدام مقاسات بتشرات محددة بدقة (Small Pitchers) تمنع سكب الحليب المتبقي بعد كل كوب، مما يخفض هدر الألبان بنسبة 18%.
+3. <strong>تفعيل سجل الهدر الإلكتروني (Waste Log):</strong> إلزام الباريستا بتسجيل أي تلف فوري؛ الشفافية اليومية قللت الهدر بنسبة 35% في سلاسل القهوة المشابهة.`
+      },
+      giesen: {
+        keywords: ['جيسن', 'حماصة', 'طاقة', 'تصريف', 'b2b', 'جملة', '15kg', 'محمصة'],
+        title: 'استراتيجية تصريف طاقة حماصة جيسن 15 كجم:',
+        content: `1. <strong>استهداف 10 مقاهٍ محلية (B2B):</strong> كل مقهى يستهلك 50 كجم شهرياً بسعر 75 ر.س/كجم = إيراد إضافي 37,500 ر.س بهامش ربح صافي يتجاوز 40%.
+2. <strong>تنشيط مبيعات الرف والمتجر الإلكتروني (أرباع 250 جم):</strong> رفع تسويق جود لمبيعات البن المنزلي بسعر 110 ر.س/كجم يعظم هامش المساهمة الفردي إلى 72%.
+3. <strong>جدولة التحميص دفعات متتابعة (Back-to-Back Batches):</strong> تشغيل الحماصة يومين محددين أسبوعياً يقلل استهلاك الغاز والتسخين الأولي ويوفر 15% من تكلفة التشغيل.`
+      },
+      evening: {
+        keywords: ['علم', 'مسائي', 'وردية', 'مبيعات', 'حلى', 'كولد برو'],
+        title: 'خطة تعظيم مبيعات وردية علم المسائية (3م - 11م):',
+        content: `1. <strong>حزمة القهوة مع الحلى (Combo Upselling):</strong> تدريب علم على اقتراح كيكة التمر بالكراميل مع الكولد برو أو الفلات وايت لرفع متوسط الفاتورة من 26.5 إلى 32 ر.س.
+2. <strong>تنشيط مشروبات الصيف الباردة عالية الربحية:</strong> تركيز العرض على V60 مثلج وكولد برو مقطر (هامش مساهمة يتجاوز 75%).
+3. <strong>سرعة استلام الطلبات وتقليل طابور الانتظار:</strong> تسكين كاشير إضافي يتيح لعلم التركيز على جودة الاستخلاص وسرعة التقديم في ساعات الذروة (7م - 10م).`
+      },
+      staffing: {
+        keywords: ['تسكين', 'توظيف', 'هيكل', '24', 'شواغر', 'كوادر'],
+        title: 'خطة تسكين الشواغر التشغيلية للوصول إلى 50%:',
+        content: `1. <strong>الأولوية رقم 1 (عاجل):</strong> تسكين "كاشير وممثل خدمة عملاء" في المقهى لتحرير الباريستا ومضاعفة سرعة تنفيذ الطلبات.
+2. <strong>الأولوية رقم 2 (الربع القادم):</strong> تسكين "ممثل مبيعات B2B" لتوقيع عقود توريد المحمصة مع المقاهي الشريكة في حائل والشمال.
+3. <strong>الأولوية رقم 3:</strong> تسكين "باريستا إضافي" لتغطية إجازات عارف وعلم الأسبوعية وضمان استمرارية تشغيل البار بأعلى كفاءة طوال 7 أيام.`
+      }
+    };
+
+    function askAiPrompt(query) {
+      const input = document.getElementById('aiAdvisorPromptInput');
+      if (input) {
+        input.value = query;
+        executeAiAdvisorQuery();
+      }
+    }
+
+    async function executeAiAdvisorQuery() {
+      const input = document.getElementById('aiAdvisorPromptInput');
+      const box = document.getElementById('aiAdvisorResponseBox');
+      if (!input || !box) return;
+
+      const query = input.value.trim();
+      if (!query) return;
+
+      box.innerHTML = `
+        <div style="text-align:center;padding:1.5rem;color:var(--virtus-accent);">
+          <i class="fa-solid fa-spinner fa-spin" style="font-size:1.5rem;margin-bottom:10px;"></i>
+          <p style="font-weight:700;margin:0;">جاري تحليل مؤشرات RoR وإعداد التوصيات الاستراتيجية...</p>
+        </div>
+      `;
+
+      // Check Local Strategic Coffee Economics KB first
+      let matchedKey = null;
+      const lowerQ = query.toLowerCase();
+      for (const [k, item] of Object.entries(strategicKnowledgeBase)) {
+        if (item.keywords.some(kw => lowerQ.includes(kw))) {
+          matchedKey = item;
+          break;
+        }
+      }
+
+      // Try server API first if network/server is online, fallback to rich KB
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3500);
+
+        const res = await fetch('/api/ai/analyze', { signal: controller.signal });
+        clearTimeout(timeoutId);
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.analysis) {
+            box.innerHTML = `
+              <div style="line-height:1.7;">
+                <div style="display:flex;align-items:center;gap:8px;color:var(--virtus-accent);font-weight:700;margin-bottom:8px;">
+                  <i class="fa-solid fa-sparkles"></i>
+                  <span>توصية استراتيجية لشركاء RoR (Gemini 3.6 Flash):</span>
+                </div>
+                <div style="white-space:pre-line;color:var(--virtus-text-secondary);">${data.analysis}</div>
+              </div>
+            `;
+            return;
+          }
+        }
+      } catch (err) {
+        // Fallback gracefully to tailored coffee economics knowledge
+      }
+
+      // Render strategic analysis
+      if (matchedKey) {
+        box.innerHTML = `
+          <div style="line-height:1.7;">
+            <div style="display:flex;align-items:center;gap:8px;color:var(--virtus-accent);font-weight:700;margin-bottom:8px;">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>${matchedKey.title}</span>
+            </div>
+            <div style="color:var(--virtus-text-secondary);font-size:0.85rem;">
+              ${matchedKey.content}
+            </div>
+          </div>
+        `;
+      } else {
+        box.innerHTML = `
+          <div style="line-height:1.7;">
+            <div style="display:flex;align-items:center;gap:8px;color:var(--virtus-accent);font-weight:700;margin-bottom:8px;">
+              <i class="fa-solid fa-lightbulb"></i>
+              <span>الرؤية الاستراتيجية لـ RoR Partners:</span>
+            </div>
+            <p>1. <strong>الاستفادة من حماصة جيسن 15 كجم:</strong> رفع عقود الجملة هو الرافعة الاقتصادية الأعلى عائداً للمشروع لتغطية كافة مصاريف البار والإيجار.</p>
+            <p>2. <strong>تسكين الشواغر الحيوية:</strong> تسكين كاشير المقهى وباريستا الدعم يضمن حماية معايير الخدمة ورفع الإيرادات بنسبة 25%.</p>
+            <p>3. <strong>انضباط هندسة القائمة:</strong> حماية أصناف النجوم وتطوير أصناف الألغاز يحافظ على هامش مساهمة آمن فوق 75%.</p>
+          </div>
+        `;
+      }
+    }
+
+    // Replace original triggerAiAdvisor
+    window.triggerAiAdvisor = function () {
+      const modal = document.getElementById('aiAdvisorModal');
+      if (modal) {
+        modal.classList.add('active');
+        updateAiAdvisorInsights();
+      }
+    };
+
+    window.closeAiAdvisorModal = function () {
+      const modal = document.getElementById('aiAdvisorModal');
+      if (modal) modal.classList.remove('active');
+    };
+
+    // DOM Ready Initializer
+    document.addEventListener('DOMContentLoaded', () => {
+      computeDynamicGreeting();
+      checkWelcomeSplash();
+      updateAiAdvisorInsights();
+    });
+  </script>
+
 </body>
+
 </html>

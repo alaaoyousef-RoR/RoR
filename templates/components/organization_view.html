@@ -1,355 +1,1660 @@
 <!-- ═══════════════════════════════════════════════════════════════
-     VIEW: STRUCTURE & ORGANIZATION (الهيكل والتنظيم)
+     VIEW: STRUCTURE & ORGANIZATION (الهيكل والتنظيم المؤسسي - 24 وظيفة)
+     Virtus Dark Theme | Western Numerals | FontAwesome 6 | Zero Emojis
      ═══════════════════════════════════════════════════════════════ -->
 
-<!-- 1. Hierarchical Organizational Chart -->
 <div class="view-section" id="view-org-chart">
-  <div class="content-card">
-    <div class="card-header">
-      <div>
-        <h2>📊 الهيكل التنظيمي الهرمي المعتمد لـ RoR</h2>
-        <div class="card-subtitle">مخطط شجري يعكس القيادة التنفيذية، إدارة العمليات والبار، والوظائف المستقبلية</div>
+  
+  <!-- Embedded Scoped Styling for Organization View -->
+  <style>
+    .org-view-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+      width: 100%;
+    }
+
+    /* 1. Header & KPI Counter Grid */
+    .org-header-card {
+      background: var(--virtus-surface, #1D1F24);
+      border: 1px solid var(--virtus-border, #2A2D35);
+      border-radius: 16px;
+      padding: 1.75rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .org-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--virtus-border, #2A2D35);
+    }
+
+    .org-title-group h1 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin: 0 0 6px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .org-title-group p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--virtus-text-muted, #9CA3AF);
+    }
+
+    .org-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-mindmap-link {
+      background: #16171B;
+      border: 1px solid var(--virtus-border, #2A2D35);
+      color: var(--virtus-text-secondary, #F3F4F6);
+      padding: 0.55rem 1rem;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-mindmap-link:hover {
+      background: var(--virtus-surface-hover, #23262D);
+      border-color: var(--virtus-gold, #DFA15A);
+      color: #FFFFFF;
+    }
+
+    /* 4-Card Counter Grid */
+    .org-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .org-kpi-box {
+      background: #16171B;
+      border: 1px solid var(--virtus-border, #2A2D35);
+      border-radius: 14px;
+      padding: 1.15rem 1.25rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .org-kpi-box:hover {
+      transform: translateY(-2px);
+      border-color: rgba(224, 107, 67, 0.4);
+    }
+
+    .org-kpi-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 3px;
+      background: transparent;
+    }
+
+    .org-kpi-box.kpi-total::before { background: var(--virtus-accent, #E06B43); }
+    .org-kpi-box.kpi-occupied::before { background: var(--virtus-success, #10B981); }
+    .org-kpi-box.kpi-vacant::before { background: var(--virtus-gold, #DFA15A); }
+    .org-kpi-box.kpi-ratio::before { background: linear-gradient(90deg, #E06B43, #DFA15A); }
+
+    .kpi-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .kpi-box-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--virtus-text-dim, #6B7280);
+    }
+
+    .kpi-box-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.88rem;
+    }
+
+    .kpi-box-icon.icon-accent { background: rgba(224, 107, 67, 0.12); color: var(--virtus-accent, #E06B43); }
+    .kpi-box-icon.icon-success { background: rgba(16, 185, 129, 0.12); color: var(--virtus-success, #10B981); }
+    .kpi-box-icon.icon-gold { background: rgba(223, 161, 90, 0.12); color: var(--virtus-gold, #DFA15A); }
+    .kpi-box-icon.icon-pie { background: rgba(255, 255, 255, 0.08); color: #FFFFFF; }
+
+    .kpi-box-number {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+
+    .kpi-box-sub {
+      font-size: 0.74rem;
+      color: var(--virtus-text-muted, #9CA3AF);
+      font-weight: 500;
+    }
+
+    .kpi-progress-bar-bg {
+      height: 6px;
+      background: #23262D;
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-top: 0.6rem;
+    }
+
+    .kpi-progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #E06B43, #EC7A53);
+      border-radius: 9999px;
+      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* 2. Interactive Filter Bar & Live Search */
+    .org-filter-bar {
+      background: var(--virtus-surface, #1D1F24);
+      border: 1px solid var(--virtus-border, #2A2D35);
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .filter-pills-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-pill-btn {
+      background: #16171B;
+      border: 1px solid var(--virtus-border, #2A2D35);
+      color: var(--virtus-text-muted, #9CA3AF);
+      border-radius: 9999px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .filter-pill-btn:hover {
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.2);
+      background: var(--virtus-surface-hover, #23262D);
+    }
+
+    .filter-pill-btn.active {
+      background: var(--virtus-accent, #E06B43);
+      color: #FFFFFF;
+      border-color: var(--virtus-accent, #E06B43);
+      box-shadow: 0 2px 8px rgba(224, 107, 67, 0.35);
+    }
+
+    .filter-pill-btn .pill-counter {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 9999px;
+      padding: 1px 7px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .filter-pill-btn.active .pill-counter {
+      background: rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
+    }
+
+    .org-search-box {
+      position: relative;
+      min-width: 280px;
+      flex: 1;
+      max-width: 360px;
+    }
+
+    .org-search-box input {
+      width: 100%;
+      background: #16171B;
+      border: 1px solid var(--virtus-border, #2A2D35);
+      border-radius: 10px;
+      padding: 0.55rem 2.25rem 0.55rem 0.85rem;
+      color: #FFFFFF;
+      font-size: 0.82rem;
+    }
+
+    .org-search-box input:focus {
+      outline: none;
+      border-color: var(--virtus-accent, #E06B43);
+    }
+
+    .org-search-box .search-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--virtus-text-dim, #6B7280);
+      font-size: 0.82rem;
+    }
+
+    /* 3. Section Titles */
+    .section-headline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 1.25rem 0 0.85rem 0;
+    }
+
+    .section-headline-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-headline-badge {
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--virtus-border, #2A2D35);
+      color: var(--virtus-text-muted, #9CA3AF);
+      font-weight: 600;
+    }
+
+    /* 4. Common Job Card Layout */
+    .job-cards-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .grid-4-cols {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .grid-3-cols {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .org-job-card {
+      background: var(--virtus-surface, #1D1F24);
+      border: 1px solid var(--virtus-border, #2A2D35);
+      border-radius: 14px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    }
+
+    .org-job-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Pulse Dot for Occupied */
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--virtus-success, #10B981);
+      display: inline-block;
+      box-shadow: 0 0 8px var(--virtus-success, #10B981);
+      animation: pulseGreen 2s infinite;
+    }
+
+    @keyframes pulseGreen {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .status-badge.occupied {
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--virtus-success, #10B981);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .status-badge.vacant {
+      background: rgba(224, 107, 67, 0.12);
+      color: var(--virtus-accent, #E06B43);
+      border: 1px solid rgba(224, 107, 67, 0.25);
+    }
+
+    .card-top-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+    }
+
+    .job-dept-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--virtus-gold, #DFA15A);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .card-person-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 0.85rem;
+    }
+
+    .avatar-square {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+      color: #FFFFFF;
+      flex-shrink: 0;
+    }
+
+    .avatar-partner-1 { background: linear-gradient(135deg, #E06B43, #A64421); }
+    .avatar-partner-2 { background: linear-gradient(135deg, #2563EB, #1D4ED8); }
+    .avatar-partner-3 { background: linear-gradient(135deg, #059669, #047857); }
+    .avatar-partner-4 { background: linear-gradient(135deg, #7C3AED, #6D28D9); }
+    .avatar-bar-aref { background: linear-gradient(135deg, #D97706, #B45309); }
+    .avatar-bar-elem { background: linear-gradient(135deg, #0891B2, #0E7490); }
+    .avatar-vacant { background: #23262D; color: var(--virtus-text-dim, #6B7280); border: 1px dashed var(--virtus-border, #2A2D35); }
+
+    .person-name-title h3 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin: 0 0 3px 0;
+    }
+
+    .person-name-title .job-role-en {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--virtus-accent, #E06B43);
+      line-height: 1.3;
+    }
+
+    .job-summary-desc {
+      font-size: 0.8rem;
+      color: var(--virtus-text-muted, #9CA3AF);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      min-height: 48px;
+    }
+
+    .job-responsibilities-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1rem 0;
+      border-top: 1px solid var(--virtus-border-subtle, rgba(255, 255, 255, 0.05));
+      padding-top: 0.75rem;
+    }
+
+    .job-responsibilities-list li {
+      font-size: 0.76rem;
+      color: var(--virtus-text-secondary, #F3F4F6);
+      line-height: 1.55;
+      position: relative;
+      padding-right: 14px;
+      margin-bottom: 5px;
+    }
+
+    .job-responsibilities-list li::before {
+      content: '•';
+      color: var(--virtus-accent, #E06B43);
+      position: absolute;
+      right: 0;
+      font-weight: bold;
+    }
+
+    /* Dashed Card Style for Vacancies */
+    .org-job-card.is-vacant {
+      background: rgba(22, 23, 27, 0.7);
+      border: 1.5px dashed rgba(224, 107, 67, 0.35);
+    }
+
+    .org-job-card.is-vacant:hover {
+      border-color: var(--virtus-accent, #E06B43);
+      background: rgba(29, 31, 36, 0.85);
+    }
+
+    .btn-assign-action {
+      width: 100%;
+      background: #16171B;
+      border: 1px solid var(--virtus-accent, #E06B43);
+      color: var(--virtus-accent, #E06B43);
+      border-radius: 9px;
+      padding: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-assign-action:hover {
+      background: var(--virtus-accent, #E06B43);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(224, 107, 67, 0.35);
+    }
+
+    .btn-assigned-done {
+      width: 100%;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--virtus-success, #10B981);
+      border-radius: 9px;
+      padding: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-assigned-done .unassign-icon {
+      color: var(--virtus-text-dim, #6B7280);
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .btn-assigned-done .unassign-icon:hover {
+      color: var(--virtus-danger, #EF4444);
+      background: rgba(239, 68, 68, 0.15);
+    }
+
+    /* Responsive Breakdown */
+    @media (max-width: 1200px) {
+      .grid-4-cols { grid-template-columns: repeat(2, 1fr); }
+      .grid-3-cols { grid-template-columns: repeat(2, 1fr); }
+      .org-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .grid-4-cols { grid-template-columns: 1fr; }
+      .grid-3-cols { grid-template-columns: 1fr; }
+      .org-kpi-grid { grid-template-columns: 1fr; }
+      .org-filter-bar { flex-direction: column; align-items: stretch; }
+      .org-search-box { max-width: 100%; }
+    }
+  </style>
+
+  <div class="org-view-wrapper">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         HEADER & STAT COUNTERS (4-CARD GRID)
+         ═══════════════════════════════════════════════════════════════ -->
+    <div class="org-header-card">
+      <div class="org-header-top">
+        <div class="org-title-group">
+          <h1>
+            <i class="fa-solid fa-sitemap" style="color:var(--virtus-accent, #E06B43);"></i>
+            <span>الهيكل التنظيمي المعتمد ومصفوفة الـ 24 وظيفة</span>
+          </h1>
+          <p>المخطط الهيكلي التشغيلي لمشروع RoR: قيادة المجلس التنفيذي الرباعي، كادر المقهى والبار، وشواغر التوسع المؤسسي المعتمدة.</p>
+        </div>
+        <div class="org-header-actions">
+          <a href="/mindmap" target="_blank" class="btn-mindmap-link">
+            <i class="fa-solid fa-network-wired" style="color:var(--virtus-gold, #DFA15A);"></i>
+            <span>الخريطة الذهنية الموسعة</span>
+          </a>
+        </div>
       </div>
-      <a href="/mindmap" target="_blank" class="btn btn-secondary" style="font-size:12px;">
-        <span>🔍</span> فتح الخريطة الذهنية الموسعة
-      </a>
+
+      <!-- 4-Card Counter Grid -->
+      <div class="org-kpi-grid">
+        <!-- 1. Total Jobs -->
+        <div class="org-kpi-box kpi-total">
+          <div class="kpi-top-row">
+            <span class="kpi-box-label">إجمالي الوظائف المعتمدة</span>
+            <div class="kpi-box-icon icon-accent"><i class="fa-solid fa-briefcase"></i></div>
+          </div>
+          <div class="kpi-box-number" id="kpiTotalJobs">24</div>
+          <div class="kpi-box-sub">وظيفة موثقة بالهيكل الكامل</div>
+        </div>
+
+        <!-- 2. Occupied Jobs -->
+        <div class="org-kpi-box kpi-occupied">
+          <div class="kpi-top-row">
+            <span class="kpi-box-label">الوظائف القائمة (المشغولة)</span>
+            <div class="kpi-box-icon icon-success"><i class="fa-solid fa-user-check"></i></div>
+          </div>
+          <div class="kpi-box-number" id="kpiOccupiedJobs" style="color:var(--virtus-success, #10B981);">6</div>
+          <div class="kpi-box-sub">4 شركاء تنفيذيين + 2 باريستا بالبار</div>
+        </div>
+
+        <!-- 3. Target Vacancies -->
+        <div class="org-kpi-box kpi-vacant">
+          <div class="kpi-top-row">
+            <span class="kpi-box-label">الشواغر المستهدفة للتوظيف</span>
+            <div class="kpi-box-icon icon-gold"><i class="fa-solid fa-user-plus"></i></div>
+          </div>
+          <div class="kpi-box-number" id="kpiVacantJobs" style="color:var(--virtus-gold, #DFA15A);">18</div>
+          <div class="kpi-box-sub">2 كادر بالبار + 16 وظيفة تشغيل وتوسع</div>
+        </div>
+
+        <!-- 4. Staffing Ratio -->
+        <div class="org-kpi-box kpi-ratio">
+          <div class="kpi-top-row">
+            <span class="kpi-box-label">نسبة التسكين الميداني</span>
+            <div class="kpi-box-icon icon-pie"><i class="fa-solid fa-chart-pie"></i></div>
+          </div>
+          <div class="kpi-box-number" id="kpiRatioText" style="color:var(--virtus-accent, #E06B43);">25%</div>
+          <div class="kpi-progress-bar-bg">
+            <div class="kpi-progress-bar-fill" id="kpiRatioFill" style="width: 25%;"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="org-chart">
-      <!-- Level 1: CEO -->
-      <div class="org-level level-1">
-        <div class="org-node ceo">
-          <div class="node-avatar">علاء</div>
-          <div class="node-info">
-            <div class="node-name">علاء السيد</div>
-            <div class="node-title">الرئيس التنفيذي وقائد الجودة (CEO)</div>
-          </div>
-        </div>
+    <!-- ═══════════════════════════════════════════════════════════════
+         INTERACTIVE FILTER PILLS & LIVE SEARCH
+         ═══════════════════════════════════════════════════════════════ -->
+    <div class="org-filter-bar">
+      <div class="filter-pills-group" id="orgFilterPills">
+        <button class="filter-pill-btn active" data-filter="all" onclick="applyOrgFilter('all')">
+          <span>الكل</span>
+          <span class="pill-counter" id="pillCountAll">24</span>
+        </button>
+        <button class="filter-pill-btn" data-filter="occupied" onclick="applyOrgFilter('occupied')">
+          <span>المشغولة حالياً</span>
+          <span class="pill-counter" id="pillCountOccupied">6</span>
+        </button>
+        <button class="filter-pill-btn" data-filter="vacant" onclick="applyOrgFilter('vacant')">
+          <span>الشواغر المستهدفة</span>
+          <span class="pill-counter" id="pillCountVacant">18</span>
+        </button>
+        <button class="filter-pill-btn" data-filter="exec" onclick="applyOrgFilter('exec')">
+          <span>الإدارة العليا والقيادة</span>
+          <span class="pill-counter">4</span>
+        </button>
+        <button class="filter-pill-btn" data-filter="bar" onclick="applyOrgFilter('bar')">
+          <span>المقهى والبار</span>
+          <span class="pill-counter">4</span>
+        </button>
+        <button class="filter-pill-btn" data-filter="ops" onclick="applyOrgFilter('ops')">
+          <span>الأقسام التشغيلية والمستقبلية</span>
+          <span class="pill-counter">16</span>
+        </button>
       </div>
 
-      <!-- Level 2: C-Suite Leadership -->
-      <div class="org-level level-2">
-        <div class="org-node coo">
-          <div class="node-avatar">عبدالله</div>
-          <div class="node-info">
-            <div class="node-name">عبدالله</div>
-            <div class="node-title">مدير العمليات (COO)</div>
-          </div>
-        </div>
-
-        <div class="org-node cfo">
-          <div class="node-avatar">أنس</div>
-          <div class="node-info">
-            <div class="node-name">أنس</div>
-            <div class="node-title">المدير المالي والإداري (CFO)</div>
-          </div>
-        </div>
-
-        <div class="org-node cmo">
-          <div class="node-avatar">جود</div>
-          <div class="node-info">
-            <div class="node-name">جود / جون</div>
-            <div class="node-title">مدير التسويق والعلامة (CMO)</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Level 3: Bar Team & Key Roles -->
-      <div class="org-level level-3">
-        <div class="org-node barista">
-          <div class="node-avatar">عارف</div>
-          <div class="node-info">
-            <div class="node-name">عارف</div>
-            <div class="node-title">باريستا (وردية صباحية)</div>
-          </div>
-        </div>
-
-        <div class="org-node barista">
-          <div class="node-avatar">علم</div>
-          <div class="node-info">
-            <div class="node-name">علم</div>
-            <div class="node-title">باريستا (وردية مسائية)</div>
-          </div>
-        </div>
-
-        <div class="org-node vacant">
-          <div class="node-avatar">?</div>
-          <div class="node-info">
-            <div class="node-name">شاغر</div>
-            <div class="node-title">مدير مبيعات B2B</div>
-          </div>
-          <button class="assign-btn" onclick="quickAssign('b2b-sales-manager')">تعيين سريع</button>
-        </div>
-
-        <div class="org-node vacant">
-          <div class="node-avatar">?</div>
-          <div class="node-info">
-            <div class="node-name">شاغر</div>
-            <div class="node-title">أخصائي التجارة الإلكترونية</div>
-          </div>
-          <button class="assign-btn" onclick="quickAssign('ecommerce-specialist')">تعيين سريع</button>
-        </div>
+      <div class="org-search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="orgSearchInput" placeholder="بحث عن مسمى وظيفي أو موظف أو قسم..." oninput="filterOrgCardsLive()">
       </div>
     </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 1: الإدارة العليا والقيادة الاستراتيجية (المجلس التنفيذي)
+         4 Equal Founding Partners horizontally side-by-side
+         ═══════════════════════════════════════════════════════════════ -->
+    <div class="org-section-container" id="section-exec" data-section-category="exec">
+      <div class="section-headline">
+        <div class="section-headline-title">
+          <i class="fa-solid fa-chess-king" style="color:var(--virtus-accent, #E06B43);"></i>
+          <span>المجلس التنفيذي والإدارة العليا الاستراتيجية (الشركاء المؤسسون)</span>
+        </div>
+        <span class="section-headline-badge">4 شركاء متساوون أفقياً على نفس المستوى القيادي</span>
+      </div>
+
+      <div class="job-cards-grid grid-4-cols">
+        
+        <!-- Partner 1: Alaa Yousef -->
+        <div class="org-job-card is-occupied" data-job-id="exec-alaa" data-category="exec" data-status="occupied">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-crown"></i> قيادة استراتيجية وجودة</span>
+              <span class="status-badge occupied"><span class="pulse-dot"></span> قائم / مشغول</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-partner-1">ع</div>
+              <div class="person-name-title">
+                <h3>علاء يوسف</h3>
+                <div class="job-role-en">Chief Strategic Advisor (CSA) to CEO &amp; Roastmaster</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">
+              مرجع الجودة والاستراتيجية وتصميم بروفايلات حماصة جيسن 15 كجم وضبط المعايير التأسيسية للمحاصيل الفاخرة.
+            </div>
+            <ul class="job-responsibilities-list">
+              <li>تصميم وبرمجة منحنيات التحميص (Roast Profiles) لحماصة جيسن 15 كجم.</li>
+              <li>قيادة جلسات تقييم جودة القهوة المختصة والتذوق الحسي (SCA Cupping).</li>
+              <li>التوجيه الاستراتيجي والرقابة على مصفوفة الحوكمة وضبط هوامش الربحية.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <div class="btn-assigned-done" style="background:rgba(224,107,67,0.1);border-color:rgba(224,107,67,0.3);color:var(--virtus-accent,#E06B43);">
+              <span><i class="fa-solid fa-shield-halved"></i> شريك مؤسس معتمد</span>
+              <span style="font-size:0.72rem;color:var(--virtus-gold,#DFA15A);">100% حضور</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Partner 2: Joud Al-Qasir -->
+        <div class="org-job-card is-occupied" data-job-id="exec-joud" data-category="exec" data-status="occupied">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-bullhorn"></i> قيادة تنفيذية وتسويق</span>
+              <span class="status-badge occupied"><span class="pulse-dot"></span> قائم / مشغول</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-partner-2">ج</div>
+              <div class="person-name-title">
+                <h3>جود القصير</h3>
+                <div class="job-role-en">Chief Executive Officer &amp; Chief Marketing Officer (CEO &amp; CMO)</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">
+              القيادة العامة وإدارة القنوات الرقمية ومبيعات الرف والمتجر وتوسيع قاعدة عملاء التجزئة والجملة.
+            </div>
+            <ul class="job-responsibilities-list">
+              <li>إدارة العمل المؤسسي الشامل وتنسيق الخطط التطويرية بين الشركاء.</li>
+              <li>إدارة الحملات التسويقية الرقمية، قنوات التواصل الاجتماعي، والهوية البصرية.</li>
+              <li>تنشيط مبيعات الرف بالفرع والمتجر الإلكتروني وشراكات الضيافة.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <div class="btn-assigned-done" style="background:rgba(37,99,235,0.1);border-color:rgba(37,99,235,0.3);color:#60A5FA;">
+              <span><i class="fa-solid fa-shield-halved"></i> شريك مؤسس معتمد</span>
+              <span style="font-size:0.72rem;color:var(--virtus-gold,#DFA15A);">100% حضور</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Partner 3: Abdullah Al-Qasir -->
+        <div class="org-job-card is-occupied" data-job-id="exec-abdullah" data-category="exec" data-status="occupied">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-gears"></i> عمليات وسلاسل إمداد</span>
+              <span class="status-badge occupied"><span class="pulse-dot"></span> قائم / مشغول</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-partner-3">عب</div>
+              <div class="person-name-title">
+                <h3>عبد الله القصير</h3>
+                <div class="job-role-en">Chief Operating Officer (COO)</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">
+              مدير العمليات والتشغيل الميداني وسلاسل الإمداد والتنسيق الدائم بين حركة البار وخط إنتاج المحمصة.
+            </div>
+            <ul class="job-responsibilities-list">
+              <li>الإشراف اليومي الميداني على انضباط ورديات البار ونظافة المعرض والمعدات.</li>
+              <li>إدارة سلاسل الإمداد والمخزون الحرج (Min/Max Par Levels) ومكافحة الهدر.</li>
+              <li>التنسيق اللوجستي بين إنتاج حماصة جيسن 15 كجم واحتياجات الفرع.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <div class="btn-assigned-done" style="background:rgba(5,150,105,0.1);border-color:rgba(5,150,105,0.3);color:#34D399;">
+              <span><i class="fa-solid fa-shield-halved"></i> شريك مؤسس معتمد</span>
+              <span style="font-size:0.72rem;color:var(--virtus-gold,#DFA15A);">100% حضور</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Partner 4: Anas Al-Safadi -->
+        <div class="org-job-card is-occupied" data-job-id="exec-anas" data-category="exec" data-status="occupied">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-chart-pie"></i> إدارة مالية ومراقبة</span>
+              <span class="status-badge occupied"><span class="pulse-dot"></span> قائم / مشغول</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-partner-4">أ</div>
+              <div class="person-name-title">
+                <h3>أنس الصفدي</h3>
+                <div class="job-role-en">Chief Financial Officer (CFO)</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">
+              المدير المالي والإداري والحسابات ومراقبة التدفق النقدي ومتابعة نقطة التعادل والامتثال النظامي.
+            </div>
+            <ul class="job-responsibilities-list">
+              <li>مراقبة السيولة النقدية اليومية وتحديث نموذج نقطة التعادل (Break-even).</li>
+              <li>إدارة سجلات المحاسبة، مسيرات الرواتب، والامتثال لمتطلبات الفوترة ZATCA.</li>
+              <li>جدولة التزامات الموردين والمصاريف التشغيلية الثابتة والمتغيرة.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <div class="btn-assigned-done" style="background:rgba(124,58,237,0.1);border-color:rgba(124,58,237,0.3);color:#A78BFA;">
+              <span><i class="fa-solid fa-shield-halved"></i> شريك مؤسس معتمد</span>
+              <span style="font-size:0.72rem;color:var(--virtus-gold,#DFA15A);">100% حضور</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 2: قسم المقهى والبار التشغيلي (العمليات الميدانية)
+         4 Positions: 2 Occupied (Aref, Elem) + 2 Vacant (Cashier, Backup Barista)
+         ═══════════════════════════════════════════════════════════════ -->
+    <div class="org-section-container" id="section-bar" data-section-category="bar">
+      <div class="section-headline">
+        <div class="section-headline-title">
+          <i class="fa-solid fa-mug-saucer" style="color:var(--virtus-accent, #E06B43);"></i>
+          <span>قسم المقهى والبار التشغيلي (العمليات الميدانية بالفرع)</span>
+        </div>
+        <span class="section-headline-badge">4 وظائف: 2 قائمون بالعمل + 2 شواغر مستهدفة</span>
+      </div>
+
+      <div class="job-cards-grid grid-4-cols">
+
+        <!-- Barista Morning: Aref -->
+        <div class="org-job-card is-occupied" data-job-id="bar-aref" data-category="bar" data-status="occupied">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-sun"></i> وردية صباحية (07:00 ص - 03:00 م)</span>
+              <span class="status-badge occupied"><span class="pulse-dot"></span> قائم / مشغول</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-bar-aref">عا</div>
+              <div class="person-name-title">
+                <h3>عارف</h3>
+                <div class="job-role-en">باريستا معتمد - الوردية الصباحية</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">
+              المسؤول عن افتتاح البار الصباحي، معايرة مطاحن الإسبريسو والفلتر، واستقبال ضيوف الصباح بلباقة.
+            </div>
+            <ul class="job-responsibilities-list">
+              <li>معايرة استخلاص الإسبريسو والـ V60 مع بداية كل صباح وضبط الجرامات والوقت.</li>
+              <li>تحضير مشروبات الحليب المتبخرة والمشروبات الباردة حسب معايير RoR.</li>
+              <li>تنفيذ مهام البار بدقة وانضباط تام دون أي مهام إشرافية أو تحميص.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <div class="btn-assigned-done">
+              <span><i class="fa-solid fa-check"></i> مباشر للعمل</span>
+              <span style="font-size:0.75rem;color:var(--virtus-text-muted);">عقد سارٍ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Barista Evening: Elem -->
+        <div class="org-job-card is-occupied" data-job-id="bar-elem" data-category="bar" data-status="occupied">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-moon"></i> وردية مسائية (03:00 م - 11:00 م)</span>
+              <span class="status-badge occupied"><span class="pulse-dot"></span> قائم / مشغول</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-bar-elem">عل</div>
+              <div class="person-name-title">
+                <h3>علم</h3>
+                <div class="job-role-en">باريستا معتمد - الوردية المسائية</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">
+              إدارة أوقات الذروة المسائية، تحضير المشروبات الساخنة والباردة بسرعة فائقة، وإقفال البار اليومي.
+            </div>
+            <ul class="job-responsibilities-list">
+              <li>إدارة ضغط الطلبات المسائي وتحضير طلبات الكولد برو والمشروبات الخاصة.</li>
+              <li>ترشيح أصناف الحلى ومبيعات البن المنزلي لرفع متوسط الفاتورة اليومية.</li>
+              <li>إقفال المحطة وتنظيف وتعقيم المكائن والمطاحن وفق معايير HACCP.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <div class="btn-assigned-done">
+              <span><i class="fa-solid fa-check"></i> مباشر للعمل</span>
+              <span style="font-size:0.75rem;color:var(--virtus-text-muted);">عقد سارٍ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vacancy: Cashier & Customer Experience -->
+        <div class="org-job-card is-vacant" id="vac-card-bar-cashier" data-job-id="bar-cashier" data-category="bar" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-cash-register"></i> خدمة عملاء ومبيعات</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-user-plus"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">شاغر: كاشير وممثل خدمة عملاء</h3>
+                <div class="job-role-en">Cashier &amp; Guest Experience Specialist</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">
+              استقبال الضيوف وإدارة نقاط البيع POS وتطبيق أساليب البيع الإضافي (Upselling) لتنشيط مبيعات الحلى.
+            </div>
+            <ul class="job-responsibilities-list">
+              <li>استقبال طلبات العملاء بلباقة ومعالجة الدفع السريع (مدى / Apple Pay).</li>
+              <li>تطبيق بروتوكول اقتراح أصناف الحلى والبن المنزلي مع كل طلب قهوة.</li>
+              <li>مساعدة الباريستا في تنظيم الطوابير وتسليم المشروبات في أوقات الذروة.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('bar-cashier', 'كاشير وممثل خدمة عملاء')">
+              <i class="fa-solid fa-user-plus"></i>
+              <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Vacancy: Backup Barista -->
+        <div class="org-job-card is-vacant" id="vac-card-bar-backup" data-job-id="bar-backup" data-category="bar" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-hand-holding-hand"></i> إسناد وتشغيل</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-user-plus"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">شاغر: باريستا إضافي / دعم تشغيلي</h3>
+                <div class="job-role-en">Support &amp; Relief Shift Barista</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">
+              تغطية أيام الإجازات الأسبوعية لعارف وعلم ومساندة ساعات الذروة في عطلات نهاية الأسبوع والمواسم.
+            </div>
+            <ul class="job-responsibilities-list">
+              <li>تغطية ورديات الإجازة الأسبوعية وتأمين استمرار عمل البار 7 أيام دون انقطاع.</li>
+              <li>المساندة في تجهيز المشروبات الباردة والتحضير المسبق (Prep Sheet).</li>
+              <li>تطبيق معايرة استخلاص RoR بدقة ومطابقة جودة الأكواب.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('bar-backup', 'باريستا إضافي / دعم تشغيلي')">
+              <i class="fa-solid fa-user-plus"></i>
+              <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 3: الأقسام والشواغر التشغيلية والتوسعية (16 شاغراً)
+         16 Dashed Cards with Department Badges & Quick Assign Buttons
+         ═══════════════════════════════════════════════════════════════ -->
+    <div class="org-section-container" id="section-ops" data-section-category="ops">
+      <div class="section-headline">
+        <div class="section-headline-title">
+          <i class="fa-solid fa-building-flag" style="color:var(--virtus-accent, #E06B43);"></i>
+          <span>الأقسام والشواغر التشغيلية والتوسعية المستهدفة (16 فرصة شاغرة)</span>
+        </div>
+        <span class="section-headline-badge">بطاقات شاغرة جاهزة للتسكين الفوري والربط مع الميزانية</span>
+      </div>
+
+      <div class="job-cards-grid grid-4-cols">
+
+        <!-- 1. Roastery: Lead Roaster -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-roaster" data-job-id="ops-roaster" data-category="ops" data-dept="roastery" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-fire-burner"></i> قسم المحمصة والإنتاج</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-fire"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">حمّاص إنتاج متفرغ (Giesen 15kg)</h3>
+                <div class="job-role-en">Production Roastmaster</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">تشغيل حماصة جيسن 15 كجم، تنفيذ بروفايلات التحميص اليومية، وإدارة دفعات الإنتاج.</div>
+            <ul class="job-responsibilities-list">
+              <li>تنفيذ جدول التحميص لدفعات المقهى وطلبيات مبيعات الجملة B2B.</li>
+              <li>مراقبة ثبات منحنيات الحرارة ومعامل RoR ومعدل الفقد (Weight Loss).</li>
+              <li>صيانة حوض التبريد وجامع القشور وتوثيق بيانات كل دفعة بسجل الإنتاج.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-roaster', 'حمّاص إنتاج متفرغ (Giesen 15kg)')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Roastery: Assistant Roaster -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-asst-roaster" data-job-id="ops-asst-roaster" data-category="ops" data-dept="roastery" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-fire-burner"></i> قسم المحمصة والإنتاج</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-boxes-stacked"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">مساعد حمّاص ومناول بن</h3>
+                <div class="job-role-en">Assistant Roaster &amp; Handler</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">وزن أكياس البن الأخضر، تلقيم الحماصة، وتفريغ صواني التبريد وترتيب صوامع التخزين.</div>
+            <ul class="job-responsibilities-list">
+              <li>تجهيز أوزان الدفعات الخضراء وتنقية الشوائب قبل التحميل.</li>
+              <li>متابعة تبريد الحبوب المحمصة ونقلها لحاويات إزالة الغازات (Degassing).</li>
+              <li>تنظيف مسارات الهواء ونظام الشفط بنهاية يوم العمل.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-asst-roaster', 'مساعد حمّاص ومناول بن')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. Roastery: Packaging Specialist -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-packaging" data-job-id="ops-packaging" data-category="ops" data-dept="roastery" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-fire-burner"></i> قسم المحمصة والإنتاج</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-box-open"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">مسؤول تعبئة وتغليف</h3>
+                <div class="job-role-en">Packaging &amp; Labeling Specialist</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">تعبئة أكياس الـ 250 جم و 1 كجم، لحام صمام الحفظ الحراري، وتجهيز شحنات الجملة.</div>
+            <ul class="job-responsibilities-list">
+              <li>وزن وتعبئة المحاصيل بدقة ±1 جم وضبط اللحام الحراري للأكياس.</li>
+              <li>طباعة وتثبيت ملصقات تفاصيل المحصول والإيحاءات وتاريخ التحميص.</li>
+              <li>تجهيز كراتين الجملة والطلبيات المخصصة لمنافذ التوزيع والشحن.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-packaging', 'مسؤول تعبئة وتغليف')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. Quality: Licensed Q-Grader -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-qgrader" data-job-id="ops-qgrader" data-category="ops" data-dept="quality" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-award"></i> ضبط الجودة والبحث (PLM)</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-certificate"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">أخصائي تقييم جودة (Licensed Q-Grader)</h3>
+                <div class="job-role-en">Certified Q-Grader &amp; Quality Lead</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">إدارة جلسات التذوق الدوري لعينات الإنتاج واعتماد درجات التقييم للمحاصيل الخضراء.</div>
+            <ul class="job-responsibilities-list">
+              <li>جلسات تذوق أسبوعية معتمدة وفق بروتوكول SCA لتقييم الحبوب المحمصة.</li>
+              <li>كشف العيوب النكهية، حموضة القهوة، ومطابقة المواصفات مع الموردين.</li>
+              <li>قياس رطوبة وكثافة أكياس البن الأخضر الوارد للمستودع.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-qgrader', 'أخصائي تقييم جودة القهوة (Licensed Q-Grader)')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 5. Quality: R&D Beverage Developer -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-rd-developer" data-job-id="ops-rd-developer" data-category="ops" data-dept="quality" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-flask-vial"></i> ضبط الجودة والبحث (PLM)</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-flask"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">مطور منتجات ووصفات (R&amp;D)</h3>
+                <div class="job-role-en">Beverage &amp; Product Developer</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">ابتكار خلطات الإسبريسو الحصرية ومشروبات المواسم وتطوير خلطات الكولد برو.</div>
+            <ul class="job-responsibilities-list">
+              <li>تطوير وصفات المشروبات المبتكرة الموسمية وحساب تكلفتها المعيارية.</li>
+              <li>اختبار استخلاص القهوة المقطرة بنسب TDS مختلفة وضبط كفاءة الاستخلاص.</li>
+              <li>تدريب الكادر على بطاقات الوصفات القياسية (Standard Recipe Cards).</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-rd-developer', 'مطور منتجات ووصفات')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 6. Marketing: Content Creator -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-content-creator" data-job-id="ops-content-creator" data-category="ops" data-dept="marketing" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-camera"></i> التسويق والعلامة التجارية</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-video"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">صانع محتوى ومدير تواصل</h3>
+                <div class="job-role-en">Social Content Creator &amp; Specialist</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">تصوير يوميات تحميص جيسن 15 كجم وحركة البار وإدارة منصات TikTok و Instagram.</div>
+            <ul class="job-responsibilities-list">
+              <li>إنتاج فيديوهات ريلز وتيك توك جذابة تسلط الضوء على شغف الجودة بـ RoR.</li>
+              <li>التفاعل السريع والمهني مع استفسارات العملاء على الرسائل والتعليقات.</li>
+              <li>متابعة تقييمات Google Maps وتحفيز العملاء على ترك تعليقات إيجابية.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-content-creator', 'صانع محتوى ومدير تواصل')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 7. Marketing: Graphic Designer -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-designer" data-job-id="ops-designer" data-category="ops" data-dept="marketing" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-palette"></i> التسويق والعلامة التجارية</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-bezier-curve"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">مصمم جرافيك وهوية بصرية</h3>
+                <div class="job-role-en">Graphic &amp; Brand Identity Designer</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">تصميم ملصقات أكياس المحاصيل وبوسترات القوائم المطبوعة والحملات الترويجية.</div>
+            <ul class="job-responsibilities-list">
+              <li>تصميم بطاقات تعريف المحاصيل المطبوعة والمرفقة مع أرباع البن.</li>
+              <li>تحديث تصاميم شاشات العرض الرقمية للمنيو داخل الفرع.</li>
+              <li>توحيد الهوية البصرية عبر جميع نقاط التماس والتغليف.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-designer', 'مصمم جرافيك وهوية بصرية')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 8. Sales: B2B Wholesale Rep -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-b2b-rep" data-job-id="ops-b2b-rep" data-category="ops" data-dept="sales" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-handshake"></i> المبيعات وتطوير الأعمال</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-briefcase"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">ممثل مبيعات جملة (B2B Rep)</h3>
+                <div class="job-role-en">B2B Wholesale Sales Executive</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">استهداف 10 مقاهٍ محلية لتوريد محاصيل جيسن 15 كجم بعقود توريد شهرية منتظمة.</div>
+            <ul class="job-responsibilities-list">
+              <li>تنفيذ زيارات ميدانية لأصحاب المقاهي والمطاعم وتقديم عينات التذوق.</li>
+              <li>إتمام صفقات التوريد الشهرية بمتوسط 50-100 كجم شهرياً لكل عميل.</li>
+              <li>متابعة تصريف طاقة المحمصة وتحقيق مستهدفات الإيراد بالجملة.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-b2b-rep', 'ممثل مبيعات جملة')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 9. Sales: Key Account Manager -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-kam" data-job-id="ops-kam" data-category="ops" data-dept="sales" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-handshake"></i> المبيعات وتطوير الأعمال</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-building-user"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">مسؤول حسابات كبار العملاء</h3>
+                <div class="job-role-en">Key Account Manager (KAM)</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">إدارة علاقات الفنادق والشركات الكبرى وعقود التوريد المستمرة ومتابعة التحصيل.</div>
+            <ul class="job-responsibilities-list">
+              <li>إدارة وتجديد عقود الضيافة للجهات الحكومية والشركات الخاصة.</li>
+              <li>متابعة جداول تسليم البن الدورية وضمان رضا العملاء التام.</li>
+              <li>التنسيق مع الإدارة المالية لمتابعة الذمم المدينة وتحصيل المستحقات.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-kam', 'مسؤول حسابات كبار العملاء')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 10. E-Commerce: Store Manager -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-ecom-manager" data-job-id="ops-ecom-manager" data-category="ops" data-dept="ecommerce" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-globe"></i> التجارة الإلكترونية وسلاسل الإمداد</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-cart-shopping"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">مدير المتجر الإلكتروني</h3>
+                <div class="job-role-en">E-Commerce Platform Manager</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">إدارة منصة المتجر الرقمية، تجربة التسوق، ومزامنة توفر المحاصيل مع المحمصة.</div>
+            <ul class="job-responsibilities-list">
+              <li>متابعة حركة الطلبات اليومية الرقمية ورفع معدل التحويل (Conversion Rate).</li>
+              <li>إطلاق أكواد الخصم الترويجية وحزم القهوة المنزلية المميزة.</li>
+              <li>تكامل بوابات الدفع الإلكتروني (مدى، تابي، تمارا، Apple Pay).</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-ecom-manager', 'مدير المتجر الإلكتروني')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 11. Logistics: Shipping & Inventory Specialist -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-shipping" data-job-id="ops-shipping" data-category="ops" data-dept="ecommerce" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-truck-fast"></i> التجارة الإلكترونية وسلاسل الإمداد</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-truck-ramp-box"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">أخصائي شحن ومخزون</h3>
+                <div class="job-role-en">Fulfillment &amp; Inventory Specialist</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">تجهيز بوالص الشحن السريع وتسليم الطرود لشركات النقل ومتابعة وصولها للعملاء.</div>
+            <ul class="job-responsibilities-list">
+              <li>طباعة بوالص الشحن وتغليف الطلبيات في كراتين الشحن المعتمدة.</li>
+              <li>تنسيق مواعيد استلام مندوبي الشحن وحل أي تأخيرات لوجستية.</li>
+              <li>إجراء الجرد الأسبوعي لمخزون أكياس البن ومواد التغليف.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-shipping', 'أخصائي شحن ومخزون')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 12. Supply Chain: Green Coffee Procurement -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-green-buyer" data-job-id="ops-green-buyer" data-category="ops" data-dept="ecommerce" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-seedling"></i> التجارة الإلكترونية وسلاسل الإمداد</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-wheat-awn"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">مسؤول مشتريات وتوريد بن أخضر</h3>
+                <div class="job-role-en">Green Coffee Procurement Specialist</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">التواصل مع مستوردي ومزارع البن الأخضر ومتابعة عقود التوريد المباشر ومستودع البن.</div>
+            <ul class="job-responsibilities-list">
+              <li>التفاوض على أسعار شحنات البن الأخضر بالجملة وضمان شروط ائتمان ممتازة.</li>
+              <li>تتبع شحنات الموانئ والتخليص الجمركي واشتراطات هيئة الغذاء والدواء.</li>
+              <li>مراقبة درجات حرارة ورطوبة مستودع البن لحماية الجودة من التلف.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-green-buyer', 'مسؤول مشتريات وتوريد بن أخضر')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 13. Maintenance: Espresso & Roaster Tech -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-tech" data-job-id="ops-tech" data-category="ops" data-dept="maint" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-screwdriver-wrench"></i> قسم الصيانة والدعم الفني</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-wrench"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">فني صيانة آلات القهوة والمطاحن</h3>
+                <div class="job-role-en">Coffee Equipment Maintenance Tech</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">الصيانة الوقائية والطارئة لمكائن الإسبريسو ومطاحن ماهلكونيج وحماصة جيسن 15 كجم.</div>
+            <ul class="job-responsibilities-list">
+              <li>فحص دوري لضغط مضخات الإسبريسو ودرجة حرارة الغلايات وفلاتر المياه.</li>
+              <li>تنظيف ومعايرة شفرات طواحين الإسبريسو واستبدال الجوانات التالفة.</li>
+              <li>صيانة شعلات الغاز ومحركات تدوير حماصة جيسن 15 كجم لضمان السلامة.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-tech', 'فني صيانة آلات القهوة والمطاحن')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 14. HR: Human Resources Specialist -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-hr-spec" data-job-id="ops-hr-spec" data-category="ops" data-dept="hr" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-users-gear"></i> قسم الموارد البشرية والتدريب</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-id-card"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">أخصائي موارد بشرية</h3>
+                <div class="job-role-en">HR &amp; Personnel Affairs Specialist</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">إدارة شؤون الموظفين، عقود منصة قوى، التأمينات الاجتماعية، والامتثال لنظام العمل.</div>
+            <ul class="job-responsibilities-list">
+              <li>توثيق عقود العمل عبر منصة قوى وإدارة ملفات الموظفين الرسمية.</li>
+              <li>متابعة الشهادات الصحية البلدية وتجديد إقامات العمالة النظامية.</li>
+              <li>حصر ساعات العمل والإجازات وتجهيز مسير الرواتب المعتمد شهرياً.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-hr-spec', 'أخصائي موارد بشرية')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 15. HR: Internal Barista Trainer -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-barista-trainer" data-job-id="ops-barista-trainer" data-category="ops" data-dept="hr" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-graduation-cap"></i> قسم الموارد البشرية والتدريب</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-chalkboard-user"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">مدرب باريستا داخلي</h3>
+                <div class="job-role-en">Head Barista &amp; Internal Trainer</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">تدريب الباريستا الجدد على معايير استخلاص RoR، سرعة الخدمة، وفن الرسم بالحليب.</div>
+            <ul class="job-responsibilities-list">
+              <li>إقامة ورش تدريبية دورية لعارف وعلم والكوادر المنضمة حديثاً.</li>
+              <li>اختبار سرعة إعداد الأكواب تحت الضغط لتقليل زمن انتظار الزبائن.</li>
+              <li>تدريب الفريق على فنون الضيافة والتعامل مع ملاحظات العملاء بإيجابية.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-barista-trainer', 'مدرب باريستا داخلي')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 16. Finance: General & Cost Accountant -->
+        <div class="org-job-card is-vacant" id="vac-card-ops-cost-accountant" data-job-id="ops-cost-accountant" data-category="ops" data-dept="finance" data-status="vacant">
+          <div>
+            <div class="card-top-meta">
+              <span class="job-dept-tag"><i class="fa-solid fa-calculator"></i> قسم المالية والمحاسبة</span>
+              <span class="status-badge vacant"><i class="fa-regular fa-clock"></i> شاغر للتوظيف</span>
+            </div>
+            <div class="card-person-header">
+              <div class="avatar-square avatar-vacant"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+              <div class="person-name-title">
+                <h3 class="vacancy-holder-name">محاسب عام وتكاليف</h3>
+                <div class="job-role-en">General &amp; Cost Accountant</div>
+              </div>
+            </div>
+            <div class="job-summary-desc">تسجيل القيود اليومية، حساب تكلفة كل كجم محمص وكوب قهوة، ومطابقة ضريبة ZATCA.</div>
+            <ul class="job-responsibilities-list">
+              <li>حساب تكلفة الغذاء الدقيقة (Actual vs Ideal Food Cost) للمشروبات والحلى.</li>
+              <li>تسوية مبيعات البار اليومية ومطابقة إيداعات الشبكة والنقد بالخزينة.</li>
+              <li>إعداد إقرارات ضريبة القيمة المضافة ومطابقة الفواتير مع هيئة الزكاة.</li>
+            </ul>
+          </div>
+          <div class="card-bottom-actions">
+            <button class="btn-assign-action" onclick="triggerPositionAssign('ops-cost-accountant', 'محاسب عام وتكاليف')">
+              <i class="fa-solid fa-user-plus"></i> <span>تسكين مرشح</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </div>
 
-<!-- 2. Team Roles & Responsibilities -->
-<div class="view-section" id="view-team-roles">
-  <div class="content-card">
-    <div class="card-header">
-      <div>
-        <h2>👔 بطاقات مهام ومسؤوليات فريق RoR</h2>
-        <div class="card-subtitle">التوصيف الوظيفي الدقيق والمحدد لكل عضو في الفريق التنفيذي والتشغيلي</div>
-      </div>
-      <span class="badge badge-green">معتمد ورسمي</span>
-    </div>
+<!-- Compatibility Aliases for Legacy Navigation Anchors -->
+<div class="view-section" id="view-team-roles" style="display:none;"></div>
+<div class="view-section" id="view-vacancies" style="display:none;"></div>
+<div class="view-section" id="view-mind-map" style="display:none;"></div>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:1.25rem;">
-      
-      <!-- Alaa -->
-      <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;background:var(--surface-white);">
-        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
-          <div class="user-avatar" style="width:44px;height:44px;">علاء</div>
-          <div>
-            <h3 style="font-size:1rem;font-weight:800;">علاء السيد</h3>
-            <div style="font-size:0.78rem;color:var(--primary-accent);font-weight:700;">الرئيس التنفيذي وقائد الجودة (CEO)</div>
-          </div>
-        </div>
-        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-right:1.2rem;line-height:1.7;">
-          <li>القيادة الاستراتيجية الشاملة والتفاوض على صفقات الجملة الكبرى.</li>
-          <li>مسؤول التحميص وجودة المحاصيل على حماصة جيسن 15 كجم وضبط البروفايلات.</li>
-          <li>جلسات تقييم الجودة SCA Cupping وتطوير وصفات المشروبات الجديدة.</li>
-        </ul>
-      </div>
+<!-- ═══════════════════════════════════════════════════════════════
+     ORGANIZATION VIEW ARCHITECTURAL JAVASCRIPT
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+  // 1. Initial State & Sync with localStorage
+  function getOrgAssignedRoles() {
+    const data = JSON.parse(localStorage.getItem('ror_org_structure') || '{"roles":[]}');
+    return data.roles || [];
+  }
 
-      <!-- Abdullah -->
-      <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;background:var(--surface-white);">
-        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
-          <div class="user-avatar" style="width:44px;height:44px;background:var(--dark-base);">عبدالله</div>
-          <div>
-            <h3 style="font-size:1rem;font-weight:800;">عبدالله</h3>
-            <div style="font-size:0.78rem;color:var(--dark-base);font-weight:700;">مدير العمليات (COO)</div>
-          </div>
-        </div>
-        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-right:1.2rem;line-height:1.7;">
-          <li>الإشراف اليومي على كفاءة البار وانضباط الورديات ونظافة المعرض.</li>
-          <li>إدارة سلاسل الإمداد ومستويات المخزون (Min/Max Par Levels).</li>
-          <li>متابعة الصيانة الوقائية الدورية لمكائن الإسبريسو ومطاحن البار.</li>
-        </ul>
-      </div>
+  function saveOrgAssignedRoles(roles) {
+    localStorage.setItem('ror_org_structure', JSON.stringify({ roles }));
+  }
 
-      <!-- Anas -->
-      <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;background:var(--surface-white);">
-        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
-          <div class="user-avatar" style="width:44px;height:44px;background:#10B981;">أنس</div>
-          <div>
-            <h3 style="font-size:1rem;font-weight:800;">أنس</h3>
-            <div style="font-size:0.78rem;color:#059669;font-weight:700;">المدير المالي والإداري (CFO)</div>
-          </div>
-        </div>
-        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-right:1.2rem;line-height:1.7;">
-          <li>التخطيط المالي، حساب نقطة التعادل، والرقابة على التدفقات النقدية.</li>
-          <li>تسجيل القيود اليومية والامتثال لمتطلبات الفاتورة الإلكترونية ZATCA.</li>
-          <li>إدارة شؤون الموظفين، مسيرات الرواتب، والعقود والتأمينات الاجتماعية.</li>
-        </ul>
-      </div>
+  // 2. Re-calculate Counters and Staffing Ratio Live
+  function recalculateOrgMetrics() {
+    const totalJobs = 24;
+    const baseOccupied = 6; // 4 partners + 2 baristas
+    const assignedRoles = getOrgAssignedRoles();
+    
+    // Count filled vacancies
+    const additionalOccupied = assignedRoles.length;
+    const currentOccupied = Math.min(totalJobs, baseOccupied + additionalOccupied);
+    const currentVacant = Math.max(0, totalJobs - currentOccupied);
+    const ratioPercent = Math.round((currentOccupied / totalJobs) * 100);
 
-      <!-- Joud -->
-      <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;background:var(--surface-white);">
-        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
-          <div class="user-avatar" style="width:44px;height:44px;background:var(--alert-orange);">جود</div>
-          <div>
-            <h3 style="font-size:1rem;font-weight:800;">جود / جون</h3>
-            <div style="font-size:0.78rem;color:var(--alert-orange-dark);font-weight:700;">مدير التسويق وإدارة القنوات (CMO)</div>
-          </div>
-        </div>
-        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-right:1.2rem;line-height:1.7;">
-          <li>تطوير الهوية البصرية وإدارة قنوات التواصل الاجتماعي وإنشاء المحتوى.</li>
-          <li>تحسين ظهور RoR على Google Maps وإدارة برنامج ولاء العملاء.</li>
-          <li>التواصل مع المؤثرين وبناء الشراكات التسويقية غير المدفوعة.</li>
-        </ul>
-      </div>
+    // Update KPI Elements
+    const kpiTotal = document.getElementById('kpiTotalJobs');
+    const kpiOcc = document.getElementById('kpiOccupiedJobs');
+    const kpiVac = document.getElementById('kpiVacantJobs');
+    const kpiRat = document.getElementById('kpiRatioText');
+    const kpiBar = document.getElementById('kpiRatioFill');
 
-      <!-- Aref -->
-      <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;background:var(--surface-white);">
-        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
-          <div class="user-avatar" style="width:44px;height:44px;background:var(--primary-accent);">عارف</div>
-          <div>
-            <h3 style="font-size:1rem;font-weight:800;">عارف</h3>
-            <div style="font-size:0.78rem;color:var(--primary-accent);font-weight:700;">باريستا - الوردية الصباحية (7 ص - 3 م)</div>
-          </div>
-        </div>
-        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-right:1.2rem;line-height:1.7;">
-          <li>معايرة مطاحن الإسبريسو والفلتر الصباحية وضبط الجرامات والوقت.</li>
-          <li>تحضير وتقديم المشروبات بمعايير RoR واستقبال ضيوف الصباح بلباقة.</li>
-          <li>تنفيذ مهام البار بدقة وانضباط تام دون أي مهام إشرافية أو تحميص.</li>
-        </ul>
-      </div>
+    if (kpiTotal) kpiTotal.textContent = totalJobs;
+    if (kpiOcc) kpiOcc.textContent = currentOccupied;
+    if (kpiVac) kpiVac.textContent = currentVacant;
+    if (kpiRat) kpiRat.textContent = `${ratioPercent}%`;
+    if (kpiBar) kpiBar.style.width = `${ratioPercent}%`;
 
-      <!-- Elem -->
-      <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;background:var(--surface-white);">
-        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
-          <div class="user-avatar" style="width:44px;height:44px;background:var(--dark-base);">علم</div>
-          <div>
-            <h3 style="font-size:1rem;font-weight:800;">علم</h3>
-            <div style="font-size:0.78rem;color:var(--dark-base);font-weight:700;">باريستا - الوردية المسائية (3 م - 11 م)</div>
-          </div>
-        </div>
-        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-right:1.2rem;line-height:1.7;">
-          <li>إدارة ذروة الطلبات المسائية وتحضير المشروبات الباردة والساخنة بسرعة.</li>
-          <li>ترشيح أصناف الحلى ومبيعات البن المنزلي لرفع متوسط الفاتورة.</li>
-          <li>إقفال المحطة وتنظيف وتعقيم المكائن والمطاحن نهاية اليوم بدقة.</li>
-        </ul>
-      </div>
+    // Update Filter Pills Counters
+    const pillAll = document.getElementById('pillCountAll');
+    const pillOcc = document.getElementById('pillCountOccupied');
+    const pillVac = document.getElementById('pillCountVacant');
 
-    </div>
-  </div>
-</div>
+    if (pillAll) pillAll.textContent = totalJobs;
+    if (pillOcc) pillOcc.textContent = currentOccupied;
+    if (pillVac) pillVac.textContent = currentVacant;
+  }
 
-<!-- 3. Interactive Mind Map -->
-<div class="view-section" id="view-mind-map">
-  <div class="content-card">
-    <div class="card-header">
-      <div>
-        <h2>🧠 الخريطة الذهنية التفاعلية الشاملة (Mind Map)</h2>
-        <div class="card-subtitle">عرض هرمي شجري تفاعلي قابل للتوسيع والطي لجميع أذرع وأنظمة RoR المؤسسية</div>
-      </div>
-      <a href="/mindmap" target="_blank" class="btn btn-primary" style="font-size:12px;">
-        <span>🗺️</span> فتح في نافذة مستقلة كاملة
-      </a>
-    </div>
+  // 3. Render Card Status from LocalStorage
+  function refreshOrgCardsFromStorage() {
+    const assigned = getOrgAssignedRoles();
+    
+    // Reset all vacancies to vacant first
+    document.querySelectorAll('.org-job-card.is-vacant').forEach(card => {
+      const jobId = card.dataset.jobId;
+      const assignedRole = assigned.find(r => r.id === jobId);
 
-    <div class="mind-map">
-      <div class="mind-map-center">
-        <div class="center-node">
-          RoR Enterprise Suite
-        </div>
-      </div>
+      const statusBadge = card.querySelector('.status-badge');
+      const actionArea = card.querySelector('.card-bottom-actions');
+      const titleEl = card.querySelector('.vacancy-holder-name');
 
-      <div class="mind-map-branches">
-        <!-- Branch 1: Departments -->
-        <div class="branch" data-branch="departments">
-          <div class="branch-node" onclick="toggleBranch('departments')">
-            <span class="icon">🏢</span>
-            <span class="label">الأنظمة التشغيلية (8 أقسام)</span>
-            <span class="expand-icon">▼</span>
-          </div>
-          <div class="sub-branches">
-            <div class="sub-branch" onclick="showView('dept-prod')"><span>1️⃣ المحمصة والإنتاج (MRP)</span><span class="badge badge-oxford">12 مهمة</span></div>
-            <div class="sub-branch" onclick="showView('dept-quality')"><span>2️⃣ ضبط الجودة والبحث (PLM)</span><span class="badge badge-oxford">12 مهمة</span></div>
-            <div class="sub-branch" onclick="showView('dept-marketing')"><span>3️⃣ التسويق والعلامة (Social)</span><span class="badge badge-oxford">12 مهمة</span></div>
-            <div class="sub-branch" onclick="showView('dept-sales')"><span>4️⃣ المبيعات وتطوير الأعمال (B2B)</span><span class="badge badge-oxford">12 مهمة</span></div>
-            <div class="sub-branch" onclick="showView('dept-ecommerce')"><span>5️⃣ التجارة واللوجستيات (eCom)</span><span class="badge badge-oxford">12 مهمة</span></div>
-            <div class="sub-branch" onclick="showView('dept-maint')"><span>6️⃣ الصيانة والدعم الفني (Field Service)</span><span class="badge badge-oxford">12 مهمة</span></div>
-            <div class="sub-branch" onclick="showView('dept-hr')"><span>7️⃣ الموارد البشرية والورديات (HR)</span><span class="badge badge-oxford">12 مهمة</span></div>
-            <div class="sub-branch" onclick="showView('dept-finance')"><span>8️⃣ الإدارة المالية والضريبية (Finance)</span><span class="badge badge-oxford">12 مهمة</span></div>
-          </div>
-        </div>
+      if (assignedRole) {
+        // Mark as Filled / Occupied
+        card.dataset.status = 'occupied';
+        card.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+        card.style.background = 'rgba(29, 31, 36, 0.95)';
 
-        <!-- Branch 2: Operations -->
-        <div class="branch" data-branch="operations">
-          <div class="branch-node" onclick="toggleBranch('operations')">
-            <span class="icon">📋</span>
-            <span class="label">الخطة التشغيلية والمالية</span>
-            <span class="expand-icon">▼</span>
-          </div>
-          <div class="sub-branches">
-            <div class="sub-branch" onclick="showView('40-tasks')"><span>خطة الـ 40 مهمة المعتمدة</span></div>
-            <div class="sub-branch" onclick="showView('menu-engineering')"><span>مصفوفة هندسة المنيو 2D</span></div>
-            <div class="sub-branch" onclick="showView('breakeven')"><span>حاسبة نقطة التعادل الشهرية</span></div>
-            <div class="sub-branch" onclick="showView('raci-matrix')"><span>مصفوفة المسؤوليات RACI</span></div>
-            <div class="sub-branch" onclick="showView('waste-cashflow')"><span>سجل الهدر والسيولة النقدية</span></div>
-          </div>
-        </div>
+        if (statusBadge) {
+          statusBadge.className = 'status-badge occupied';
+          statusBadge.innerHTML = `<span class="pulse-dot"></span> مشغول: ${assignedRole.holder}`;
+        }
 
-        <!-- Branch 3: Development -->
-        <div class="branch" data-branch="development">
-          <div class="branch-node" onclick="toggleBranch('development')">
-            <span class="icon">🚀</span>
-            <span class="label">مسارات التطوير والتوسع</span>
-            <span class="expand-icon">▼</span>
-          </div>
-          <div class="sub-branches">
-            <div class="sub-branch" onclick="showView('training')"><span>برامج التدريب والتطوير</span></div>
-            <div class="sub-branch" onclick="showView('process-improvement')"><span>أدلة التشغيل القياسية SOPs</span></div>
-            <div class="sub-branch" onclick="showView('tech-roadmap')"><span>خارطة التقنية والأتمتة</span></div>
-            <div class="sub-branch" onclick="showView('expansion')"><span>خطة التوسع الإقليمي والفروع</span></div>
-            <div class="sub-branch" onclick="showView('innovation')"><span>خط الابتكار والمنتجات الجديدة</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+        if (actionArea) {
+          actionArea.innerHTML = `
+            <div class="btn-assigned-done">
+              <span><i class="fa-solid fa-user-check"></i> ${assignedRole.holder} (${assignedRole.salary || 5000} ر.س)</span>
+              <span class="unassign-icon" title="إلغاء التسكين" onclick="unassignOrgPosition('${jobId}', '${assignedRole.holder}')">
+                <i class="fa-solid fa-trash-can"></i>
+              </span>
+            </div>
+          `;
+        }
+      } else {
+        // Reset to Vacant
+        card.dataset.status = 'vacant';
+        card.style.borderColor = '';
+        card.style.background = '';
 
-<!-- 4. Positions & Vacancies Grid -->
-<div class="view-section" id="view-vacancies">
-  <div class="content-card">
-    <div class="card-header">
-      <div>
-        <h2>💼 الوظائف والشواغر والتسكين المستقبلي</h2>
-        <div class="card-subtitle">المناصب المخططة لدعم التوسع مع إمكانية التسكين السريع وحفظ البيانات في النظام</div>
-      </div>
-      <span class="badge badge-orange">تخطيط القوى العاملة</span>
-    </div>
+        if (statusBadge) {
+          statusBadge.className = 'status-badge vacant';
+          statusBadge.innerHTML = '<i class="fa-regular fa-clock"></i> شاغر للتوظيف';
+        }
 
-    <div class="vacancies-grid">
-      
-      <!-- B2B Sales Manager -->
-      <div class="vacancy-card priority-high" id="vac-card-b2b-sales-manager">
-        <span class="status-badge vacant">شاغر للتوظيف</span>
-        <div class="vacancy-icon">💼</div>
-        <h3>مدير مبيعات B2B</h3>
-        <p class="vacancy-dept">قسم المبيعات وتطوير الأعمال</p>
-        <ul class="vacancy-responsibilities">
-          <li>إدارة علاقات عملاء الجملة وتصريف طاقة حماصة جيسن.</li>
-          <li>تطوير خط أنابيب المقاهي الشريكة وإتمام العقود.</li>
-          <li>تحقيق مستهدف 10 مقاهٍ شهرية منتظمة.</li>
-        </ul>
-        <div class="vacancy-meta">
-          <span>الأولوية: <strong>عالية جداً</strong></span>
-          <span>المستهدف: <strong>الربع 2</strong></span>
-        </div>
-        <button class="btn-primary btn" onclick="quickAssign('b2b-sales-manager')">تعيين وتسكين سريع</button>
-      </div>
+        const originalTitle = card.dataset.originalTitle || (titleEl ? titleEl.textContent : 'وظيفة شاغرة');
+        if (!card.dataset.originalTitle && titleEl) {
+          card.dataset.originalTitle = titleEl.textContent;
+        }
 
-      <!-- E-commerce Specialist -->
-      <div class="vacancy-card priority-medium" id="vac-card-ecommerce-specialist">
-        <span class="status-badge vacant">شاغر للتوظيف</span>
-        <div class="vacancy-icon">💻</div>
-        <h3>أخصائي التجارة الإلكترونية</h3>
-        <p class="vacancy-dept">قسم التجارة واللوجستيات</p>
-        <ul class="vacancy-responsibilities">
-          <li>إدارة منصة المتجر الإلكتروني ومخزون المحاصيل.</li>
-          <li>متابعة بوالص الشحن السريع ورضا العملاء.</li>
-          <li>تحسين معدل التحويل والحملات الرقمية.</li>
-        </ul>
-        <div class="vacancy-meta">
-          <span>الأولوية: <strong>متوسطة</strong></span>
-          <span>المستهدف: <strong>الربع 3</strong></span>
-        </div>
-        <button class="btn-primary btn" onclick="quickAssign('ecommerce-specialist')">تعيين وتسكين سريع</button>
-      </div>
+        if (actionArea) {
+          actionArea.innerHTML = `
+            <button class="btn-assign-action" onclick="triggerPositionAssign('${jobId}', '${card.dataset.originalTitle || 'وظيفة شاغرة'}')">
+              <i class="fa-solid fa-user-plus"></i>
+              <span>تسكين مرشح</span>
+            </button>
+          `;
+        }
+      }
+    });
 
-      <!-- Backup Barista -->
-      <div class="vacancy-card priority-low" id="vac-card-barista-backup">
-        <span class="status-badge planned">مخطط للتغطية</span>
-        <div class="vacancy-icon">☕</div>
-        <h3>باريستا إضافي / تغطية</h3>
-        <p class="vacancy-dept">قسم العمليات - البار</p>
-        <ul class="vacancy-responsibilities">
-          <li>تغطية أيام إجازات عارف وعلم الأسبوعية.</li>
-          <li>مساندة البار في ساعات الذروة والمواسم.</li>
-          <li>تطبيق معايير استخلاص RoR المعتمدة.</li>
-        </ul>
-        <div class="vacancy-meta">
-          <span>الأولوية: <strong>عند الحاجة</strong></span>
-          <span>المستهدف: <strong>موسمي</strong></span>
-        </div>
-        <button class="btn-secondary btn" onclick="quickAssign('barista-backup')">تعيين وتسكين سريع</button>
-      </div>
+    recalculateOrgMetrics();
+  }
 
-    </div>
-  </div>
-</div>
+  // 4. Quick Assign Action Trigger
+  window.triggerPositionAssign = function(positionId, positionTitle) {
+    const titleEl = document.getElementById('positionTitle');
+    if (titleEl) titleEl.textContent = positionTitle;
+
+    const modal = document.getElementById('assignModal');
+    const form = document.getElementById('assignForm');
+    if (modal && form) {
+      form.dataset.positionId = positionId;
+      modal.classList.add('active');
+    }
+  };
+
+  // 5. Unassign Action
+  window.unassignOrgPosition = function(positionId, employeeName) {
+    if (!confirm(`هل أنت متأكد من إلغاء تسكين الموظف (${employeeName}) وإعادة الوظيفة لقائمة الشواغر؟`)) {
+      return;
+    }
+
+    let roles = getOrgAssignedRoles();
+    roles = roles.filter(r => r.id !== positionId);
+    saveOrgAssignedRoles(roles);
+
+    refreshOrgCardsFromStorage();
+    if (typeof showNotification === 'function') {
+      showNotification(`تمت إعادة الوظيفة إلى قائمة الشواغر المستهدفة`, 'info');
+    }
+  };
+
+  // Override / Harmonize saveAssignment in app.js
+  const originalSaveAssignment = window.saveAssignment;
+  window.saveAssignment = function(event) {
+    event.preventDefault();
+    const form = event.target;
+    const positionId = form.dataset.positionId;
+    const employeeName = form.employeeName.value.trim();
+    const startDate = form.startDate.value;
+    const salary = parseFloat(form.salary.value) || 5000;
+
+    let roles = getOrgAssignedRoles();
+    // remove existing if any
+    roles = roles.filter(r => r.id !== positionId);
+    roles.push({
+      id: positionId,
+      holder: employeeName,
+      startDate,
+      salary,
+      vacant: false,
+      assignedAt: new Date().toISOString()
+    });
+
+    saveOrgAssignedRoles(roles);
+
+    // Close modal & reset form
+    const modal = document.getElementById('assignModal');
+    if (modal) modal.classList.remove('active');
+    form.reset();
+
+    // Re-render
+    refreshOrgCardsFromStorage();
+
+    if (typeof showNotification === 'function') {
+      showNotification(`تم تسكين الموظف (${employeeName}) بنجاح وتحديث نسبة التسكين!`, 'success');
+    }
+  };
+
+  // 6. Interactive Filter Pills
+  window.applyOrgFilter = function(filter) {
+    // Update active pill button
+    document.querySelectorAll('.filter-pill-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === filter);
+    });
+
+    filterOrgCardsLive();
+  };
+
+  // 7. Live Real-Time Search & Multi-Criteria Filter
+  window.filterOrgCardsLive = function() {
+    const activePill = document.querySelector('.filter-pill-btn.active');
+    const filter = activePill ? activePill.dataset.filter : 'all';
+    const searchQuery = (document.getElementById('orgSearchInput')?.value || '').trim().toLowerCase();
+
+    const allCards = document.querySelectorAll('.org-job-card');
+    
+    allCards.forEach(card => {
+      const category = card.dataset.category || '';
+      const status = card.dataset.status || '';
+      const textContent = card.textContent.toLowerCase();
+
+      // Check Category / Status Filter
+      let matchesFilter = true;
+      if (filter === 'occupied') {
+        matchesFilter = (status === 'occupied');
+      } else if (filter === 'vacant') {
+        matchesFilter = (status === 'vacant');
+      } else if (filter === 'exec') {
+        matchesFilter = (category === 'exec');
+      } else if (filter === 'bar') {
+        matchesFilter = (category === 'bar');
+      } else if (filter === 'ops') {
+        matchesFilter = (category === 'ops');
+      }
+
+      // Check Search Query
+      const matchesSearch = !searchQuery || textContent.includes(searchQuery);
+
+      // Apply Visibility
+      if (matchesFilter && matchesSearch) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // Handle Sections visibility
+    ['exec', 'bar', 'ops'].forEach(secCat => {
+      const secContainer = document.getElementById(`section-${secCat}`);
+      if (secContainer) {
+        const visibleCards = secContainer.querySelectorAll('.org-job-card[style*="display: flex"]');
+        const hasVisible = (visibleCards.length > 0) || (filter === 'all' && !searchQuery);
+        secContainer.style.display = hasVisible ? 'block' : 'none';
+      }
+    });
+  };
+
+  // Hook into Router / showView to support legacy sub-navigation links
+  const originalShowView = window.showView;
+  window.showView = function(viewId) {
+    // If navigation targets any of the organization anchors, redirect view to org-chart
+    const orgAnchors = ['org-chart', 'team-roles', 'mind-map', 'vacancies'];
+    if (orgAnchors.includes(viewId)) {
+      if (typeof originalShowView === 'function') {
+        originalShowView('org-chart');
+      }
+
+      // Target specific filter pill if appropriate
+      if (viewId === 'vacancies') {
+        applyOrgFilter('vacant');
+      } else if (viewId === 'team-roles') {
+        applyOrgFilter('all');
+      }
+      return;
+    }
+
+    if (typeof originalShowView === 'function') {
+      originalShowView(viewId);
+    }
+  };
+
+  // DOM Content Loaded Handler for Organization View
+  document.addEventListener('DOMContentLoaded', () => {
+    refreshOrgCardsFromStorage();
+  });
+</script>
