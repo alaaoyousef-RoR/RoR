@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RoR Enterprise Suite | نظام التشغيل والتحول المؤسسي (ERP)</title>
   
-  <!-- Google Fonts: IBM Plex Sans Arabic (300, 400, 500, 600, 700) -->
+  <!-- Google Fonts: Strictly IBM Plex Sans Arabic (Regular 400 Only) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400&display=swap" rel="stylesheet">
   
-  <!-- FontAwesome 6 Icons CDN -->
+  <!-- FontAwesome 6 CDN (Fallback) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- Tailwind CSS Play CDN -->
@@ -32,17 +32,25 @@
        DARK VIRTUS THEME & CORE DESIGN SYSTEM
        ═══════════════════════════════════════════════════════════════ -->
   <style>
-    /* 1. Global Typography: IBM Plex Sans Arabic + Western Numerals */
+    /* 1. Global Typography: Strictly IBM Plex Sans Arabic 400 + Western Numerals */
     *,
     *::before,
     *::after {
       box-sizing: border-box;
-      font-family: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+      font-family: 'IBM Plex Sans Arabic', sans-serif !important;
+      font-weight: 400 !important;
       font-variant-numeric: tabular-nums !important;
       font-feature-settings: "lnum" 1 !important;
     }
 
-    /* 2. Virtus Dark Palette Variables */
+    h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label, td, th, div {
+      font-family: 'IBM Plex Sans Arabic', sans-serif !important;
+      font-weight: 400 !important;
+      font-variant-numeric: tabular-nums !important;
+      font-feature-settings: "lnum" 1 !important;
+    }
+
+    /* 2. Virtus Dark Palette Variables & Design Tokens */
     :root {
       --virtus-canvas: #111215;
       --virtus-canvas-alt: #131417;
@@ -108,17 +116,19 @@
       transition: all 0.3s ease;
     }
 
-    /* 4. Left Fixed Sidebar Virtus Dark & Collapsible Functionality */
+    /* 4. Left Sidebar Virtus Dark & Collapsible Functionality */
     .sidebar {
       width: 270px !important;
       min-width: 270px !important;
       background-color: var(--virtus-sidebar) !important;
       border-left: 1px solid var(--virtus-border) !important;
       color: var(--virtus-text-muted) !important;
-      transition: all 0.3s ease !important;
+      transition: width 0.3s ease, min-width 0.3s ease, transform 0.3s ease !important;
       display: flex;
       flex-direction: column;
       z-index: 50;
+      position: relative;
+      overflow-x: hidden;
     }
 
     /* Desktop Collapsed Sidebar State (72px Mini Sidebar) */
@@ -186,16 +196,13 @@
 
     .sidebar.collapsed .nav-icon {
       margin: 0 !important;
-      font-size: 1.15rem !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
     }
 
     .sidebar.collapsed .section-content {
-      padding: 0.25rem 0 !important;
-    }
-
-    .sidebar.collapsed .nav-link {
-      padding: 0.6rem 0 !important;
-      justify-content: center !important;
+      display: none !important;
     }
 
     .sidebar.collapsed .sidebar-bottom-pinned {
@@ -213,7 +220,6 @@
 
     .sidebar.collapsed .pinned-icon {
       margin: 0 !important;
-      font-size: 1.1rem !important;
     }
 
     .sidebar.collapsed .sidebar-footer {
@@ -238,7 +244,7 @@
 
     .brand-title {
       color: var(--virtus-text-primary) !important;
-      font-weight: 800 !important;
+      font-size: 0.98rem;
     }
 
     .brand-version-badge {
@@ -282,7 +288,6 @@
     .nav-link.active {
       background: var(--virtus-accent-light) !important;
       color: var(--virtus-accent) !important;
-      font-weight: 600 !important;
       border-right: 3px solid var(--virtus-accent) !important;
     }
 
@@ -327,10 +332,11 @@
 
     /* 6. Top Header Bar */
     .top-header {
-      height: 72px;
+      min-height: 64px;
       background-color: var(--virtus-sidebar) !important;
-      border-bottom: 1px solid var(--virtus-border) !important;
-      padding: 0 1.75rem;
+      border: 1px solid var(--virtus-border) !important;
+      border-radius: 16px;
+      padding: 0.75rem 1.25rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -351,15 +357,14 @@
       background: #1D1F24 !important;
       border: 1px solid var(--virtus-border) !important;
       color: var(--virtus-text-muted) !important;
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: all 0.2s ease;
-      font-size: 1rem;
     }
 
     .sidebar-toggle-btn:hover {
@@ -397,7 +402,6 @@
       top: 50%;
       transform: translateY(-50%);
       color: var(--virtus-text-dim);
-      font-size: 0.9rem;
       pointer-events: none;
     }
 
@@ -441,14 +445,13 @@
       border-radius: 6px;
       background: var(--virtus-accent-light);
       color: var(--virtus-accent);
-      font-weight: 600;
     }
 
     /* Top Bar Header Actions & Clean Two-Line Time Greeting */
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1.25rem;
     }
 
     /* Two-Line Minimal Layout for Header Greeting */
@@ -463,20 +466,13 @@
     .greeting-line-1 {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
       font-size: 0.92rem;
-      font-weight: 700;
       color: #FFFFFF;
-    }
-
-    .greeting-line-1 i {
-      color: var(--virtus-accent);
-      font-size: 0.95rem;
     }
 
     .greeting-line-2 {
       font-size: 0.75rem;
-      font-weight: 500;
       color: var(--virtus-text-muted);
       letter-spacing: -0.2px;
     }
@@ -485,18 +481,17 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      padding: 7px 14px;
+      padding: 6px 12px;
       border-radius: 10px;
       background: #111215;
       border: 1px solid var(--virtus-border);
       font-size: 0.8rem;
-      font-weight: 600;
       color: var(--virtus-text-muted);
     }
 
     /* 7. Workspace and Elevated Surface Cards */
     .workspace-container {
-      padding: 1.75rem;
+      padding: 0;
       flex: 1;
       max-width: 1600px;
       margin: 0 auto;
@@ -509,7 +504,7 @@
     .view-section {
       background-color: var(--virtus-surface) !important;
       border: 1px solid var(--virtus-border) !important;
-      border-radius: 14px !important;
+      border-radius: 16px !important;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
       color: var(--virtus-text-secondary) !important;
     }
@@ -526,8 +521,11 @@
     /* Buttons Dark Virtus */
     .btn-primary {
       background-color: var(--virtus-accent) !important;
-      border-color: var(--virtus-accent) !important;
+      border: 1px solid var(--virtus-accent) !important;
       color: #FFFFFF !important;
+      border-radius: 10px;
+      padding: 0.5rem 1rem;
+      transition: all 0.2s;
     }
 
     .btn-primary:hover {
@@ -537,8 +535,11 @@
 
     .btn-secondary {
       background-color: #17191E !important;
-      border-color: var(--virtus-border) !important;
+      border: 1px solid var(--virtus-border) !important;
       color: var(--virtus-text-secondary) !important;
+      border-radius: 10px;
+      padding: 0.5rem 1rem;
+      transition: all 0.2s;
     }
 
     .btn-secondary:hover {
@@ -600,7 +601,6 @@
     .modal-header h3 {
       color: var(--virtus-text-primary) !important;
       font-size: 1.15rem;
-      font-weight: 700;
       margin: 0;
     }
 
@@ -611,7 +611,6 @@
       width: 32px;
       height: 32px;
       border-radius: 8px;
-      font-size: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -634,7 +633,6 @@
     .form-group label {
       color: var(--virtus-text-muted) !important;
       font-size: 0.82rem;
-      font-weight: 600;
       margin-bottom: 0.35rem;
       display: block;
     }
@@ -694,20 +692,17 @@
       border-radius: 9999px;
       color: var(--virtus-accent);
       font-size: 0.78rem;
-      font-weight: 700;
       margin-bottom: 1rem;
     }
 
     .welcome-title {
       font-size: 1.5rem;
-      font-weight: 800;
       color: #FFFFFF;
       margin-bottom: 0.4rem;
     }
 
     .welcome-subtitle-badge {
       font-size: 0.8rem;
-      font-weight: 600;
       color: var(--virtus-gold);
       margin-bottom: 0.75rem;
       display: block;
@@ -739,7 +734,6 @@
 
     .welcome-stat-box .stat-num {
       font-size: 1.35rem;
-      font-weight: 800;
       color: var(--virtus-accent);
       margin-bottom: 4px;
     }
@@ -747,7 +741,6 @@
     .welcome-stat-box .stat-label {
       font-size: 0.72rem;
       color: var(--virtus-text-muted);
-      font-weight: 600;
     }
 
     .welcome-footer-bar {
@@ -782,7 +775,6 @@
       border-radius: 10px;
       padding: 0.65rem 1.5rem;
       font-size: 0.9rem;
-      font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -816,7 +808,7 @@
         grid-template-columns: repeat(2, 1fr);
       }
       .top-header {
-        padding: 0 1rem;
+        padding: 0.75rem 1rem;
       }
       .sidebar {
         position: fixed !important;
@@ -852,12 +844,16 @@
       <header class="top-header flex items-center justify-between gap-4 mb-8 w-full">
         <div class="header-left">
           <button class="btn-icon sidebar-toggle-btn" id="sidebarToggle" aria-label="تبديل القائمة الجانبية">
-            <i class="fa-solid fa-bars text-gray-300 text-base"></i>
+            <svg class="w-5 h-5 text-gray-300 cursor-pointer" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"/>
+            </svg>
           </button>
           
           <!-- Global Search -->
           <div class="global-search">
-            <i class="fa-solid fa-magnifying-glass text-gray-400 text-sm search-icon"></i>
+            <svg class="w-4 h-4 text-gray-400 search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
+            </svg>
             <input type="text" id="globalSearchInput"
               placeholder="بحث فوري في المهام، المنيو، مبيعات البار، والمحمصة..."
               oninput="performGlobalSearch(this.value)">
@@ -869,17 +865,23 @@
           <!-- Elegant Two-Line Minimal Time Greeting Layout -->
           <div class="header-greeting-container" id="topbarGreetingContainer">
             <div class="greeting-line-1">
-              <i class="fa-regular fa-clock"></i>
+              <span id="topbarGreetingIcon" class="flex items-center text-[#E06B43]">
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+              </span>
               <span id="topbarGreetingText">مساء مبارك، علاء</span>
             </div>
             <div class="greeting-line-2" id="topbarGreetingSub">
-              المرحلة الانتقالية بعد 4 سنوات تشغيل
+              اليوم الحالي - المرحلة الانتقالية بعد 4 سنوات تشغيل
             </div>
           </div>
 
           <!-- Live Date Display (Western Numerals) -->
           <div class="header-date-badge">
-            <i class="fa-regular fa-calendar" style="color:var(--virtus-gold);margin-left:6px;"></i>
+            <svg class="w-4 h-4 text-[#DFA15A] ml-1.5 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z"/>
+            </svg>
             <span id="topbarDateDisplay">15 سبتمبر 2026</span>
           </div>
         </div>
@@ -916,11 +918,13 @@
     <div class="modal-container welcome-modal-card">
       <div class="welcome-hero-banner">
         <div class="welcome-badge-tag">
-          <i class="fa-solid fa-gem"></i>
+          <svg class="w-3.5 h-3.5 text-[#E06B43]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 4h12l4 6-10 10L2 10l4-6Z"/>
+          </svg>
           <span>منظومة الحوكمة والتشغيل الميداني</span>
         </div>
         <h2 class="welcome-title" id="splashGreetingTitle">مساء مبارك، علاء — شركاء RoR</h2>
-        <span class="welcome-subtitle-badge" id="splashGreetingDayBadge">المرحلة الانتقالية بعد 4 سنوات تشغيل</span>
+        <span class="welcome-subtitle-badge" id="splashGreetingDayBadge">اليوم الحالي - المرحلة الانتقالية بعد 4 سنوات تشغيل</span>
         <div class="welcome-subtitle">
           Welcome To RoR Partners System — الانتقال المؤسسي بعد 4 سنوات تشغيلية، استثمار طاقة الحماصة الرائدة، وتطبيق هيكل الـ 24 وظيفة المعتمد لحفظ السيولة والربحية.
         </div>
@@ -953,7 +957,9 @@
         </label>
         <button onclick="dismissWelcomeSplash()" class="btn-enter-workspace">
           <span>ابدأ العمل / Enter Workspace</span>
-          <i class="fa-solid fa-arrow-left"></i>
+          <svg class="w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14 7-5 5 5 5"/>
+          </svg>
         </button>
       </div>
     </div>
@@ -968,7 +974,11 @@
     <div class="modal-container">
       <div class="modal-header">
         <h2>إضافة / تعديل صنف في المنيو</h2>
-        <button class="close-btn" onclick="closeMenuModal()"><i class="fa-solid fa-xmark"></i></button>
+        <button class="close-btn" onclick="closeMenuModal()">
+          <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+          </svg>
+        </button>
       </div>
       <div class="modal-body">
         <form id="menuItemForm" onsubmit="saveMenuItem(event)">
@@ -1015,7 +1025,11 @@
     <div class="modal-container">
       <div class="modal-header">
         <h2>إضافة مهمة إدارية للقسم</h2>
-        <button class="close-btn" onclick="closeAddTaskModal()"><i class="fa-solid fa-xmark"></i></button>
+        <button class="close-btn" onclick="closeAddTaskModal()">
+          <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+          </svg>
+        </button>
       </div>
       <div class="modal-body">
         <form id="newMgmtTaskForm" onsubmit="saveNewMgmtTask(event)">
@@ -1027,7 +1041,7 @@
             <div class="form-group">
               <label>المسؤول المكلف *</label>
               <select name="assignedTo" required>
-                <option value="علاء">علاء يوسف - CSA & Roastmaster</option>
+                <option value="علاء">علاء يوسف - CSA & Lead Roastmaster</option>
                 <option value="جود">جود القصير - CEO & CMO</option>
                 <option value="عبدالله">عبدالله القصير - COO العمليات</option>
                 <option value="أنس">أنس الصفدي - CFO المالي والإداري</option>
@@ -1066,7 +1080,11 @@
     <div class="modal-container">
       <div class="modal-header">
         <h2>تسكين وتعيين مرشح - <span id="positionTitle" style="color:var(--virtus-accent);"></span></h2>
-        <button class="close-btn" onclick="closeAssignModal()"><i class="fa-solid fa-xmark"></i></button>
+        <button class="close-btn" onclick="closeAssignModal()">
+          <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+          </svg>
+        </button>
       </div>
       <div class="modal-body">
         <form id="assignForm" onsubmit="saveAssignment(event)">
@@ -1098,7 +1116,11 @@
     <div class="modal-container">
       <div class="modal-header">
         <h2 id="devModalTitle">إضافة مبادرة تطوير</h2>
-        <button class="close-btn" onclick="closeAddDevModal()"><i class="fa-solid fa-xmark"></i></button>
+        <button class="close-btn" onclick="closeAddDevModal()">
+          <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+          </svg>
+        </button>
       </div>
       <div class="modal-body">
         <form id="newDevItemForm" onsubmit="saveNewDevItem(event)">
@@ -1150,21 +1172,28 @@
       const dayName = days[now.getDay()];
 
       let greetingPrefix = "مساء مبارك، علاء";
+      let iconSvg = `<svg class="w-4 h-4 text-[#E06B43]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 0 1-.88-17.96A9.08 9.08 0 0 0 12 7a9.08 9.08 0 0 0 6.96 3.2 9 9 0 0 1-6.96 10.8Z"/></svg>`;
+
       if (hour >= 5 && hour < 12) {
         greetingPrefix = "صباح مبارك، علاء";
+        iconSvg = `<svg class="w-4 h-4 text-[#E06B43]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5V3m0 18v-2M7.05 7.05 5.636 5.636m12.728 12.728L16.95 16.95M5 12H3m18 0h-2M7.05 16.95l-1.414 1.414M18.364 5.636 16.95 7.05M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"/></svg>`;
       } else if (hour >= 12 && hour < 17) {
         greetingPrefix = "ظهرًا مباركًا، علاء";
+        iconSvg = `<svg class="w-4 h-4 text-[#E06B43]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>`;
       } else {
         greetingPrefix = "مساء مبارك، علاء";
+        iconSvg = `<svg class="w-4 h-4 text-[#E06B43]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 0 1-.88-17.96A9.08 9.08 0 0 0 12 7a9.08 9.08 0 0 0 6.96 3.2 9 9 0 0 1-6.96 10.8Z"/></svg>`;
       }
 
-      const subText = `${dayName} - المرحلة الانتقالية بعد 4 سنوات تشغيل`;
+      const subText = `اليوم الحالي - المرحلة الانتقالية بعد 4 سنوات تشغيل`;
 
       // Update Top Bar Two-Line Greeting
       const topbarTextEl = document.getElementById('topbarGreetingText');
       const topbarSubEl = document.getElementById('topbarGreetingSub');
+      const topbarIconEl = document.getElementById('topbarGreetingIcon');
       if (topbarTextEl) topbarTextEl.textContent = greetingPrefix;
       if (topbarSubEl) topbarSubEl.textContent = subText;
+      if (topbarIconEl) topbarIconEl.innerHTML = iconSvg;
 
       // Synchronize Splash Modal
       const splashTitleEl = document.getElementById('splashGreetingTitle');
@@ -1216,6 +1245,7 @@
         } else {
           // Desktop: toggle collapsed mini sidebar
           sidebar.classList.toggle('collapsed');
+          document.body.classList.toggle('sidebar-collapsed');
           // Save preference
           localStorage.setItem('ror_sidebar_collapsed', sidebar.classList.contains('collapsed') ? 'true' : 'false');
         }
@@ -1252,6 +1282,7 @@
         const savedCollapsed = localStorage.getItem('ror_sidebar_collapsed');
         if (savedCollapsed === 'true') {
           sidebar.classList.add('collapsed');
+          document.body.classList.add('sidebar-collapsed');
         }
       }
     }

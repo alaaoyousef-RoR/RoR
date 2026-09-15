@@ -1,26 +1,30 @@
 <!-- ═══════════════════════════════════════════════════════════════
      VIEW: MAIN DASHBOARD (لوحة المؤشرات والأداء)
-     Virtus Dark Theme | IBM Plex Sans Arabic | FontAwesome 6 | Zero Emojis
+     Virtus Dark Theme | IBM Plex Sans Arabic | Flowbite SVG Icons | Zero Broken Boxes
      ═══════════════════════════════════════════════════════════════ -->
 <div class="view-section active" id="view-kpi-dashboard">
   
   <!-- Header Banner -->
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;width:100%;">
+  <div class="flex justify-between items-center mb-8 flex-wrap gap-4 w-full">
     <div>
-      <h1 style="font-size:1.6rem;font-weight:800;color:var(--text-primary);margin:0 0 4px 0;">
+      <h1 class="text-2xl text-white m-0 mb-1">
         لوحة قيادة الأداء والعمليات لـ RoR
       </h1>
-      <p style="font-size:0.85rem;color:var(--text-secondary);margin:0;">
+      <p class="text-sm text-gray-400 m-0">
         المرحلة الانتقالية بعد 4 سنوات تشغيل • التركيز على الكفاءة التشغيلية ونمو مبيعات الجملة
       </p>
     </div>
-    <div style="display:flex;gap:0.75rem;">
-      <button onclick="exportCafeSalesCSV()" class="btn btn-secondary">
-        <i class="fa-solid fa-file-csv"></i>
+    <div class="flex gap-3">
+      <button onclick="exportCafeSalesCSV()" class="btn btn-secondary flex items-center gap-2">
+        <svg class="w-4 h-4 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4"/>
+        </svg>
         <span>تصدير تقرير البار</span>
       </button>
-      <a href="#40-tasks" class="btn btn-primary">
-        <i class="fa-solid fa-list-check"></i>
+      <a href="#40-tasks" class="btn btn-primary flex items-center gap-2">
+        <svg class="w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z"/>
+        </svg>
         <span>خطة الـ 40 مهمة</span>
       </a>
     </div>
@@ -30,58 +34,66 @@
   <div class="kpi-grid grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8 w-full">
     
     <!-- 1. Cafe Bar Revenue KPI Card -->
-    <div class="kpi-card min-h-[120px] p-5 rounded-2xl bg-[#1D1F24] border border-[#2D3139] flex items-center justify-between shadow-lg">
+    <div class="kpi-card min-h-[110px] p-5 rounded-2xl bg-[#1D1F24] border border-[#2D3139] flex items-center justify-between shadow-md">
       <div class="kpi-content flex-1">
-        <div class="kpi-label text-xs text-gray-400 font-semibold mb-1">إيرادات البار (المقهى)</div>
-        <div class="kpi-value text-2xl font-extrabold text-white leading-tight" id="kpiBarRevenue">0 ر.س</div>
-        <div class="kpi-change positive text-xs text-emerald-400 mt-1.5">
-          <span class="font-bold">+14.2%</span> مقارنة بالأسابيع السابقة
+        <div class="kpi-label text-xs text-gray-400 mb-1">إيرادات البار (المقهى)</div>
+        <div class="kpi-value text-2xl text-white leading-tight" id="kpiBarRevenue">0 ر.س</div>
+        <div class="kpi-change positive text-xs text-emerald-400 mt-1.5 flex items-center gap-1">
+          <span class="text-emerald-400">+14.2%</span> مقارنة بالأسابيع السابقة
         </div>
       </div>
-      <div class="kpi-icon-box w-12 h-12 rounded-xl flex items-center justify-center bg-[#252830] border border-white/5 shadow-inner shrink-0 mr-3">
-        <i class="fa-solid fa-mug-hot text-[#E06B43] text-xl"></i>
+      <div class="kpi-icon-box w-11 h-11 rounded-xl bg-[#252830] flex items-center justify-center text-[#E06B43] border border-white/5 shrink-0 mr-3 shadow-inner">
+        <svg class="w-6 h-6 text-[#E06B43]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13h2c1.1046 0 2 .8954 2 2s-.8954 2-2 2h-2.5M10 3c0 2.4-3 1.6-3 4m8-4c0 2.4-3 1.6-3 4m-7 4 .6398 6.398C5.84428 19.4428 7.56494 21 9.61995 21H10.38c2.0551 0 3.7757-1.5572 3.9802-3.602L15 11H5Z"/>
+        </svg>
       </div>
     </div>
 
     <!-- 2. Roastery Sales KPI Card -->
-    <div class="kpi-card min-h-[120px] p-5 rounded-2xl bg-[#1D1F24] border border-[#2D3139] flex items-center justify-between shadow-lg">
+    <div class="kpi-card min-h-[110px] p-5 rounded-2xl bg-[#1D1F24] border border-[#2D3139] flex items-center justify-between shadow-md">
       <div class="kpi-content flex-1">
-        <div class="kpi-label text-xs text-gray-400 font-semibold mb-1">مبيعات المحمصة (الجملة والأرباع)</div>
-        <div class="kpi-value text-2xl font-extrabold text-white leading-tight" id="kpiRoastRevenue">0 ر.س</div>
-        <div class="kpi-change positive text-xs text-emerald-400 mt-1.5">
-          <span class="font-bold">+28.5%</span> طاقة التحميص الأساسية
+        <div class="kpi-label text-xs text-gray-400 mb-1">مبيعات المحمصة (الجملة والأرباع)</div>
+        <div class="kpi-value text-2xl text-white leading-tight" id="kpiRoastRevenue">0 ر.س</div>
+        <div class="kpi-change positive text-xs text-emerald-400 mt-1.5 flex items-center gap-1">
+          <span class="text-emerald-400">+28.5%</span> طاقة التحميص الأساسية
         </div>
       </div>
-      <div class="kpi-icon-box w-12 h-12 rounded-xl flex items-center justify-center bg-[#252830] border border-white/5 shadow-inner shrink-0 mr-3">
-        <i class="fa-solid fa-seedling text-emerald-400 text-xl"></i>
+      <div class="kpi-icon-box w-11 h-11 rounded-xl bg-[#252830] flex items-center justify-center text-emerald-400 border border-white/5 shrink-0 mr-3 shadow-inner">
+        <svg class="w-6 h-6 text-emerald-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.83892 12.4543s1.24988-3.08822-.21626-5.29004C8.15656 4.96245 4.58671 4.10885 4.39794 4.2436c-.18877.13476-1.11807 3.32546.34803 5.52727 1.4661 2.20183 5.09295 2.68343 5.09295 2.68343Zm0 0C10.3389 13.4543 12 15 12 18v2c0-2-.4304-3.4188 2.0696-5.9188m0 0s-.4894-2.7888 1.1206-4.35788c1.6101-1.56907 4.4903-1.54682 4.6701-1.28428.1798.26254.4317 2.84376-1.0809 4.31786-1.61 1.5691-4.7098 1.3243-4.7098 1.3243Z"/>
+        </svg>
       </div>
     </div>
 
-    <!-- 3. Financial Expenses KPI Card -->
-    <div class="kpi-card min-h-[120px] p-5 rounded-2xl bg-[#1D1F24] border border-[#2D3139] flex items-center justify-between shadow-lg">
+    <!-- 3. Commitments & Expenses KPI Card -->
+    <div class="kpi-card min-h-[110px] p-5 rounded-2xl bg-[#1D1F24] border border-[#2D3139] flex items-center justify-between shadow-md">
       <div class="kpi-content flex-1">
-        <div class="kpi-label text-xs text-gray-400 font-semibold mb-1">إجمالي الالتزامات والمصاريف</div>
-        <div class="kpi-value text-2xl font-extrabold text-white leading-tight" id="kpiTotalExpenses">0 ر.س</div>
-        <div class="kpi-change text-xs text-gray-400 mt-1.5">
-          <span class="font-bold text-amber-400">تكاليف محكومة</span> ثابتة ومتغيرة
+        <div class="kpi-label text-xs text-gray-400 mb-1">إجمالي الالتزامات والمصاريف</div>
+        <div class="kpi-value text-2xl text-white leading-tight" id="kpiTotalExpenses">0 ر.س</div>
+        <div class="kpi-change text-xs text-gray-400 mt-1.5 flex items-center gap-1">
+          <span class="text-amber-400">تكاليف محكومة</span> ثابتة ومتغيرة
         </div>
       </div>
-      <div class="kpi-icon-box w-12 h-12 rounded-xl flex items-center justify-center bg-[#252830] border border-white/5 shadow-inner shrink-0 mr-3">
-        <i class="fa-solid fa-credit-card text-amber-400 text-xl"></i>
+      <div class="kpi-icon-box w-11 h-11 rounded-xl bg-[#252830] flex items-center justify-center text-amber-400 border border-white/5 shrink-0 mr-3 shadow-inner">
+        <svg class="w-6 h-6 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M6 14h2m3 0h5M3 7v10a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1Z"/>
+        </svg>
       </div>
     </div>
 
     <!-- 4. Net Cash Flow KPI Card -->
-    <div class="kpi-card min-h-[120px] p-5 rounded-2xl bg-[#1D1F24] border border-[#2D3139] flex items-center justify-between shadow-lg">
+    <div class="kpi-card min-h-[110px] p-5 rounded-2xl bg-[#1D1F24] border border-[#2D3139] flex items-center justify-between shadow-md">
       <div class="kpi-content flex-1">
-        <div class="kpi-label text-xs text-gray-400 font-semibold mb-1">صافي التدفق التشغيلي</div>
-        <div class="kpi-value text-2xl font-extrabold text-white leading-tight" id="kpiNetIncome">0 ر.س</div>
-        <div class="kpi-change positive text-xs text-emerald-400 mt-1.5">
-          <span class="font-bold">فائض سيولة</span> بعد الوفاء بالمصاريف
+        <div class="kpi-label text-xs text-gray-400 mb-1">صافي التدفق التشغيلي</div>
+        <div class="kpi-value text-2xl text-white leading-tight" id="kpiNetIncome">0 ر.س</div>
+        <div class="kpi-change positive text-xs text-emerald-400 mt-1.5 flex items-center gap-1">
+          <span class="text-emerald-400">فائض سيولة</span> بعد الوفاء بالمصاريف
         </div>
       </div>
-      <div class="kpi-icon-box w-12 h-12 rounded-xl flex items-center justify-center bg-[#252830] border border-white/5 shadow-inner shrink-0 mr-3">
-        <i class="fa-solid fa-sack-dollar text-cyan-400 text-xl"></i>
+      <div class="kpi-icon-box w-11 h-11 rounded-xl bg-[#252830] flex items-center justify-center text-cyan-400 border border-white/5 shrink-0 mr-3 shadow-inner">
+        <svg class="w-6 h-6 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8H5m12 0a1 1 0 0 1 1 1v2.6M17 8l-4-4M5 8a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.6M5 8l4-4 4 4m6 4h-4a2 2 0 1 0 0 4h4a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1Z"/>
+        </svg>
       </div>
     </div>
 
@@ -91,11 +103,13 @@
   <div class="dashboard-split-container grid grid-cols-1 lg:grid-cols-12 gap-6 w-full mb-8">
     
     <!-- Main Trend Chart Container (lg:col-span-7) -->
-    <div class="content-card chart-split-card lg:col-span-7 bg-[#1D1F24] border border-[#2D3139] rounded-2xl p-6 min-h-[380px] flex flex-col mb-0">
+    <div class="content-card chart-split-card lg:col-span-7 bg-[#1D1F24] border border-[#2D3139] rounded-2xl p-6 min-h-[380px] flex flex-col mb-0 shadow-md">
       <div class="card-header mb-4 flex justify-between items-center pb-3 border-b border-[#2D3139]">
         <div>
-          <h3 class="m-0 text-base font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-chart-line text-[#E06B43]"></i>
+          <h3 class="m-0 text-base text-white flex items-center gap-2">
+            <svg class="w-5 h-5 text-[#E06B43]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"/>
+            </svg>
             <span>مسار الإيرادات والمصاريف التشغيلية</span>
           </h3>
           <div class="card-subtitle text-xs text-gray-400 mt-1">تطور الأداء المالي على مدار الـ 8 أسابيع</div>
@@ -108,12 +122,14 @@
     </div>
 
     <!-- Top Sellers Table Container (lg:col-span-5) -->
-    <div class="content-card sellers-split-card lg:col-span-5 bg-[#1D1F24] border border-[#2D3139] rounded-2xl p-6 min-h-[380px] flex flex-col justify-between mb-0">
+    <div class="content-card sellers-split-card lg:col-span-5 bg-[#1D1F24] border border-[#2D3139] rounded-2xl p-6 min-h-[380px] flex flex-col justify-between mb-0 shadow-md">
       <div>
         <div class="card-header mb-4 flex justify-between items-center pb-3 border-b border-[#2D3139]">
           <div>
-            <h3 class="m-0 text-base font-bold text-white flex items-center gap-2">
-              <i class="fa-solid fa-star text-[#DFA15A]"></i>
+            <h3 class="m-0 text-base text-white flex items-center gap-2">
+              <svg class="w-5 h-5 text-[#DFA15A]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-width="2" d="M11.083 5.104c.35-.8 1.484-.8 1.834 0l1.87 4.27a1 1 0 0 0 .828.599l4.63.456c.868.086 1.218 1.164.561 1.737l-3.49 3.048a1 1 0 0 0-.311.956l1.01 4.542c.19.85-.733 1.52-1.48 1.077l-4.004-2.373a1 1 0 0 0-.962 0l-4.004 2.373c-.747.443-1.67-.227-1.48-1.077l1.01-4.542a1 1 0 0 0-.31-.956l-3.491-3.048c-.657-.573-.307-1.651.561-1.737l4.63-.456a1 1 0 0 0 .828-.6l1.87-4.269Z"/>
+              </svg>
               <span>الأصناف الأكثر ربحية</span>
             </h3>
             <div class="card-subtitle text-xs text-gray-400 mt-1">وفق مصفوفة المساهمة والطلب</div>
@@ -141,67 +157,90 @@
   </div>
 
   <!-- Operational Overview Row -->
-  <div style="display:grid;grid-template-columns: 1fr 1fr;gap:1.5rem;width:100%;">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
     
     <!-- 40-Task Plan Progress Summary -->
-    <div class="content-card" style="margin-bottom:0;background:#1D1F24;border:1px solid #2D3139;border-radius:16px;padding:1.5rem;">
-      <div class="card-header" style="margin-bottom:1rem;">
+    <div class="content-card bg-[#1D1F24] border border-[#2D3139] rounded-2xl p-6 shadow-md mb-0">
+      <div class="card-header mb-4 flex justify-between items-center pb-3 border-b border-[#2D3139]">
         <div>
-          <h3 style="margin:0 0 4px 0;"><i class="fa-solid fa-list-check" style="color:var(--virtus-accent,#E06B43);margin-left:6px;"></i> جاهزية خطة الـ 40 مهمة</h3>
-          <div class="card-subtitle" style="font-size:0.8rem;color:#9CA3AF;">المهام المعتمدة للمرحلة الانتقالية</div>
+          <h3 class="m-0 text-base text-white flex items-center gap-2">
+            <svg class="w-5 h-5 text-[#E06B43]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z"/>
+            </svg>
+            <span>جاهزية خطة الـ 40 مهمة</span>
+          </h3>
+          <div class="card-subtitle text-xs text-gray-400 mt-1">المهام المعتمدة للمرحلة الانتقالية</div>
         </div>
         <span class="badge badge-oxford">خطة 8 أسابيع</span>
       </div>
-      <div style="margin-bottom:1.25rem;">
-        <div style="display:flex;justify-content:space-between;font-size:0.85rem;font-weight:700;margin-bottom:0.4rem;">
+      <div class="mb-5">
+        <div class="flex justify-between text-sm mb-2 text-gray-300">
           <span>نسبة إنجاز المهام الكلية</span>
           <span><span id="completedTasks">0</span> / 40 مهمة</span>
         </div>
-        <div class="progress-bar" style="height:10px;">
-          <div class="progress-fill" id="taskProgressFill" style="width: 0%;"></div>
+        <div class="progress-bar h-2.5 bg-[#111215] rounded-full overflow-hidden border border-white/5">
+          <div class="progress-fill h-full bg-[#E06B43] rounded-full transition-all duration-500" id="taskProgressFill" style="width: 0%;"></div>
         </div>
       </div>
-      <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;margin:0 0 1rem 0;">
+      <p class="text-xs text-gray-400 leading-relaxed mb-4">
         تم استكمال حصر الأصول وضبط أسعار التكلفة المعيارية ومصفوفة المسؤوليات RACI. يجري حالياً تفعيل حسابات التكلفة الأساسية وخطة التوسع.
       </p>
       <div>
-        <a href="#40-tasks" class="btn btn-secondary" style="font-size:12px;">
+        <a href="#40-tasks" class="btn btn-secondary text-xs flex items-center gap-2 inline-flex">
           <span>عرض جدول المهام بالكامل</span>
-          <i class="fa-solid fa-arrow-left" style="margin-right:6px;"></i>
+          <svg class="w-3.5 h-3.5 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14 7-5 5 5 5"/>
+          </svg>
         </a>
       </div>
     </div>
 
     <!-- Executive Strategic Priorities Card -->
-    <div class="content-card" style="margin-bottom:0;background:#1D1F24;border:1px solid #2D3139;border-radius:16px;padding:1.5rem;">
-      <div class="card-header" style="margin-bottom:1rem;">
+    <div class="content-card bg-[#1D1F24] border border-[#2D3139] rounded-2xl p-6 shadow-md mb-0">
+      <div class="card-header mb-4 flex justify-between items-center pb-3 border-b border-[#2D3139]">
         <div>
-          <h3 style="color:var(--virtus-accent,#E06B43);margin:0 0 4px 0;"><i class="fa-solid fa-bullseye" style="margin-left:6px;"></i> أولويات المرحلة الانتقالية لـ RoR</h3>
-          <div class="card-subtitle" style="font-size:0.8rem;color:#9CA3AF;">القرارات التشغيلية والمالية المعتمدة للمجلس التنفيذي</div>
+          <h3 class="m-0 text-base text-[#E06B43] flex items-center gap-2">
+            <svg class="w-5 h-5 text-[#E06B43]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+            </svg>
+            <span>أولويات المرحلة الانتقالية لـ RoR</span>
+          </h3>
+          <div class="card-subtitle text-xs text-gray-400 mt-1">القرارات التشغيلية والمالية المعتمدة للمجلس التنفيذي</div>
         </div>
         <span class="badge badge-green">معتمد</span>
       </div>
-      <div style="font-size:0.84rem;color:var(--text-primary);line-height:1.65;margin-bottom:1.25rem;">
-        <div style="display:flex;gap:0.65rem;align-items:flex-start;margin-bottom:0.75rem;">
-          <i class="fa-solid fa-circle-check" style="color:var(--virtus-success,#10B981);margin-top:4px;"></i>
+      <div class="text-xs text-gray-300 leading-relaxed mb-5 space-y-3">
+        <div class="flex gap-2.5 items-start">
+          <svg class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+          </svg>
           <span><strong>مبيعات الجملة:</strong> الاستفادة القصوى من طاقة التحميص الأساسية لتحقيق أعلى عائد نقدي لكل ساعة تشغيل، واستهداف التعاقد مع 10 مقاهٍ محلية.</span>
         </div>
-        <div style="display:flex;gap:0.65rem;align-items:flex-start;margin-bottom:0.75rem;">
-          <i class="fa-solid fa-circle-check" style="color:var(--virtus-accent,#E06B43);margin-top:4px;"></i>
+        <div class="flex gap-2.5 items-start">
+          <svg class="w-4 h-4 text-[#E06B43] shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+          </svg>
           <span><strong>كفاءة البار:</strong> وردية المساء لعلم تسجل متوسط فاتورة 26.8 ر.س نتيجة إقبال الحلويات، مع فرصة لمضاعفة مبيعات الكولد برو والبن المنزلي.</span>
         </div>
-        <div style="display:flex;gap:0.65rem;align-items:flex-start;">
-          <i class="fa-solid fa-circle-check" style="color:var(--virtus-gold,#DFA15A);margin-top:4px;"></i>
+        <div class="flex gap-2.5 items-start">
+          <svg class="w-4 h-4 text-[#DFA15A] shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+          </svg>
           <span><strong>نقطة التعادل:</strong> تغطية التكاليف الثابتة تتطلب 68 كوباً يومياً، ويحقق الفرع حالياً متوسط 140 كوباً يومياً (أمان مالي مرتفع).</span>
         </div>
       </div>
-      <div style="display:flex;gap:8px;">
-        <a href="#vision-financial" class="btn btn-secondary" style="font-size:12px;flex:1;justify-content:center;">
-          <i class="fa-solid fa-scale-balanced"></i>
+      <div class="flex gap-3">
+        <a href="#vision-financial" class="btn btn-secondary text-xs flex-1 justify-center flex items-center gap-2">
+          <svg class="w-4 h-4 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M6 14h2m3 0h5M3 7v10a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1Z"/>
+          </svg>
           <span>لوحة الأداء المالي</span>
         </a>
-        <a href="#roastery-sales" class="btn btn-primary" style="font-size:12px;flex:1;justify-content:center;">
-          <i class="fa-solid fa-fire-burner"></i>
+        <a href="#roastery-sales" class="btn btn-primary text-xs flex-1 justify-center flex items-center gap-2">
+          <svg class="w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.83892 12.4543s1.24988-3.08822-.21626-5.29004C8.15656 4.96245 4.58671 4.10885 4.39794 4.2436c-.18877.13476-1.11807 3.32546.34803 5.52727 1.4661 2.20183 5.09295 2.68343 5.09295 2.68343Zm0 0C10.3389 13.4543 12 15 12 18v2c0-2-.4304-3.4188 2.0696-5.9188m0 0s-.4894-2.7888 1.1206-4.35788c1.6101-1.56907 4.4903-1.54682 4.6701-1.28428.1798.26254.4317 2.84376-1.0809 4.31786-1.61 1.5691-4.7098 1.3243-4.7098 1.3243Z"/>
+          </svg>
           <span>مبيعات المحمصة</span>
         </a>
       </div>

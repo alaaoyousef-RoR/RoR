@@ -4,7 +4,11 @@
     <span class="traffic-dot traffic-red"></span>
     <span class="traffic-dot traffic-yellow"></span>
     <span class="traffic-dot traffic-green"></span>
-    <button id="sidebarCloseBtn" class="sidebar-close-mobile-btn" aria-label="إغلاق القائمة الجانبية"><i class="fa-solid fa-xmark"></i></button>
+    <button id="sidebarCloseBtn" class="sidebar-close-mobile-btn" aria-label="إغلاق القائمة الجانبية">
+      <svg class="w-4 h-4 text-gray-400 hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+      </svg>
+    </button>
   </div>
 
   <!-- Brand Top Section -->
@@ -33,26 +37,37 @@
     </div>
   </div>
 
-  <!-- Integrated Sidebar Search (Untitled UI Search Box) -->
+  <!-- Integrated Sidebar Search (Flowbite Search Box) -->
   <div class="sidebar-search-container">
     <div class="sidebar-search-box">
-      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <svg class="w-4 h-4 text-gray-400 search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
+      </svg>
       <input type="text" id="sidebarSearchInput" placeholder="بحث سريع في النظام..." oninput="filterSidebarNav(this.value)" autocomplete="off">
       <span class="search-key-badge">⌘K</span>
     </div>
   </div>
 
-  <!-- Multi-Tier Expandable Navigation (Untitled UI Accordion) -->
+  <!-- Multi-Tier Expandable Navigation (Accordion) -->
   <div class="nav-sections" id="sidebarNavSections">
     
     <!-- 1. MAIN DASHBOARD / HOME -->
     <div class="nav-section" data-section="dashboard">
       <button class="section-header" type="button" aria-expanded="true">
         <span class="section-header-left">
-          <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
+          <span class="nav-icon">
+            <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6.025A7.5 7.5 0 1 0 17.975 14H10V6.025Z"/>
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 3c-.169 0-.334.014-.5.025V11h7.975c.011-.166.025-.331.025-.5A7.5 7.5 0 0 0 13.5 3Z"/>
+            </svg>
+          </span>
           <span class="title-text">لوحة التحكم الرئيسية</span>
         </span>
-        <span class="chevron"><i class="fa-solid fa-chevron-down"></i></span>
+        <span class="chevron">
+          <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 10 4 4 4-4"/>
+          </svg>
+        </span>
       </button>
       <div class="section-content">
         <a href="#kpi-dashboard" class="nav-link active">
@@ -66,10 +81,18 @@
     <div class="nav-section" data-section="operational-plan">
       <button class="section-header" type="button" aria-expanded="false">
         <span class="section-header-left">
-          <span class="nav-icon"><i class="fa-solid fa-clipboard-list"></i></span>
+          <span class="nav-icon">
+            <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z"/>
+            </svg>
+          </span>
           <span class="title-text">الخطة التشغيلية</span>
         </span>
-        <span class="chevron"><i class="fa-solid fa-chevron-down"></i></span>
+        <span class="chevron">
+          <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 10 4 4 4-4"/>
+          </svg>
+        </span>
       </button>
       <div class="section-content collapsed">
         <a href="#40-tasks" class="nav-link">
@@ -103,10 +126,18 @@
     <div class="nav-section" data-section="ror-system">
       <button class="section-header" type="button" aria-expanded="false">
         <span class="section-header-left">
-          <span class="nav-icon"><i class="fa-solid fa-sliders"></i></span>
+          <span class="nav-icon">
+            <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M20 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6h-2m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4"/>
+            </svg>
+          </span>
           <span class="title-text">RoR Operation System</span>
         </span>
-        <span class="chevron"><i class="fa-solid fa-chevron-down"></i></span>
+        <span class="chevron">
+          <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 10 4 4 4-4"/>
+          </svg>
+        </span>
       </button>
       <div class="section-content collapsed">
         <a href="#vision-financial" class="nav-link">
@@ -132,14 +163,22 @@
       </div>
     </div>
 
-    <!-- 4. OPERATIONAL DEPARTMENTS (ODOO-INSPIRED) -->
+    <!-- 4. OPERATIONAL DEPARTMENTS (8 SYSTEMS) -->
     <div class="nav-section" data-section="departments">
       <button class="section-header" type="button" aria-expanded="false">
         <span class="section-header-left">
-          <span class="nav-icon"><i class="fa-solid fa-building"></i></span>
+          <span class="nav-icon">
+            <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 4h12M6 4v16M6 4H5m13 0v16m0-16h1m-1 16H6m12 0h1M6 20H5M9 7h1v1H9V7Zm5 0h1v1h-1V7Zm-5 4h1v1H9v-1Zm5 0h1v1h-1v-1Zm-3 4h2a1 1 0 0 1 1 1v4h-4v-4a1 1 0 0 1 1-1Z"/>
+            </svg>
+          </span>
           <span class="title-text">الأنظمة التشغيلية (8 أقسام)</span>
         </span>
-        <span class="chevron"><i class="fa-solid fa-chevron-down"></i></span>
+        <span class="chevron">
+          <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 10 4 4 4-4"/>
+          </svg>
+        </span>
       </button>
       <div class="section-content collapsed">
         <a href="#dept-prod" class="nav-link">
@@ -181,10 +220,18 @@
     <div class="nav-section" data-section="structure">
       <button class="section-header" type="button" aria-expanded="false">
         <span class="section-header-left">
-          <span class="nav-icon"><i class="fa-solid fa-sitemap"></i></span>
+          <span class="nav-icon">
+            <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M16 19h4a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-2m-2.236-4a3 3 0 1 0 0-4M3 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+            </svg>
+          </span>
           <span class="title-text">الهيكل والتنظيم</span>
         </span>
-        <span class="chevron"><i class="fa-solid fa-chevron-down"></i></span>
+        <span class="chevron">
+          <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 10 4 4 4-4"/>
+          </svg>
+        </span>
       </button>
       <div class="section-content collapsed">
         <a href="#org-chart" class="nav-link">
@@ -210,10 +257,18 @@
     <div class="nav-section" data-section="development">
       <button class="section-header" type="button" aria-expanded="false">
         <span class="section-header-left">
-          <span class="nav-icon"><i class="fa-solid fa-arrow-trend-up"></i></span>
+          <span class="nav-icon">
+            <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"/>
+            </svg>
+          </span>
           <span class="title-text">التطوير والنمو المؤسسي</span>
         </span>
-        <span class="chevron"><i class="fa-solid fa-chevron-down"></i></span>
+        <span class="chevron">
+          <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 10 4 4 4-4"/>
+          </svg>
+        </span>
       </button>
       <div class="section-content collapsed">
         <a href="#training" class="nav-link">
@@ -245,7 +300,11 @@
   <div class="sidebar-bottom-pinned">
     <a href="#kpi-dashboard" class="pinned-nav-item" onclick="showNotificationToast('لا توجد تنبيهات متأخرة حالياً - مؤشرات الالتزام ممتازة');">
       <div class="pinned-item-main">
-        <span class="pinned-icon"><i class="fa-regular fa-bell"></i></span>
+        <span class="pinned-icon">
+          <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5.365V3m0 2.365a5.338 5.338 0 0 1 5.133 5.368v1.8c0 2.386 1.867 2.982 1.867 4.175 0 .593 0 1.292-.538 1.292H5.538C5 18 5 17.301 5 16.708c0-1.193 1.867-1.789 1.867-4.175v-1.8A5.338 5.338 0 0 1 12 5.365ZM8.73 18a3.27 3.27 0 0 0 6.54 0H8.73Z"/>
+          </svg>
+        </span>
         <span class="pinned-label">الإشعارات والتنبيهات</span>
       </div>
       <span class="pinned-badge">4</span>
@@ -253,14 +312,22 @@
 
     <a href="#process-improvement" class="pinned-nav-item">
       <div class="pinned-item-main">
-        <span class="pinned-icon"><i class="fa-regular fa-file-lines"></i></span>
+        <span class="pinned-icon">
+          <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 3v4a1 1 0 0 1-1 1H5m4 8h6m-6-4h6m4-8v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z"/>
+          </svg>
+        </span>
         <span class="pinned-label">أدلة وسياسات التشغيل</span>
       </div>
     </a>
 
     <a href="#vision-financial" class="pinned-nav-item">
       <div class="pinned-item-main">
-        <span class="pinned-icon"><i class="fa-solid fa-sliders"></i></span>
+        <span class="pinned-icon">
+          <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M20 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6h-2m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4"/>
+          </svg>
+        </span>
         <span class="pinned-label">إعدادات النظام والتهيئة</span>
       </div>
     </a>
@@ -274,11 +341,13 @@
         <span class="user-status-dot"></span>
       </div>
       <div class="user-profile-details">
-        <div class="user-name">علاء السيد</div>
-        <div class="user-role-email">CEO &amp; Roastmaster</div>
+        <div class="user-name">علاء يوسف</div>
+        <div class="user-role-email">CSA &amp; Lead Roastmaster</div>
       </div>
-      <button class="profile-action-btn" aria-label="خيارات الحساب" onclick="showNotification('ملف الشريك المؤسس: علاء السيد (مفعل)', 'info')">
-        <i class="fa-solid fa-ellipsis-vertical"></i>
+      <button class="profile-action-btn" aria-label="خيارات الحساب" onclick="showNotification('ملف الشريك المؤسس: علاء يوسف (مفعل)', 'info')">
+        <svg class="w-4 h-4 text-gray-400 hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-width="3" d="M12 6h.01M12 12h.01M12 18h.01"/>
+        </svg>
       </button>
     </div>
   </div>
