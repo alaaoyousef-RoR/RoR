@@ -1,0 +1,355 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     VIEW: STRUCTURE & ORGANIZATION (الهيكل والتنظيم)
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- 1. Hierarchical Organizational Chart -->
+<div class="view-section" id="view-org-chart">
+  <div class="content-card">
+    <div class="card-header">
+      <div>
+        <h2>📊 الهيكل التنظيمي الهرمي المعتمد لـ RoR</h2>
+        <div class="card-subtitle">مخطط شجري يعكس القيادة التنفيذية، إدارة العمليات والبار، والوظائف المستقبلية</div>
+      </div>
+      <a href="/mindmap" target="_blank" class="btn btn-secondary" style="font-size:12px;">
+        <span>🔍</span> فتح الخريطة الذهنية الموسعة
+      </a>
+    </div>
+
+    <div class="org-chart">
+      <!-- Level 1: CEO -->
+      <div class="org-level level-1">
+        <div class="org-node ceo">
+          <div class="node-avatar">علاء</div>
+          <div class="node-info">
+            <div class="node-name">علاء السيد</div>
+            <div class="node-title">الرئيس التنفيذي وقائد الجودة (CEO)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Level 2: C-Suite Leadership -->
+      <div class="org-level level-2">
+        <div class="org-node coo">
+          <div class="node-avatar">عبدالله</div>
+          <div class="node-info">
+            <div class="node-name">عبدالله</div>
+            <div class="node-title">مدير العمليات (COO)</div>
+          </div>
+        </div>
+
+        <div class="org-node cfo">
+          <div class="node-avatar">أنس</div>
+          <div class="node-info">
+            <div class="node-name">أنس</div>
+            <div class="node-title">المدير المالي والإداري (CFO)</div>
+          </div>
+        </div>
+
+        <div class="org-node cmo">
+          <div class="node-avatar">جود</div>
+          <div class="node-info">
+            <div class="node-name">جود / جون</div>
+            <div class="node-title">مدير التسويق والعلامة (CMO)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Level 3: Bar Team & Key Roles -->
+      <div class="org-level level-3">
+        <div class="org-node barista">
+          <div class="node-avatar">عارف</div>
+          <div class="node-info">
+            <div class="node-name">عارف</div>
+            <div class="node-title">باريستا (وردية صباحية)</div>
+          </div>
+        </div>
+
+        <div class="org-node barista">
+          <div class="node-avatar">علم</div>
+          <div class="node-info">
+            <div class="node-name">علم</div>
+            <div class="node-title">باريستا (وردية مسائية)</div>
+          </div>
+        </div>
+
+        <div class="org-node vacant">
+          <div class="node-avatar">?</div>
+          <div class="node-info">
+            <div class="node-name">شاغر</div>
+            <div class="node-title">مدير مبيعات B2B</div>
+          </div>
+          <button class="assign-btn" onclick="quickAssign('b2b-sales-manager')">تعيين سريع</button>
+        </div>
+
+        <div class="org-node vacant">
+          <div class="node-avatar">?</div>
+          <div class="node-info">
+            <div class="node-name">شاغر</div>
+            <div class="node-title">أخصائي التجارة الإلكترونية</div>
+          </div>
+          <button class="assign-btn" onclick="quickAssign('ecommerce-specialist')">تعيين سريع</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. Team Roles & Responsibilities -->
+<div class="view-section" id="view-team-roles">
+  <div class="content-card">
+    <div class="card-header">
+      <div>
+        <h2>👔 بطاقات مهام ومسؤوليات فريق RoR</h2>
+        <div class="card-subtitle">التوصيف الوظيفي الدقيق والمحدد لكل عضو في الفريق التنفيذي والتشغيلي</div>
+      </div>
+      <span class="badge badge-green">معتمد ورسمي</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:1.25rem;">
+      
+      <!-- Alaa -->
+      <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;background:var(--surface-white);">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
+          <div class="user-avatar" style="width:44px;height:44px;">علاء</div>
+          <div>
+            <h3 style="font-size:1rem;font-weight:800;">علاء السيد</h3>
+            <div style="font-size:0.78rem;color:var(--primary-accent);font-weight:700;">الرئيس التنفيذي وقائد الجودة (CEO)</div>
+          </div>
+        </div>
+        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-right:1.2rem;line-height:1.7;">
+          <li>القيادة الاستراتيجية الشاملة والتفاوض على صفقات الجملة الكبرى.</li>
+          <li>مسؤول التحميص وجودة المحاصيل على حماصة جيسن 15 كجم وضبط البروفايلات.</li>
+          <li>جلسات تقييم الجودة SCA Cupping وتطوير وصفات المشروبات الجديدة.</li>
+        </ul>
+      </div>
+
+      <!-- Abdullah -->
+      <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;background:var(--surface-white);">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
+          <div class="user-avatar" style="width:44px;height:44px;background:var(--dark-base);">عبدالله</div>
+          <div>
+            <h3 style="font-size:1rem;font-weight:800;">عبدالله</h3>
+            <div style="font-size:0.78rem;color:var(--dark-base);font-weight:700;">مدير العمليات (COO)</div>
+          </div>
+        </div>
+        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-right:1.2rem;line-height:1.7;">
+          <li>الإشراف اليومي على كفاءة البار وانضباط الورديات ونظافة المعرض.</li>
+          <li>إدارة سلاسل الإمداد ومستويات المخزون (Min/Max Par Levels).</li>
+          <li>متابعة الصيانة الوقائية الدورية لمكائن الإسبريسو ومطاحن البار.</li>
+        </ul>
+      </div>
+
+      <!-- Anas -->
+      <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;background:var(--surface-white);">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
+          <div class="user-avatar" style="width:44px;height:44px;background:#10B981;">أنس</div>
+          <div>
+            <h3 style="font-size:1rem;font-weight:800;">أنس</h3>
+            <div style="font-size:0.78rem;color:#059669;font-weight:700;">المدير المالي والإداري (CFO)</div>
+          </div>
+        </div>
+        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-right:1.2rem;line-height:1.7;">
+          <li>التخطيط المالي، حساب نقطة التعادل، والرقابة على التدفقات النقدية.</li>
+          <li>تسجيل القيود اليومية والامتثال لمتطلبات الفاتورة الإلكترونية ZATCA.</li>
+          <li>إدارة شؤون الموظفين، مسيرات الرواتب، والعقود والتأمينات الاجتماعية.</li>
+        </ul>
+      </div>
+
+      <!-- Joud -->
+      <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;background:var(--surface-white);">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
+          <div class="user-avatar" style="width:44px;height:44px;background:var(--alert-orange);">جود</div>
+          <div>
+            <h3 style="font-size:1rem;font-weight:800;">جود / جون</h3>
+            <div style="font-size:0.78rem;color:var(--alert-orange-dark);font-weight:700;">مدير التسويق وإدارة القنوات (CMO)</div>
+          </div>
+        </div>
+        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-right:1.2rem;line-height:1.7;">
+          <li>تطوير الهوية البصرية وإدارة قنوات التواصل الاجتماعي وإنشاء المحتوى.</li>
+          <li>تحسين ظهور RoR على Google Maps وإدارة برنامج ولاء العملاء.</li>
+          <li>التواصل مع المؤثرين وبناء الشراكات التسويقية غير المدفوعة.</li>
+        </ul>
+      </div>
+
+      <!-- Aref -->
+      <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;background:var(--surface-white);">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
+          <div class="user-avatar" style="width:44px;height:44px;background:var(--primary-accent);">عارف</div>
+          <div>
+            <h3 style="font-size:1rem;font-weight:800;">عارف</h3>
+            <div style="font-size:0.78rem;color:var(--primary-accent);font-weight:700;">باريستا - الوردية الصباحية (7 ص - 3 م)</div>
+          </div>
+        </div>
+        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-right:1.2rem;line-height:1.7;">
+          <li>معايرة مطاحن الإسبريسو والفلتر الصباحية وضبط الجرامات والوقت.</li>
+          <li>تحضير وتقديم المشروبات بمعايير RoR واستقبال ضيوف الصباح بلباقة.</li>
+          <li>تنفيذ مهام البار بدقة وانضباط تام دون أي مهام إشرافية أو تحميص.</li>
+        </ul>
+      </div>
+
+      <!-- Elem -->
+      <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);padding:1.25rem;background:var(--surface-white);">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
+          <div class="user-avatar" style="width:44px;height:44px;background:var(--dark-base);">علم</div>
+          <div>
+            <h3 style="font-size:1rem;font-weight:800;">علم</h3>
+            <div style="font-size:0.78rem;color:var(--dark-base);font-weight:700;">باريستا - الوردية المسائية (3 م - 11 م)</div>
+          </div>
+        </div>
+        <ul style="font-size:0.82rem;color:var(--text-secondary);padding-right:1.2rem;line-height:1.7;">
+          <li>إدارة ذروة الطلبات المسائية وتحضير المشروبات الباردة والساخنة بسرعة.</li>
+          <li>ترشيح أصناف الحلى ومبيعات البن المنزلي لرفع متوسط الفاتورة.</li>
+          <li>إقفال المحطة وتنظيف وتعقيم المكائن والمطاحن نهاية اليوم بدقة.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 3. Interactive Mind Map -->
+<div class="view-section" id="view-mind-map">
+  <div class="content-card">
+    <div class="card-header">
+      <div>
+        <h2>🧠 الخريطة الذهنية التفاعلية الشاملة (Mind Map)</h2>
+        <div class="card-subtitle">عرض هرمي شجري تفاعلي قابل للتوسيع والطي لجميع أذرع وأنظمة RoR المؤسسية</div>
+      </div>
+      <a href="/mindmap" target="_blank" class="btn btn-primary" style="font-size:12px;">
+        <span>🗺️</span> فتح في نافذة مستقلة كاملة
+      </a>
+    </div>
+
+    <div class="mind-map">
+      <div class="mind-map-center">
+        <div class="center-node">
+          RoR Enterprise Suite
+        </div>
+      </div>
+
+      <div class="mind-map-branches">
+        <!-- Branch 1: Departments -->
+        <div class="branch" data-branch="departments">
+          <div class="branch-node" onclick="toggleBranch('departments')">
+            <span class="icon">🏢</span>
+            <span class="label">الأنظمة التشغيلية (8 أقسام)</span>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="sub-branches">
+            <div class="sub-branch" onclick="showView('dept-prod')"><span>1️⃣ المحمصة والإنتاج (MRP)</span><span class="badge badge-oxford">12 مهمة</span></div>
+            <div class="sub-branch" onclick="showView('dept-quality')"><span>2️⃣ ضبط الجودة والبحث (PLM)</span><span class="badge badge-oxford">12 مهمة</span></div>
+            <div class="sub-branch" onclick="showView('dept-marketing')"><span>3️⃣ التسويق والعلامة (Social)</span><span class="badge badge-oxford">12 مهمة</span></div>
+            <div class="sub-branch" onclick="showView('dept-sales')"><span>4️⃣ المبيعات وتطوير الأعمال (B2B)</span><span class="badge badge-oxford">12 مهمة</span></div>
+            <div class="sub-branch" onclick="showView('dept-ecommerce')"><span>5️⃣ التجارة واللوجستيات (eCom)</span><span class="badge badge-oxford">12 مهمة</span></div>
+            <div class="sub-branch" onclick="showView('dept-maint')"><span>6️⃣ الصيانة والدعم الفني (Field Service)</span><span class="badge badge-oxford">12 مهمة</span></div>
+            <div class="sub-branch" onclick="showView('dept-hr')"><span>7️⃣ الموارد البشرية والورديات (HR)</span><span class="badge badge-oxford">12 مهمة</span></div>
+            <div class="sub-branch" onclick="showView('dept-finance')"><span>8️⃣ الإدارة المالية والضريبية (Finance)</span><span class="badge badge-oxford">12 مهمة</span></div>
+          </div>
+        </div>
+
+        <!-- Branch 2: Operations -->
+        <div class="branch" data-branch="operations">
+          <div class="branch-node" onclick="toggleBranch('operations')">
+            <span class="icon">📋</span>
+            <span class="label">الخطة التشغيلية والمالية</span>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="sub-branches">
+            <div class="sub-branch" onclick="showView('40-tasks')"><span>خطة الـ 40 مهمة المعتمدة</span></div>
+            <div class="sub-branch" onclick="showView('menu-engineering')"><span>مصفوفة هندسة المنيو 2D</span></div>
+            <div class="sub-branch" onclick="showView('breakeven')"><span>حاسبة نقطة التعادل الشهرية</span></div>
+            <div class="sub-branch" onclick="showView('raci-matrix')"><span>مصفوفة المسؤوليات RACI</span></div>
+            <div class="sub-branch" onclick="showView('waste-cashflow')"><span>سجل الهدر والسيولة النقدية</span></div>
+          </div>
+        </div>
+
+        <!-- Branch 3: Development -->
+        <div class="branch" data-branch="development">
+          <div class="branch-node" onclick="toggleBranch('development')">
+            <span class="icon">🚀</span>
+            <span class="label">مسارات التطوير والتوسع</span>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="sub-branches">
+            <div class="sub-branch" onclick="showView('training')"><span>برامج التدريب والتطوير</span></div>
+            <div class="sub-branch" onclick="showView('process-improvement')"><span>أدلة التشغيل القياسية SOPs</span></div>
+            <div class="sub-branch" onclick="showView('tech-roadmap')"><span>خارطة التقنية والأتمتة</span></div>
+            <div class="sub-branch" onclick="showView('expansion')"><span>خطة التوسع الإقليمي والفروع</span></div>
+            <div class="sub-branch" onclick="showView('innovation')"><span>خط الابتكار والمنتجات الجديدة</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. Positions & Vacancies Grid -->
+<div class="view-section" id="view-vacancies">
+  <div class="content-card">
+    <div class="card-header">
+      <div>
+        <h2>💼 الوظائف والشواغر والتسكين المستقبلي</h2>
+        <div class="card-subtitle">المناصب المخططة لدعم التوسع مع إمكانية التسكين السريع وحفظ البيانات في النظام</div>
+      </div>
+      <span class="badge badge-orange">تخطيط القوى العاملة</span>
+    </div>
+
+    <div class="vacancies-grid">
+      
+      <!-- B2B Sales Manager -->
+      <div class="vacancy-card priority-high" id="vac-card-b2b-sales-manager">
+        <span class="status-badge vacant">شاغر للتوظيف</span>
+        <div class="vacancy-icon">💼</div>
+        <h3>مدير مبيعات B2B</h3>
+        <p class="vacancy-dept">قسم المبيعات وتطوير الأعمال</p>
+        <ul class="vacancy-responsibilities">
+          <li>إدارة علاقات عملاء الجملة وتصريف طاقة حماصة جيسن.</li>
+          <li>تطوير خط أنابيب المقاهي الشريكة وإتمام العقود.</li>
+          <li>تحقيق مستهدف 10 مقاهٍ شهرية منتظمة.</li>
+        </ul>
+        <div class="vacancy-meta">
+          <span>الأولوية: <strong>عالية جداً</strong></span>
+          <span>المستهدف: <strong>الربع 2</strong></span>
+        </div>
+        <button class="btn-primary btn" onclick="quickAssign('b2b-sales-manager')">تعيين وتسكين سريع</button>
+      </div>
+
+      <!-- E-commerce Specialist -->
+      <div class="vacancy-card priority-medium" id="vac-card-ecommerce-specialist">
+        <span class="status-badge vacant">شاغر للتوظيف</span>
+        <div class="vacancy-icon">💻</div>
+        <h3>أخصائي التجارة الإلكترونية</h3>
+        <p class="vacancy-dept">قسم التجارة واللوجستيات</p>
+        <ul class="vacancy-responsibilities">
+          <li>إدارة منصة المتجر الإلكتروني ومخزون المحاصيل.</li>
+          <li>متابعة بوالص الشحن السريع ورضا العملاء.</li>
+          <li>تحسين معدل التحويل والحملات الرقمية.</li>
+        </ul>
+        <div class="vacancy-meta">
+          <span>الأولوية: <strong>متوسطة</strong></span>
+          <span>المستهدف: <strong>الربع 3</strong></span>
+        </div>
+        <button class="btn-primary btn" onclick="quickAssign('ecommerce-specialist')">تعيين وتسكين سريع</button>
+      </div>
+
+      <!-- Backup Barista -->
+      <div class="vacancy-card priority-low" id="vac-card-barista-backup">
+        <span class="status-badge planned">مخطط للتغطية</span>
+        <div class="vacancy-icon">☕</div>
+        <h3>باريستا إضافي / تغطية</h3>
+        <p class="vacancy-dept">قسم العمليات - البار</p>
+        <ul class="vacancy-responsibilities">
+          <li>تغطية أيام إجازات عارف وعلم الأسبوعية.</li>
+          <li>مساندة البار في ساعات الذروة والمواسم.</li>
+          <li>تطبيق معايير استخلاص RoR المعتمدة.</li>
+        </ul>
+        <div class="vacancy-meta">
+          <span>الأولوية: <strong>عند الحاجة</strong></span>
+          <span>المستهدف: <strong>موسمي</strong></span>
+        </div>
+        <button class="btn-secondary btn" onclick="quickAssign('barista-backup')">تعيين وتسكين سريع</button>
+      </div>
+
+    </div>
+  </div>
+</div>

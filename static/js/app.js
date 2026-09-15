@@ -332,9 +332,11 @@ document.addEventListener('DOMContentLoaded', () => {
 // Greeting & Date
 function initDateAndGreeting() {
   const now = new Date();
-  const dateStr = now.toLocaleDateString('ar-SA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const dayNames = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+  const monthNames = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+  const dateStr = `${dayNames[now.getDay()]}، ${now.getDate()} ${monthNames[now.getMonth()]} ${now.getFullYear()}`;
   const dateEl = document.getElementById('topbarDateDisplay');
-  if (dateEl) dateEl.textContent = dateStr || '15 سبتمبر 2026';
+  if (dateEl) dateEl.textContent = dateStr;
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -364,15 +366,86 @@ function initSidebarAccordion() {
     });
   });
 
-  // Mobile sidebar toggle
+  // Mobile sidebar toggle & close
   const toggleBtn = document.getElementById('sidebarToggle');
+  const closeBtn = document.getElementById('sidebarCloseBtn');
   const sidebar = document.getElementById('mainSidebar');
   if (toggleBtn && sidebar) {
     toggleBtn.addEventListener('click', () => {
       sidebar.classList.toggle('mobile-open');
     });
   }
+  if (closeBtn && sidebar) {
+    closeBtn.addEventListener('click', () => {
+      sidebar.classList.remove('mobile-open');
+    });
+  }
+
+  // Keyboard shortcut (Cmd+K / Ctrl+K) to focus sidebar search
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      const sidebarSearch = document.getElementById('sidebarSearchInput');
+      if (sidebarSearch) {
+        sidebarSearch.focus();
+        sidebarSearch.select();
+      }
+    }
+  });
 }
+
+// Filter Sidebar Nav Items
+function filterSidebarNav(query) {
+  query = (query || '').trim().toLowerCase();
+  const navSections = document.querySelectorAll('.nav-section');
+  
+  if (!query) {
+    navSections.forEach(section => {
+      section.style.display = '';
+      const links = section.querySelectorAll('.nav-link');
+      links.forEach(l => l.style.display = '');
+    });
+    return;
+  }
+
+  navSections.forEach(section => {
+    const links = section.querySelectorAll('.nav-link');
+    let sectionHasMatch = false;
+
+    links.forEach(link => {
+      const text = (link.textContent || '').toLowerCase();
+      if (text.includes(query)) {
+        link.style.display = 'flex';
+        sectionHasMatch = true;
+      } else {
+        link.style.display = 'none';
+      }
+    });
+
+    const headerText = (section.querySelector('.section-header')?.textContent || '').toLowerCase();
+    if (headerText.includes(query)) {
+      sectionHasMatch = true;
+      links.forEach(l => l.style.display = 'flex');
+    }
+
+    if (sectionHasMatch) {
+      section.style.display = '';
+      const content = section.querySelector('.section-content');
+      if (content) {
+        content.classList.remove('collapsed');
+        const chevron = section.querySelector('.chevron');
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+      }
+    } else {
+      section.style.display = 'none';
+    }
+  });
+}
+
+function showNotificationToast(msg, type = 'info') {
+  showNotification(msg, type);
+}
+
 
 function showView(viewId) {
   // Hide all views
@@ -414,6 +487,10 @@ function showView(viewId) {
     setTimeout(() => breakevenChartInstance.resize(), 50);
   }
 
+  // Close mobile sidebar on navigation
+  const sidebar = document.getElementById('mainSidebar');
+  if (sidebar) sidebar.classList.remove('mobile-open');
+
   // Scroll to top
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -441,10 +518,10 @@ function refreshAllMetrics() {
   const elExp = document.getElementById('kpiTotalExpenses');
   const elNet = document.getElementById('kpiNetIncome');
 
-  if (elBar) elBar.textContent = totalCafeRev.toLocaleString('ar-SA') + ' ر.س';
-  if (elRoast) elRoast.textContent = totalRoastRev.toLocaleString('ar-SA') + ' ر.س';
-  if (elExp) elExp.textContent = totalExpenses.toLocaleString('ar-SA') + ' ر.س';
-  if (elNet) elNet.textContent = (netIncome >= 0 ? '+' : '') + netIncome.toLocaleString('ar-SA') + ' ر.س';
+  if (elBar) elBar.textContent = totalCafeRev.toLocaleString('en-US') + ' ر.س';
+  if (elRoast) elRoast.textContent = totalRoastRev.toLocaleString('en-US') + ' ر.س';
+  if (elExp) elExp.textContent = totalExpenses.toLocaleString('en-US') + ' ر.س';
+  if (elNet) elNet.textContent = (netIncome >= 0 ? '+' : '') + netIncome.toLocaleString('en-US') + ' ر.س';
 
   // Task summary
   const completedTasks = tasks.filter(t => t.status === 'completed').length;
@@ -515,7 +592,7 @@ function initChartJS() {
             beginAtZero: true,
             ticks: {
               font: { family: 'IBM Plex Sans Arabic', size: 10 },
-              callback: value => value.toLocaleString('ar-SA') + ' ر.س'
+              callback: value => value.toLocaleString('en-US') + ' ر.س'
             },
             grid: { color: '#F0EDE8' }
           }
@@ -559,7 +636,7 @@ function initChartJS() {
           y: {
             stacked: true,
             beginAtZero: true,
-            ticks: { callback: v => v.toLocaleString('ar-SA') + ' ر.س' },
+            ticks: { callback: v => v.toLocaleString('en-US') + ' ر.س' },
             grid: { color: '#F0EDE8' }
           }
         }
@@ -796,9 +873,9 @@ function calculateBreakeven() {
   const elDaily = document.getElementById('breakevenDaily');
   const elMargin = document.getElementById('contributionMargin');
 
-  if (elInvoices) elInvoices.textContent = breakevenInvoices.toLocaleString('ar-SA');
-  if (elRevenue) elRevenue.textContent = breakevenRevenue.toLocaleString('ar-SA') + ' ر.س';
-  if (elDaily) elDaily.textContent = breakevenDaily.toLocaleString('ar-SA');
+  if (elInvoices) elInvoices.textContent = breakevenInvoices.toLocaleString('en-US');
+  if (elRevenue) elRevenue.textContent = breakevenRevenue.toLocaleString('en-US') + ' ر.س';
+  if (elDaily) elDaily.textContent = breakevenDaily.toLocaleString('en-US');
   if (elMargin) elMargin.textContent = contributionMargin.toFixed(2) + ' ر.س';
 
   updateBreakevenChart(fixedCosts, avgTicket, cogsPercent, variablePercent, contributionMargin);
@@ -853,7 +930,7 @@ function updateBreakevenChart(fixedCosts, avgTicket, cogsPercent, variablePercen
         },
         scales: {
           x: { title: { display: true, text: 'عدد الفواتير الشهرية', font: { family: 'IBM Plex Sans Arabic' } } },
-          y: { ticks: { callback: v => v.toLocaleString('ar-SA') + ' ر.س' } }
+          y: { ticks: { callback: v => v.toLocaleString('en-US') + ' ر.س' } }
         }
       }
     });
@@ -943,10 +1020,10 @@ function renderCafeShiftReports() {
   const tRev = document.getElementById('totalRevenue');
 
   if (tMCups) tMCups.textContent = mCups;
-  if (tMRev) tMRev.textContent = mRev.toLocaleString('ar-SA') + ' ر.س';
+  if (tMRev) tMRev.textContent = mRev.toLocaleString('en-US') + ' ر.س';
   if (tECups) tECups.textContent = eCups;
-  if (tERev) tERev.textContent = eRev.toLocaleString('ar-SA') + ' ر.س';
-  if (tRev) tRev.textContent = (mRev + eRev).toLocaleString('ar-SA') + ' ر.س';
+  if (tERev) tERev.textContent = eRev.toLocaleString('en-US') + ' ر.س';
+  if (tRev) tRev.textContent = (mRev + eRev).toLocaleString('en-US') + ' ر.س';
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -979,7 +1056,7 @@ function renderFinancialCommitments() {
       <td style="font-weight:700;">${escapeHtml(f.name || f.title)}</td>
       <td><span class="badge badge-gray">${escapeHtml(f.category)}</span></td>
       <td><span class="badge ${f.type === 'fixed' || f.type === 'ثابتة' ? 'badge-oxford' : 'badge-orange'}">${f.type === 'fixed' || f.type === 'ثابتة' ? 'ثابت' : 'متغير'}</span></td>
-      <td style="font-weight:800;">${f.amount.toLocaleString('ar-SA')} ر.س</td>
+      <td style="font-weight:800;">${f.amount.toLocaleString('en-US')} ر.س</td>
       <td>${f.dueDate || 'نهاية الشهر'}</td>
       <td><span class="badge ${f.status === 'paid' ? 'badge-green' : 'badge-orange'}">${f.status === 'paid' ? 'تم السداد' : 'مستحق مجدول'}</span></td>
     </tr>
