@@ -15,6 +15,10 @@ def get_db_connection():
 def index():
     return render_template('index.html')
 
+@app.route('/mindmap')
+def mindmap():
+    return render_template('mindmap.html')
+
 @app.route('/api/ai/analyze', methods=['GET'])
 def ai_analyze():
     try:
