@@ -1,0 +1,50 @@
+<!-- 7. DEPARTMENT: Human Resources -->
+<div class="view-section" id="view-dept-hr">
+  <div class="department-view" id="dept-hr" data-dept="hr">
+    <div class="dept-header">
+      <div class="dept-info">
+        <h1><i class="fa-solid fa-users-gear" style="color:var(--virtus-accent,#E06B43);margin-left:8px;"></i>7. قسم الموارد البشرية والورديات</h1>
+        <p class="dept-subtitle">Human Resources • مستوحى من نظام Odoo Employees & Timesheets</p>
+      </div>
+      <div class="dept-actions">
+        <button class="btn-secondary btn" onclick="exportToCSV(deptTasks.hr, 'مهام_الموارد_البشرية')"><i class="fa-solid fa-file-csv" style="margin-left:6px;"></i>تصدير مهام</button>
+        <button class="btn-primary btn" onclick="openAddTaskModal('hr')"><i class="fa-solid fa-plus" style="margin-left:6px;"></i>إضافة مهمة إدارية</button>
+      </div>
+    </div>
+    
+    <div class="tabs-container">
+      <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchDeptTab('hr', 'expert-tasks', this)">مهام النظام الخبيرة (12 مهمة)</button>
+        <button class="tab-btn" onclick="switchDeptTab('hr', 'mgmt-tasks', this)">مهام الإدارة (Kanban)</button>
+        <button class="tab-btn" onclick="switchDeptTab('hr', 'dashboard', this)">جدول الورديات والانضباط</button>
+      </div>
+      
+      <div class="tab-content active" id="expert-tasks-hr">
+        <div class="tasks-checklist" id="expertTasksList-hr"></div>
+      </div>
+      
+      <div class="tab-content" id="mgmt-tasks-hr">
+        <div class="kanban-board">
+          <div class="kanban-column" data-status="todo"><h3>للعمل <span class="count" id="todoCount-hr">0</span></h3><div class="tasks-container" id="todoTasks-hr"></div></div>
+          <div class="kanban-column" data-status="in-progress"><h3>قيد التنفيذ <span class="count" id="inProgressCount-hr">0</span></h3><div class="tasks-container" id="inProgressTasks-hr"></div></div>
+          <div class="kanban-column" data-status="done"><h3>مكتمل <span class="count" id="doneCount-hr">0</span></h3><div class="tasks-container" id="doneTasks-hr"></div></div>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="dashboard-hr">
+        <div class="content-card" style="margin-bottom:0;">
+          <h3 style="font-size:1rem;font-weight:700;margin-bottom:0.75rem;">توزيع مناوبات كوادر البار</h3>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead><tr><th>الموظف</th><th>المسمى الوظيفي</th><th>الفترة</th><th>ساعات العمل</th><th>الانضباط</th></tr></thead>
+              <tbody>
+                <tr><td>عارف</td><td>باريستا</td><td>الوردية الصباحية (7:00 ص - 3:00 م)</td><td>8 ساعات</td><td><span class="badge badge-green">100% منتظم</span></td></tr>
+                <tr><td>علم</td><td>باريستا</td><td>الوردية المسائية (3:00 م - 11:00 م)</td><td>8 ساعات</td><td><span class="badge badge-green">100% منتظم</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

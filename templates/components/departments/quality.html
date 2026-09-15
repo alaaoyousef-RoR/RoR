@@ -1,0 +1,55 @@
+<!-- 2. DEPARTMENT: Quality Control & R&D -->
+<div class="view-section" id="view-dept-quality">
+  <div class="department-view" id="dept-quality_rd" data-dept="quality_rd">
+    <div class="dept-header">
+      <div class="dept-info">
+        <h1><i class="fa-solid fa-award" style="color:var(--virtus-accent,#E06B43);margin-left:8px;"></i>2. قسم ضبط الجودة والبحث والتطوير</h1>
+        <p class="dept-subtitle">Quality Control & R&D • مستوحى من نظام Odoo Quality & PLM</p>
+      </div>
+      <div class="dept-actions">
+        <button class="btn-secondary btn" onclick="exportToCSV(deptTasks.quality_rd, 'مهام_الجودة_والبحث')"><i class="fa-solid fa-file-csv" style="margin-left:6px;"></i>تصدير مهام</button>
+        <button class="btn-primary btn" onclick="openAddTaskModal('quality_rd')"><i class="fa-solid fa-plus" style="margin-left:6px;"></i>إضافة مهمة إدارية</button>
+      </div>
+    </div>
+    
+    <div class="tabs-container">
+      <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchDeptTab('quality_rd', 'expert-tasks', this)">مهام النظام الخبيرة (12 مهمة)</button>
+        <button class="tab-btn" onclick="switchDeptTab('quality_rd', 'mgmt-tasks', this)">مهام الإدارة (Kanban)</button>
+        <button class="tab-btn" onclick="switchDeptTab('quality_rd', 'dashboard', this)">سجل التذوق والـ Cupping</button>
+      </div>
+      
+      <div class="tab-content active" id="expert-tasks-quality_rd">
+        <div class="tasks-checklist" id="expertTasksList-quality_rd"></div>
+      </div>
+      
+      <div class="tab-content" id="mgmt-tasks-quality_rd">
+        <div class="kanban-board">
+          <div class="kanban-column" data-status="todo"><h3>للعمل <span class="count" id="todoCount-quality_rd">0</span></h3><div class="tasks-container" id="todoTasks-quality_rd"></div></div>
+          <div class="kanban-column" data-status="in-progress"><h3>قيد التنفيذ <span class="count" id="inProgressCount-quality_rd">0</span></h3><div class="tasks-container" id="inProgressTasks-quality_rd"></div></div>
+          <div class="kanban-column" data-status="done"><h3>مكتمل <span class="count" id="doneCount-quality_rd">0</span></h3><div class="tasks-container" id="doneTasks-quality_rd"></div></div>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="dashboard-quality_rd">
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-icon blue"><i class="fa-solid fa-star"></i></div><div class="kpi-content"><div class="kpi-label">متوسط نقاط التقييم SCA</div><div class="kpi-value">86.75 / 100</div></div></div>
+          <div class="kpi-card"><div class="kpi-icon green"><i class="fa-solid fa-droplet"></i></div><div class="kpi-content"><div class="kpi-label">متوسط نسبة الـ TDS بالبار</div><div class="kpi-value">1.38% (مثالي)</div></div></div>
+          <div class="kpi-card"><div class="kpi-icon orange"><i class="fa-solid fa-flask"></i></div><div class="kpi-content"><div class="kpi-label">وصفات جديدة قيد التطوير</div><div class="kpi-value">2 مشروبات</div></div></div>
+        </div>
+        <div class="content-card" style="margin-bottom:0;">
+          <h3 style="font-size:1rem;font-weight:700;margin-bottom:0.75rem;">سجل جلسات التذوق المعتمدة (SCA Cupping Sessions)</h3>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead><tr><th>التاريخ</th><th>المحصول</th><th>الدرجة SCA</th><th>الإيحاءات والنوتات النكهية</th><th>المقيّم</th></tr></thead>
+              <tbody>
+                <tr><td>2026-09-14</td><td>إثيوبيا شلشلي مغسول</td><td>87.5</td><td>ياسمين، خوخ، حمضيات خفيفة</td><td>علاء (Q-Grader)</td></tr>
+                <tr><td>2026-09-12</td><td>كولومبيا ويلا سوبريمو</td><td>86.0</td><td>شوكولاتة داكنة، كراميل، برتقال</td><td>علاء</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

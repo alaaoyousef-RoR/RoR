@@ -1,0 +1,43 @@
+<!-- 3. DEPARTMENT: Marketing & Brand -->
+<div class="view-section" id="view-dept-marketing">
+  <div class="department-view" id="dept-marketing" data-dept="marketing">
+    <div class="dept-header">
+      <div class="dept-info">
+        <h1><i class="fa-solid fa-bullhorn" style="color:var(--virtus-accent,#E06B43);margin-left:8px;"></i>3. قسم التسويق والعلامة التجارية</h1>
+        <p class="dept-subtitle">Marketing & Brand • مستوحى من نظام Odoo Social & Email Marketing</p>
+      </div>
+      <div class="dept-actions">
+        <button class="btn-secondary btn" onclick="exportToCSV(deptTasks.marketing, 'مهام_التسويق')"><i class="fa-solid fa-file-csv" style="margin-left:6px;"></i>تصدير مهام</button>
+        <button class="btn-primary btn" onclick="openAddTaskModal('marketing')"><i class="fa-solid fa-plus" style="margin-left:6px;"></i>إضافة مهمة إدارية</button>
+      </div>
+    </div>
+    
+    <div class="tabs-container">
+      <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchDeptTab('marketing', 'expert-tasks', this)">مهام النظام الخبيرة (12 مهمة)</button>
+        <button class="tab-btn" onclick="switchDeptTab('marketing', 'mgmt-tasks', this)">مهام الإدارة (Kanban)</button>
+        <button class="tab-btn" onclick="switchDeptTab('marketing', 'dashboard', this)">مؤشرات التفاعل وتقويم النشر</button>
+      </div>
+      
+      <div class="tab-content active" id="expert-tasks-marketing">
+        <div class="tasks-checklist" id="expertTasksList-marketing"></div>
+      </div>
+      
+      <div class="tab-content" id="mgmt-tasks-marketing">
+        <div class="kanban-board">
+          <div class="kanban-column" data-status="todo"><h3>للعمل <span class="count" id="todoCount-marketing">0</span></h3><div class="tasks-container" id="todoTasks-marketing"></div></div>
+          <div class="kanban-column" data-status="in-progress"><h3>قيد التنفيذ <span class="count" id="inProgressCount-marketing">0</span></h3><div class="tasks-container" id="inProgressTasks-marketing"></div></div>
+          <div class="kanban-column" data-status="done"><h3>مكتمل <span class="count" id="doneCount-marketing">0</span></h3><div class="tasks-container" id="doneTasks-marketing"></div></div>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="dashboard-marketing">
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-icon blue"><i class="fa-solid fa-location-dot"></i></div><div class="kpi-content"><div class="kpi-label">مشاهدات Google Maps شهرياً</div><div class="kpi-value">18,400 زيارة</div></div></div>
+          <div class="kpi-card"><div class="kpi-icon orange"><i class="fa-solid fa-mobile-screen-button"></i></div><div class="kpi-content"><div class="kpi-label">معدل التفاعل على إنستغرام</div><div class="kpi-value">6.8% (مرتفع)</div></div></div>
+          <div class="kpi-card"><div class="kpi-icon green"><i class="fa-solid fa-ticket"></i></div><div class="kpi-content"><div class="kpi-label">أعضاء برنامج ولاء RoR</div><div class="kpi-value">420 مشترك</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,7 +4,7 @@
     <span class="traffic-dot traffic-red"></span>
     <span class="traffic-dot traffic-yellow"></span>
     <span class="traffic-dot traffic-green"></span>
-    <button id="sidebarCloseBtn" class="sidebar-close-mobile-btn" aria-label="إغلاق القائمة الجانبية">✕</button>
+    <button id="sidebarCloseBtn" class="sidebar-close-mobile-btn" aria-label="إغلاق القائمة الجانبية"><i class="fa-solid fa-xmark"></i></button>
   </div>
 
   <!-- Brand Top Section -->
@@ -49,7 +49,7 @@
     <div class="nav-section" data-section="dashboard">
       <button class="section-header" type="button" aria-expanded="true">
         <span class="section-header-left">
-          <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
+          <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
           <span class="title-text">لوحة التحكم الرئيسية</span>
         </span>
         <span class="chevron"><i class="fa-solid fa-chevron-down"></i></span>
@@ -66,7 +66,7 @@
     <div class="nav-section" data-section="operational-plan">
       <button class="section-header" type="button" aria-expanded="false">
         <span class="section-header-left">
-          <span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span>
+          <span class="nav-icon"><i class="fa-solid fa-clipboard-list"></i></span>
           <span class="title-text">الخطة التشغيلية</span>
         </span>
         <span class="chevron"><i class="fa-solid fa-chevron-down"></i></span>
@@ -103,7 +103,7 @@
     <div class="nav-section" data-section="ror-system">
       <button class="section-header" type="button" aria-expanded="false">
         <span class="section-header-left">
-          <span class="nav-icon"><i class="fa-solid fa-cubes"></i></span>
+          <span class="nav-icon"><i class="fa-solid fa-sliders"></i></span>
           <span class="title-text">RoR Operation System</span>
         </span>
         <span class="chevron"><i class="fa-solid fa-chevron-down"></i></span>
@@ -123,7 +123,7 @@
         </a>
         <a href="#roastery-sales" class="nav-link">
           <span class="sub-dot"></span>
-          <span class="label">مبيعات المحمصة (جيسن 15 كجم)</span>
+          <span class="label">مبيعات المحمصة (الحماصة الرائدة)</span>
         </a>
         <a href="#revolution-plan" class="nav-link">
           <span class="sub-dot"></span>
@@ -136,7 +136,7 @@
     <div class="nav-section" data-section="departments">
       <button class="section-header" type="button" aria-expanded="false">
         <span class="section-header-left">
-          <span class="nav-icon"><i class="fa-solid fa-list-check"></i></span>
+          <span class="nav-icon"><i class="fa-solid fa-building"></i></span>
           <span class="title-text">الأنظمة التشغيلية (8 أقسام)</span>
         </span>
         <span class="chevron"><i class="fa-solid fa-chevron-down"></i></span>
@@ -210,7 +210,7 @@
     <div class="nav-section" data-section="development">
       <button class="section-header" type="button" aria-expanded="false">
         <span class="section-header-left">
-          <span class="nav-icon"><i class="fa-solid fa-rocket"></i></span>
+          <span class="nav-icon"><i class="fa-solid fa-arrow-trend-up"></i></span>
           <span class="title-text">التطوير والنمو المؤسسي</span>
         </span>
         <span class="chevron"><i class="fa-solid fa-chevron-down"></i></span>
@@ -251,10 +251,10 @@
       <span class="pinned-badge">4</span>
     </a>
 
-    <a href="#process-improvement" class="pinned-nav-item" onclick="triggerAiAdvisor(); return false;">
+    <a href="#process-improvement" class="pinned-nav-item">
       <div class="pinned-item-main">
-        <span class="pinned-icon"><i class="fa-regular fa-circle-question"></i></span>
-        <span class="pinned-label">المستشار والدعم الفني</span>
+        <span class="pinned-icon"><i class="fa-regular fa-file-lines"></i></span>
+        <span class="pinned-label">أدلة وسياسات التشغيل</span>
       </div>
     </a>
 
@@ -277,7 +277,7 @@
         <div class="user-name">علاء السيد</div>
         <div class="user-role-email">CEO &amp; Roastmaster</div>
       </div>
-      <button class="profile-action-btn" aria-label="خيارات الحساب" onclick="triggerAiAdvisor()">
+      <button class="profile-action-btn" aria-label="خيارات الحساب" onclick="showNotification('ملف الشريك المؤسس: علاء السيد (مفعل)', 'info')">
         <i class="fa-solid fa-ellipsis-vertical"></i>
       </button>
     </div>

@@ -1,0 +1,52 @@
+<!-- 4. DEPARTMENT: Sales & Business Development B2B -->
+<div class="view-section" id="view-dept-sales">
+  <div class="department-view" id="dept-sales_b2b" data-dept="sales_b2b">
+    <div class="dept-header">
+      <div class="dept-info">
+        <h1><i class="fa-solid fa-handshake" style="color:var(--virtus-accent,#E06B43);margin-left:8px;"></i>4. قسم المبيعات وتطوير الأعمال (B2B)</h1>
+        <p class="dept-subtitle">Sales & B2B Development • مستوحى من نظام Odoo CRM & Sales</p>
+      </div>
+      <div class="dept-actions">
+        <button class="btn-secondary btn" onclick="exportToCSV(deptTasks.sales_b2b, 'مهام_المبيعات')"><i class="fa-solid fa-file-csv" style="margin-left:6px;"></i>تصدير مهام</button>
+        <button class="btn-primary btn" onclick="openAddTaskModal('sales_b2b')"><i class="fa-solid fa-plus" style="margin-left:6px;"></i>إضافة مهمة إدارية</button>
+      </div>
+    </div>
+    
+    <div class="tabs-container">
+      <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchDeptTab('sales_b2b', 'expert-tasks', this)">مهام النظام الخبيرة (12 مهمة)</button>
+        <button class="tab-btn" onclick="switchDeptTab('sales_b2b', 'mgmt-tasks', this)">مهام الإدارة (Kanban)</button>
+        <button class="tab-btn" onclick="switchDeptTab('sales_b2b', 'dashboard', this)">خط أنابيب الجملة (B2B Pipeline)</button>
+      </div>
+      
+      <div class="tab-content active" id="expert-tasks-sales_b2b">
+        <div class="tasks-checklist" id="expertTasksList-sales_b2b"></div>
+      </div>
+      
+      <div class="tab-content" id="mgmt-tasks-sales_b2b">
+        <div class="kanban-board">
+          <div class="kanban-column" data-status="todo"><h3>للعمل <span class="count" id="todoCount-sales_b2b">0</span></h3><div class="tasks-container" id="todoTasks-sales_b2b"></div></div>
+          <div class="kanban-column" data-status="in-progress"><h3>قيد التنفيذ <span class="count" id="inProgressCount-sales_b2b">0</span></h3><div class="tasks-container" id="inProgressTasks-sales_b2b"></div></div>
+          <div class="kanban-column" data-status="done"><h3>مكتمل <span class="count" id="doneCount-sales_b2b">0</span></h3><div class="tasks-container" id="doneTasks-sales_b2b"></div></div>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="dashboard-sales_b2b">
+        <div class="content-card" style="margin-bottom:0;">
+          <h3 style="font-size:1rem;font-weight:700;margin-bottom:0.75rem;">قائمة الـ 10 مقاهٍ المستهدفة للتعاقد مع الحماصة الرائدة</h3>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead><tr><th>المقهى / العميل</th><th>الموقع</th><th>الكمية المتوقعة شهرياً</th><th>المرحلة الحالية</th><th>المسؤول</th></tr></thead>
+              <tbody>
+                <tr><td>مقهى الأفق المختص</td><td>حائل</td><td>80 كجم</td><td><span class="badge badge-green">تم التعاقد والتوريد</span></td><td>علاء</td></tr>
+                <tr><td>سلسلة مقاهي نجد</td><td>الرياض</td><td>120 كجم</td><td><span class="badge badge-green">تم التعاقد والتوريد</span></td><td>علاء</td></tr>
+                <tr><td>مقهى زاوية البن</td><td>بريدة</td><td>50 كجم</td><td><span class="badge badge-blue">إرسال عينات وتفاوض</span></td><td>جود</td></tr>
+                <tr><td>كافيه ومخبز ريف</td><td>عنيزة</td><td>40 كجم</td><td><span class="badge badge-orange">تحديد موعد زيارة</span></td><td>جود</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

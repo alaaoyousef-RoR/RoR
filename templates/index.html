@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RoR Enterprise Suite | نظام التشغيل والتحول المؤسسي (ERP)</title>
-
-  <!-- Google Fonts: Rubik (300 to 900) -->
+  
+  <!-- Google Fonts: IBM Plex Sans Arabic (300, 400, 500, 600, 700) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <!-- FontAwesome 6 Icons CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+  
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
   <!-- Chart.js 4.4 CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
+  
   <!-- SheetJS (XLSX) Export -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
+  
   <!-- Mermaid.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-
+  
   <!-- Base Stylesheet -->
   <link rel="stylesheet" href="/static/css/style.css">
 
@@ -32,12 +32,12 @@
        DARK VIRTUS THEME & CORE DESIGN SYSTEM
        ═══════════════════════════════════════════════════════════════ -->
   <style>
-    /* 1. Global Typography & Western Numerals */
+    /* 1. Global Typography: IBM Plex Sans Arabic + Western Numerals */
     *,
     *::before,
     *::after {
       box-sizing: border-box;
-      font-family: 'Rubik', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+      font-family: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
       font-variant-numeric: tabular-nums !important;
       font-feature-settings: "lnum" 1 !important;
     }
@@ -50,26 +50,26 @@
       --virtus-surface: #1D1F24;
       --virtus-surface-hover: #23262D;
       --virtus-surface-elevated: #262930;
-      --virtus-border: #2A2D35;
+      --virtus-border: #2D3139;
       --virtus-border-subtle: rgba(255, 255, 255, 0.07);
-
+      
       --virtus-accent: #E06B43;
       --virtus-accent-hover: #EC7A53;
       --virtus-accent-light: rgba(224, 107, 67, 0.15);
       --virtus-gold: #DFA15A;
       --virtus-gold-light: rgba(223, 161, 90, 0.15);
-
+      
       --virtus-text-primary: #FFFFFF;
       --virtus-text-secondary: #F3F4F6;
       --virtus-text-muted: #9CA3AF;
       --virtus-text-dim: #6B7280;
-
+      
       --virtus-success: #10B981;
       --virtus-success-bg: rgba(16, 185, 129, 0.12);
       --virtus-warning: #F59E0B;
       --virtus-danger: #EF4444;
       --virtus-danger-bg: rgba(239, 68, 68, 0.12);
-
+      
       /* Overriding Legacy Palette */
       --canvas-bg: var(--virtus-canvas);
       --canvas-bg-alt: var(--virtus-canvas-alt);
@@ -104,15 +104,132 @@
       display: flex;
       min-height: 100vh;
       background-color: var(--virtus-canvas) !important;
+      position: relative;
+      transition: all 0.3s ease;
     }
 
-    /* 4. Left Fixed Sidebar Virtus Dark */
+    /* 4. Left Fixed Sidebar Virtus Dark & Collapsible Functionality */
     .sidebar {
       width: 270px !important;
       min-width: 270px !important;
       background-color: var(--virtus-sidebar) !important;
       border-left: 1px solid var(--virtus-border) !important;
       color: var(--virtus-text-muted) !important;
+      transition: all 0.3s ease !important;
+      display: flex;
+      flex-direction: column;
+      z-index: 50;
+    }
+
+    /* Desktop Collapsed Sidebar State (72px Mini Sidebar) */
+    .sidebar.collapsed,
+    body.sidebar-collapsed .sidebar {
+      width: 72px !important;
+      min-width: 72px !important;
+      overflow-x: hidden !important;
+    }
+
+    .sidebar.collapsed .brand-subtitle,
+    .sidebar.collapsed .brand-version-badge,
+    .sidebar.collapsed .sidebar-search-container,
+    .sidebar.collapsed .title-text,
+    .sidebar.collapsed .chevron,
+    .sidebar.collapsed .label,
+    .sidebar.collapsed .sub-dot,
+    .sidebar.collapsed .pinned-label,
+    .sidebar.collapsed .pinned-badge,
+    .sidebar.collapsed .user-profile-details,
+    .sidebar.collapsed .profile-action-btn,
+    body.sidebar-collapsed .sidebar .brand-subtitle,
+    body.sidebar-collapsed .sidebar .brand-version-badge,
+    body.sidebar-collapsed .sidebar .sidebar-search-container,
+    body.sidebar-collapsed .sidebar .title-text,
+    body.sidebar-collapsed .sidebar .chevron,
+    body.sidebar-collapsed .sidebar .label,
+    body.sidebar-collapsed .sidebar .sub-dot,
+    body.sidebar-collapsed .sidebar .pinned-label,
+    body.sidebar-collapsed .sidebar .pinned-badge,
+    body.sidebar-collapsed .sidebar .user-profile-details,
+    body.sidebar-collapsed .sidebar .profile-action-btn {
+      display: none !important;
+      opacity: 0 !important;
+    }
+
+    .sidebar.collapsed .sidebar-header {
+      padding: 1rem 0 !important;
+      justify-content: center !important;
+    }
+
+    .sidebar.collapsed .sidebar-brand-wrapper {
+      justify-content: center !important;
+      gap: 0 !important;
+      padding: 0 0.5rem !important;
+    }
+
+    .sidebar.collapsed .sidebar-logo-icon {
+      margin: 0 auto;
+    }
+
+    .sidebar.collapsed .brand-title {
+      display: none !important;
+    }
+
+    .sidebar.collapsed .section-header {
+      padding: 0.75rem 0 !important;
+      justify-content: center !important;
+    }
+
+    .sidebar.collapsed .section-header-left {
+      margin: 0 auto !important;
+      justify-content: center !important;
+    }
+
+    .sidebar.collapsed .nav-icon {
+      margin: 0 !important;
+      font-size: 1.15rem !important;
+    }
+
+    .sidebar.collapsed .section-content {
+      padding: 0.25rem 0 !important;
+    }
+
+    .sidebar.collapsed .nav-link {
+      padding: 0.6rem 0 !important;
+      justify-content: center !important;
+    }
+
+    .sidebar.collapsed .sidebar-bottom-pinned {
+      padding: 0.75rem 0 !important;
+    }
+
+    .sidebar.collapsed .pinned-nav-item {
+      padding: 0.65rem 0 !important;
+      justify-content: center !important;
+    }
+
+    .sidebar.collapsed .pinned-item-main {
+      justify-content: center !important;
+    }
+
+    .sidebar.collapsed .pinned-icon {
+      margin: 0 !important;
+      font-size: 1.1rem !important;
+    }
+
+    .sidebar.collapsed .sidebar-footer {
+      padding: 0.75rem 0 !important;
+      justify-content: center !important;
+    }
+
+    .sidebar.collapsed .user-profile-card {
+      padding: 0.5rem 0 !important;
+      justify-content: center !important;
+      border: none !important;
+      background: transparent !important;
+    }
+
+    .sidebar.collapsed .user-avatar-container {
+      margin: 0 auto;
     }
 
     .sidebar-brand-wrapper {
@@ -205,11 +322,12 @@
       min-width: 0;
       display: flex;
       flex-direction: column;
+      transition: all 0.3s ease !important;
     }
 
     /* 6. Top Header Bar */
     .top-header {
-      height: 70px;
+      height: 72px;
       background-color: var(--virtus-sidebar) !important;
       border-bottom: 1px solid var(--virtus-border) !important;
       padding: 0 1.75rem;
@@ -226,26 +344,28 @@
       align-items: center;
       gap: 1.25rem;
       flex: 1;
-      max-width: 650px;
+      max-width: 600px;
     }
 
     .sidebar-toggle-btn {
       background: #1D1F24 !important;
       border: 1px solid var(--virtus-border) !important;
       color: var(--virtus-text-muted) !important;
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: all 0.2s ease;
+      font-size: 1rem;
     }
 
     .sidebar-toggle-btn:hover {
       color: var(--virtus-accent) !important;
       border-color: var(--virtus-accent) !important;
+      background: var(--virtus-surface-hover) !important;
     }
 
     /* Global Search Box */
@@ -324,63 +444,54 @@
       font-weight: 600;
     }
 
-    /* Top Bar Header Actions */
+    /* Top Bar Header Actions & Clean Two-Line Time Greeting */
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 0.85rem;
+      gap: 1rem;
     }
 
-    .header-greeting-badge {
+    /* Two-Line Minimal Layout for Header Greeting */
+    .header-greeting-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      text-align: left;
+      gap: 2px;
+    }
+
+    .greeting-line-1 {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      border-radius: 10px;
-      background: rgba(224, 107, 67, 0.08);
-      border: 1px solid rgba(224, 107, 67, 0.2);
-      font-size: 0.82rem;
-      color: var(--virtus-text-secondary);
+      gap: 7px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #FFFFFF;
     }
 
-    .header-greeting-badge .greeting-text {
+    .greeting-line-1 i {
       color: var(--virtus-accent);
-      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .greeting-line-2 {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--virtus-text-muted);
+      letter-spacing: -0.2px;
     }
 
     .header-date-badge {
       display: flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 12px;
+      padding: 7px 14px;
       border-radius: 10px;
       background: #111215;
       border: 1px solid var(--virtus-border);
       font-size: 0.8rem;
       font-weight: 600;
       color: var(--virtus-text-muted);
-    }
-
-    .btn-ai-advisor {
-      background: linear-gradient(135deg, #E06B43 0%, #C45731 100%) !important;
-      color: #FFFFFF !important;
-      border: 1px solid rgba(255, 255, 255, 0.15) !important;
-      border-radius: 10px;
-      padding: 0.55rem 1.15rem;
-      font-size: 0.85rem;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(224, 107, 67, 0.35);
-      transition: all 0.2s ease;
-    }
-
-    .btn-ai-advisor:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(224, 107, 67, 0.5);
-      background: linear-gradient(135deg, #EC7A53 0%, #E06B43 100%) !important;
     }
 
     /* 7. Workspace and Elevated Surface Cards */
@@ -459,7 +570,6 @@
         opacity: 0;
         transform: scale(0.97);
       }
-
       to {
         opacity: 1;
         transform: scale(1);
@@ -592,14 +702,22 @@
       font-size: 1.5rem;
       font-weight: 800;
       color: #FFFFFF;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .welcome-subtitle-badge {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--virtus-gold);
+      margin-bottom: 0.75rem;
+      display: block;
     }
 
     .welcome-subtitle {
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       color: var(--virtus-text-muted);
       line-height: 1.6;
-      max-width: 520px;
+      max-width: 530px;
       margin: 0 auto;
     }
 
@@ -677,132 +795,19 @@
       transform: translateY(-1px);
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       AI EXECUTIVE ADVISOR MODAL STYLES
-       ═══════════════════════════════════════════════════════════════ */
-    .ai-advisor-card {
-      max-width: 740px !important;
-      border: 1px solid rgba(223, 161, 90, 0.3) !important;
+    /* Mobile Drawer Overlay Backdrop */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 45;
+      transition: opacity 0.3s ease;
     }
 
-    .ai-advisor-header {
-      background: linear-gradient(135deg, #1C1D24 0%, #16171B 100%) !important;
-      border-bottom: 1px solid var(--virtus-border);
-    }
-
-    .ai-metrics-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .ai-metric-card {
-      background: #16171B;
-      border: 1px solid var(--virtus-border);
-      border-radius: 12px;
-      padding: 1rem;
-    }
-
-    .ai-metric-card .ai-card-title {
-      font-size: 0.76rem;
-      color: var(--virtus-text-dim);
-      font-weight: 600;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .ai-metric-card .ai-card-val {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: #FFFFFF;
-      margin-bottom: 4px;
-    }
-
-    .ai-metric-card .ai-card-sub {
-      font-size: 0.72rem;
-      color: var(--virtus-gold);
-      font-weight: 600;
-    }
-
-    .ai-query-box {
-      margin-top: 1.25rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid var(--virtus-border);
-    }
-
-    .ai-quick-prompts {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 0.85rem;
-    }
-
-    .ai-prompt-chip {
-      background: #16171B;
-      border: 1px solid var(--virtus-border);
-      color: var(--virtus-text-muted);
-      border-radius: 9999px;
-      padding: 5px 12px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .ai-prompt-chip:hover {
-      border-color: var(--virtus-accent);
-      color: #FFFFFF;
-      background: var(--virtus-accent-light);
-    }
-
-    .ai-input-group {
-      display: flex;
-      gap: 8px;
-    }
-
-    .ai-input-group input {
-      flex: 1;
-      background: #111215;
-      border: 1px solid var(--virtus-border);
-      border-radius: 10px;
-      padding: 0.7rem 1rem;
-      color: #FFFFFF;
-      font-size: 0.85rem;
-    }
-
-    .ai-input-group input:focus {
-      outline: none;
-      border-color: var(--virtus-gold);
-    }
-
-    .ai-input-group button {
-      background: var(--virtus-accent);
-      border: none;
-      color: #FFFFFF;
-      border-radius: 10px;
-      padding: 0 1.25rem;
-      font-weight: 700;
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .ai-response-container {
-      background: #131418;
-      border: 1px solid var(--virtus-border);
-      border-radius: 12px;
-      padding: 1.25rem;
-      margin-top: 1rem;
-      min-height: 120px;
-      line-height: 1.7;
-      font-size: 0.85rem;
-      color: var(--virtus-text-secondary);
-      max-height: 280px;
-      overflow-y: auto;
+    .sidebar-overlay.active {
+      display: block;
     }
 
     /* Responsive adjustments */
@@ -810,42 +815,49 @@
       .welcome-stats-grid {
         grid-template-columns: repeat(2, 1fr);
       }
-
-      .ai-metrics-row {
-        grid-template-columns: 1fr;
-      }
-
       .top-header {
         padding: 0 1rem;
       }
-
-      .header-greeting-badge {
+      .sidebar {
+        position: fixed !important;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        transform: translateX(100%);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7);
+      }
+      .sidebar.mobile-open {
+        transform: translateX(0) !important;
+      }
+      .greeting-line-2 {
         display: none;
       }
     }
   </style>
 </head>
-
 <body>
 
-  <div class="app-wrapper">
+  <!-- Mobile Drawer Overlay Backdrop -->
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
+  <div class="app-wrapper" id="appWrapper">
+    
     <!-- 1. MULTI-TIER ACCORDION SIDEBAR -->
     {% include 'components/sidebar.html' %}
 
     <!-- 2. MAIN WORKSPACE CONTAINER -->
-    <div class="main-content" id="mainContent">
-
-      <!-- Top Bar Header with Dynamic Time-Aware Greeting & Virtus Dark System -->
-      <header class="top-header">
+    <div class="main-content flex-1 min-h-screen px-6 py-6 overflow-y-auto transition-all duration-300 w-full max-w-[1600px] mx-auto" id="main-content">
+      
+      <!-- Top Bar Header with Collapsible Sidebar Toggle & Minimal Two-Line Greeting -->
+      <header class="top-header flex items-center justify-between gap-4 mb-8 w-full">
         <div class="header-left">
-          <button class="btn-icon sidebar-toggle-btn" id="sidebarToggle" aria-label="تبديل القائمة">
-            <i class="fa-solid fa-bars"></i>
+          <button class="btn-icon sidebar-toggle-btn" id="sidebarToggle" aria-label="تبديل القائمة الجانبية">
+            <i class="fa-solid fa-bars text-gray-300 text-base"></i>
           </button>
-
+          
           <!-- Global Search -->
           <div class="global-search">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <i class="fa-solid fa-magnifying-glass text-gray-400 text-sm search-icon"></i>
             <input type="text" id="globalSearchInput"
               placeholder="بحث فوري في المهام، المنيو، مبيعات البار، والمحمصة..."
               oninput="performGlobalSearch(this.value)">
@@ -854,25 +866,22 @@
         </div>
 
         <div class="header-actions">
-          <!-- Dynamic Time-Aware Greeting -->
-          <div class="header-greeting-badge" id="topbarGreetingContainer">
-            <i class="fa-regular fa-clock" style="color:var(--virtus-accent);"></i>
-            <span id="topbarGreeting" class="greeting-text">مساء الخير والريادة</span>
-            <span style="color:var(--virtus-text-dim);">|</span>
-            <span style="font-weight:700;color:var(--virtus-text-primary);">علاء يوسف</span>
+          <!-- Elegant Two-Line Minimal Time Greeting Layout -->
+          <div class="header-greeting-container" id="topbarGreetingContainer">
+            <div class="greeting-line-1">
+              <i class="fa-regular fa-clock"></i>
+              <span id="topbarGreetingText">مساء مبارك، علاء</span>
+            </div>
+            <div class="greeting-line-2" id="topbarGreetingSub">
+              المرحلة الانتقالية بعد 4 سنوات تشغيل
+            </div>
           </div>
 
           <!-- Live Date Display (Western Numerals) -->
           <div class="header-date-badge">
-            <i class="fa-regular fa-calendar" style="color:var(--virtus-gold);"></i>
+            <i class="fa-regular fa-calendar" style="color:var(--virtus-gold);margin-left:6px;"></i>
             <span id="topbarDateDisplay">15 سبتمبر 2026</span>
           </div>
-
-          <!-- AI Executive Advisor Button -->
-          <button onclick="triggerAiAdvisor()" class="btn-ai-advisor">
-            <i class="fa-solid fa-brain"></i>
-            <span>المستشار الذكي</span>
-          </button>
         </div>
       </header>
 
@@ -910,10 +919,10 @@
           <i class="fa-solid fa-gem"></i>
           <span>منظومة الحوكمة والتشغيل الميداني</span>
         </div>
-        <h2 class="welcome-title" id="splashGreetingTitle">مساء الخير والريادة، شركاء RoR</h2>
+        <h2 class="welcome-title" id="splashGreetingTitle">مساء مبارك، علاء — شركاء RoR</h2>
+        <span class="welcome-subtitle-badge" id="splashGreetingDayBadge">المرحلة الانتقالية بعد 4 سنوات تشغيل</span>
         <div class="welcome-subtitle">
-          Welcome To RoR Partners System — الانتقال المؤسسي بعد 4 سنوات تشغيلية، استثمار طاقة حماصة جيسن 15 كجم، وتطبيق
-          هيكل الـ 24 وظيفة المعتمد لحفظ السيولة والربحية.
+          Welcome To RoR Partners System — الانتقال المؤسسي بعد 4 سنوات تشغيلية، استثمار طاقة الحماصة الرائدة، وتطبيق هيكل الـ 24 وظيفة المعتمد لحفظ السيولة والربحية.
         </div>
       </div>
 
@@ -928,8 +937,8 @@
           <div class="stat-label">قائمون بالعمل (25%)</div>
         </div>
         <div class="welcome-stat-box">
-          <div class="stat-num" style="color:var(--virtus-gold);">15 kg</div>
-          <div class="stat-label">حماصة جيسن الرائدة</div>
+          <div class="stat-num" style="color:var(--virtus-gold);">100%</div>
+          <div class="stat-label">طاقة التحميص الأساسية</div>
         </div>
         <div class="welcome-stat-box">
           <div class="stat-num">9,300</div>
@@ -946,109 +955,6 @@
           <span>ابدأ العمل / Enter Workspace</span>
           <i class="fa-solid fa-arrow-left"></i>
         </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════════════════════════
-       AI EXECUTIVE ADVISOR MODAL (المستشار الذكي)
-       ═══════════════════════════════════════════════════════════════ -->
-  <div id="aiAdvisorModal" class="modal-backdrop">
-    <div class="modal-container ai-advisor-card">
-      <div class="modal-header ai-advisor-header">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div
-            style="width:36px;height:36px;border-radius:10px;background:var(--virtus-accent-light);border:1px solid rgba(224,107,67,0.3);display:flex;align-items:center;justify-content:center;color:var(--virtus-accent);">
-            <i class="fa-solid fa-brain"></i>
-          </div>
-          <div>
-            <h2 style="font-size:1.1rem;color:#FFFFFF;margin:0;">المستشار الذكي لـ RoR Partners</h2>
-            <div style="font-size:0.75rem;color:var(--virtus-gold);font-weight:600;">تحليل اقتصادي واستراتيجي فوري مبني
-              على بيانات النظام الحالية</div>
-          </div>
-        </div>
-        <button class="close-btn" onclick="closeAiAdvisorModal()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-
-      <div class="modal-body">
-        <!-- Live Computed Financial & Operational Insights -->
-        <div class="ai-metrics-row">
-          <!-- 1. Break-even Progress -->
-          <div class="ai-metric-card">
-            <div class="ai-card-title">
-              <i class="fa-solid fa-scale-balanced" style="color:var(--virtus-accent);"></i>
-              <span>تغطية نقطة التعادل</span>
-            </div>
-            <div class="ai-card-val" id="aiCardBreakeven">232%</div>
-            <div class="ai-card-sub" id="aiCardBreakevenSub">فائض تغطية ممتاز للمصاريف الثابتة</div>
-          </div>
-
-          <!-- 2. Top Stars Menu Items -->
-          <div class="ai-metric-card">
-            <div class="ai-card-title">
-              <i class="fa-solid fa-star" style="color:var(--virtus-gold);"></i>
-              <span>أعلى أصناف النجوم (Stars)</span>
-            </div>
-            <div class="ai-card-val" style="font-size:0.95rem;line-height:1.4;" id="aiCardTopStars">
-              قهوة كولومبي (80%)<br>كورتادو كلاسيك (77%)
-            </div>
-            <div class="ai-card-sub">أعلى هوامش ربح وإقبال</div>
-          </div>
-
-          <!-- 3. Roastery Giesen Utilization -->
-          <div class="ai-metric-card">
-            <div class="ai-card-title">
-              <i class="fa-solid fa-fire-burner" style="color:var(--virtus-accent);"></i>
-              <span>طاقة حماصة جيسن 15 كجم</span>
-            </div>
-            <div class="ai-card-val" id="aiCardRoastUtil">28.8%</div>
-            <div class="ai-card-sub">173 كجم محمص / 600 كجم شهرياً</div>
-          </div>
-        </div>
-
-        <!-- AI Query Assistant -->
-        <div class="ai-query-box">
-          <div style="font-size:0.8rem;font-weight:700;color:var(--virtus-text-muted);margin-bottom:6px;">
-            استفسر من المستشار الاستراتيجي:
-          </div>
-
-          <div class="ai-quick-prompts">
-            <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('كيف أقلل الهدر اليوم؟')">
-              <i class="fa-solid fa-arrow-trend-down"></i> كيف أقلل الهدر اليوم؟
-            </button>
-            <button type="button" class="ai-prompt-chip"
-              onclick="askAiPrompt('استراتيجية تصريف طاقة حماصة جيسن 15 كجم؟')">
-              <i class="fa-solid fa-fire"></i> استراتيجية تصريف طاقة جيسن 15 كجم؟
-            </button>
-            <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('تحسين مبيعات الوردية المسائية (علم)؟')">
-              <i class="fa-solid fa-chart-line"></i> تحسين مبيعات وردية علم؟
-            </button>
-            <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('خطة رفع نسبة التسكين إلى 50%؟')">
-              <i class="fa-solid fa-users"></i> خطة رفع نسبة التسكين لـ 50%؟
-            </button>
-          </div>
-
-          <div class="ai-input-group">
-            <input type="text" id="aiAdvisorPromptInput" placeholder="اكتب استفسارك التشغيلي أو الاقتصادي..."
-              onkeydown="if(event.key==='Enter') executeAiAdvisorQuery()">
-            <button type="button" onclick="executeAiAdvisorQuery()">
-              <i class="fa-solid fa-paper-plane"></i>
-              <span>تحليل</span>
-            </button>
-          </div>
-
-          <!-- Dynamic Output Container -->
-          <div class="ai-response-container" id="aiAdvisorResponseBox">
-            <div style="color:var(--virtus-text-dim);text-align:center;padding:1rem 0;">
-              اضغط على أحد الأسئلة السريعة أعلاه أو اكتب استفسارك لتحليل بيانات RoR في الحال...
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal-footer"
-        style="padding:1rem 1.5rem;background:#16171B;border-top:1px solid var(--virtus-border);display:flex;justify-content:flex-end;">
-        <button class="btn btn-secondary" onclick="closeAiAdvisorModal()">إغلاق النافذة</button>
       </div>
     </div>
   </div>
@@ -1230,32 +1136,41 @@
   <!-- ═══════════════════════════════════════════════════════════════
        SCRIPTS & ARCHITECTURAL INITIALIZATION
        ═══════════════════════════════════════════════════════════════ -->
+  <script src="/static/js/operations.js"></script>
+  <script src="/static/js/sales.js"></script>
+  <script src="/static/js/dev_pipeline.js"></script>
   <script src="/static/js/app.js"></script>
 
   <script>
-    // 1. Dynamic Time-Aware Greeting Calculation
+    // 1. Dynamic Time-Aware Greeting Calculation (Unified 2-Line Layout)
     function computeDynamicGreeting() {
       const now = new Date();
       const hour = now.getHours();
-      let greeting = "مساء الخير والريادة";
+      const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+      const dayName = days[now.getDay()];
 
+      let greetingPrefix = "مساء مبارك، علاء";
       if (hour >= 5 && hour < 12) {
-        greeting = "صباح الخير والبركة";
+        greetingPrefix = "صباح مبارك، علاء";
       } else if (hour >= 12 && hour < 17) {
-        greeting = "ظهراً مباركاً ومثمراً";
+        greetingPrefix = "ظهرًا مباركًا، علاء";
       } else {
-        greeting = "مساء الخير والريادة";
+        greetingPrefix = "مساء مبارك، علاء";
       }
 
-      // Update Top Bar
-      const topbarEl = document.getElementById('topbarGreeting');
-      if (topbarEl) topbarEl.textContent = greeting;
+      const subText = `${dayName} - المرحلة الانتقالية بعد 4 سنوات تشغيل`;
 
-      // Update Splash Greeting
+      // Update Top Bar Two-Line Greeting
+      const topbarTextEl = document.getElementById('topbarGreetingText');
+      const topbarSubEl = document.getElementById('topbarGreetingSub');
+      if (topbarTextEl) topbarTextEl.textContent = greetingPrefix;
+      if (topbarSubEl) topbarSubEl.textContent = subText;
+
+      // Synchronize Splash Modal
       const splashTitleEl = document.getElementById('splashGreetingTitle');
-      if (splashTitleEl) splashTitleEl.textContent = `${greeting}، شركاء RoR`;
-
-      return greeting;
+      const splashDayEl = document.getElementById('splashGreetingDayBadge');
+      if (splashTitleEl) splashTitleEl.textContent = `${greetingPrefix} — شركاء RoR`;
+      if (splashDayEl) splashDayEl.textContent = subText;
     }
 
     // 2. Onboarding Welcome Splash Logic
@@ -1281,203 +1196,73 @@
       if (modal) modal.classList.remove('active');
     }
 
-    // 3. AI Executive Advisor Computed Insights
-    function updateAiAdvisorInsights() {
-      try {
-        // A. Break-even Calculation
-        const financials = JSON.parse(localStorage.getItem('ror_financials') || '[]');
-        const cafeSales = JSON.parse(localStorage.getItem('ror_cafe_sales') || '[]');
-        const roastSales = JSON.parse(localStorage.getItem('ror_roast_sales') || '[]');
+    // 3. Collapsible Sidebar Implementation (Smooth Desktop & Mobile Drawer)
+    function setupCollapsibleSidebar() {
+      const toggleBtn = document.getElementById('sidebarToggle');
+      const sidebar = document.getElementById('mainSidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      const closeBtn = document.getElementById('sidebarCloseBtn');
 
-        const totalFixedCost = financials.reduce((s, f) => s + (f.amount || 0), 0) || 9300;
-        const totalCafeRev = cafeSales.reduce((s, c) => s + (parseFloat(c.revenue) || 0), 0);
-        const totalRoastRev = roastSales.reduce((s, r) => s + (parseFloat(r.paid) || 0), 0);
-        const totalRevenue = totalCafeRev + totalRoastRev || 21575;
+      if (!sidebar || !toggleBtn) return;
 
-        const ratio = Math.round((totalRevenue / totalFixedCost) * 100);
-        const beEl = document.getElementById('aiCardBreakeven');
-        if (beEl) beEl.textContent = `${ratio}%`;
+      toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isMobile = window.innerWidth <= 900;
 
-        const beSubEl = document.getElementById('aiCardBreakevenSub');
-        if (beSubEl) {
-          beSubEl.textContent = ratio >= 100
-            ? `فائض تغطية بنسبة ${ratio - 100}% فوق المصاريف الثابتة`
-            : `تغطية جزئية، متبقي ${(totalFixedCost - totalRevenue).toLocaleString()} ر.س`;
+        if (isMobile) {
+          // Mobile: toggle drawer overlay
+          const isOpen = sidebar.classList.toggle('mobile-open');
+          if (overlay) overlay.classList.toggle('active', isOpen);
+        } else {
+          // Desktop: toggle collapsed mini sidebar
+          sidebar.classList.toggle('collapsed');
+          // Save preference
+          localStorage.setItem('ror_sidebar_collapsed', sidebar.classList.contains('collapsed') ? 'true' : 'false');
         }
+      });
 
-        // B. Top Stars from Menu
-        const menu = JSON.parse(localStorage.getItem('ror_menu') || '[]');
-        if (menu.length) {
-          const stars = [...menu].sort((a, b) => {
-            const marginA = ((a.price - a.cost) / a.price);
-            const marginB = ((b.price - b.cost) / b.price);
-            return (marginB * (b.popularity || 5)) - (marginA * (a.popularity || 5));
-          }).slice(0, 2);
+      // Mobile close button
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+          sidebar.classList.remove('mobile-open');
+          if (overlay) overlay.classList.remove('active');
+        });
+      }
 
-          const starsEl = document.getElementById('aiCardTopStars');
-          if (starsEl && stars.length >= 2) {
-            starsEl.innerHTML = `
-              ${stars[0].item} (${Math.round(((stars[0].price - stars[0].cost) / stars[0].price) * 100)}%)<br>
-              ${stars[1].item} (${Math.round(((stars[1].price - stars[1].cost) / stars[1].price) * 100)}%)
-            `;
+      // Close on clicking overlay
+      if (overlay) {
+        overlay.addEventListener('click', () => {
+          sidebar.classList.remove('mobile-open');
+          overlay.classList.remove('active');
+        });
+      }
+
+      // Auto close drawer when clicking any nav link on mobile
+      document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth <= 900) {
+            sidebar.classList.remove('mobile-open');
+            if (overlay) overlay.classList.remove('active');
           }
+        });
+      });
+
+      // Restore desktop sidebar collapsed state preference
+      if (window.innerWidth > 900) {
+        const savedCollapsed = localStorage.getItem('ror_sidebar_collapsed');
+        if (savedCollapsed === 'true') {
+          sidebar.classList.add('collapsed');
         }
-
-        // C. Giesen 15kg Roastery Utilization
-        const totalKg = roastSales.reduce((s, r) => s + (parseFloat(r.kg) || 0), 0) || 173;
-        const monthlyTargetKg = 600; // Roastery realistic operational tier
-        const utilPct = ((totalKg / monthlyTargetKg) * 100).toFixed(1);
-
-        const utilEl = document.getElementById('aiCardRoastUtil');
-        if (utilEl) utilEl.textContent = `${utilPct}%`;
-
-      } catch (err) {
-        console.error('Error updating AI insights:', err);
       }
     }
 
-    // 4. Strategic Coffee Economics QA Response Generator
-    const strategicKnowledgeBase = {
-      waste: {
-        keywords: ['هدر', 'تقليل', 'حليب', 'معايرة', 'خسارة', 'تلف'],
-        title: 'بروتوكول القضاء الفوري على الهدر الميداني (عارف وعلم):',
-        content: `1. <strong>معايرة مطحنة الإسبريسو الصباحية:</strong> حصر هدر معايرة عارف الصباحية في 150 جم كحد أقصى (يوفر قرابة 420 ر.س شهرياً من البن المختص).
-2. <strong>تقنين تبخير الحليب:</strong> استخدام مقاسات بتشرات محددة بدقة (Small Pitchers) تمنع سكب الحليب المتبقي بعد كل كوب، مما يخفض هدر الألبان بنسبة 18%.
-3. <strong>تفعيل سجل الهدر الإلكتروني (Waste Log):</strong> إلزام الباريستا بتسجيل أي تلف فوري؛ الشفافية اليومية قللت الهدر بنسبة 35% في سلاسل القهوة المشابهة.`
-      },
-      giesen: {
-        keywords: ['جيسن', 'حماصة', 'طاقة', 'تصريف', 'b2b', 'جملة', '15kg', 'محمصة'],
-        title: 'استراتيجية تصريف طاقة حماصة جيسن 15 كجم:',
-        content: `1. <strong>استهداف 10 مقاهٍ محلية (B2B):</strong> كل مقهى يستهلك 50 كجم شهرياً بسعر 75 ر.س/كجم = إيراد إضافي 37,500 ر.س بهامش ربح صافي يتجاوز 40%.
-2. <strong>تنشيط مبيعات الرف والمتجر الإلكتروني (أرباع 250 جم):</strong> رفع تسويق جود لمبيعات البن المنزلي بسعر 110 ر.س/كجم يعظم هامش المساهمة الفردي إلى 72%.
-3. <strong>جدولة التحميص دفعات متتابعة (Back-to-Back Batches):</strong> تشغيل الحماصة يومين محددين أسبوعياً يقلل استهلاك الغاز والتسخين الأولي ويوفر 15% من تكلفة التشغيل.`
-      },
-      evening: {
-        keywords: ['علم', 'مسائي', 'وردية', 'مبيعات', 'حلى', 'كولد برو'],
-        title: 'خطة تعظيم مبيعات وردية علم المسائية (3م - 11م):',
-        content: `1. <strong>حزمة القهوة مع الحلى (Combo Upselling):</strong> تدريب علم على اقتراح كيكة التمر بالكراميل مع الكولد برو أو الفلات وايت لرفع متوسط الفاتورة من 26.5 إلى 32 ر.س.
-2. <strong>تنشيط مشروبات الصيف الباردة عالية الربحية:</strong> تركيز العرض على V60 مثلج وكولد برو مقطر (هامش مساهمة يتجاوز 75%).
-3. <strong>سرعة استلام الطلبات وتقليل طابور الانتظار:</strong> تسكين كاشير إضافي يتيح لعلم التركيز على جودة الاستخلاص وسرعة التقديم في ساعات الذروة (7م - 10م).`
-      },
-      staffing: {
-        keywords: ['تسكين', 'توظيف', 'هيكل', '24', 'شواغر', 'كوادر'],
-        title: 'خطة تسكين الشواغر التشغيلية للوصول إلى 50%:',
-        content: `1. <strong>الأولوية رقم 1 (عاجل):</strong> تسكين "كاشير وممثل خدمة عملاء" في المقهى لتحرير الباريستا ومضاعفة سرعة تنفيذ الطلبات.
-2. <strong>الأولوية رقم 2 (الربع القادم):</strong> تسكين "ممثل مبيعات B2B" لتوقيع عقود توريد المحمصة مع المقاهي الشريكة في حائل والشمال.
-3. <strong>الأولوية رقم 3:</strong> تسكين "باريستا إضافي" لتغطية إجازات عارف وعلم الأسبوعية وضمان استمرارية تشغيل البار بأعلى كفاءة طوال 7 أيام.`
-      }
-    };
-
-    function askAiPrompt(query) {
-      const input = document.getElementById('aiAdvisorPromptInput');
-      if (input) {
-        input.value = query;
-        executeAiAdvisorQuery();
-      }
-    }
-
-    async function executeAiAdvisorQuery() {
-      const input = document.getElementById('aiAdvisorPromptInput');
-      const box = document.getElementById('aiAdvisorResponseBox');
-      if (!input || !box) return;
-
-      const query = input.value.trim();
-      if (!query) return;
-
-      box.innerHTML = `
-        <div style="text-align:center;padding:1.5rem;color:var(--virtus-accent);">
-          <i class="fa-solid fa-spinner fa-spin" style="font-size:1.5rem;margin-bottom:10px;"></i>
-          <p style="font-weight:700;margin:0;">جاري تحليل مؤشرات RoR وإعداد التوصيات الاستراتيجية...</p>
-        </div>
-      `;
-
-      // Check Local Strategic Coffee Economics KB first
-      let matchedKey = null;
-      const lowerQ = query.toLowerCase();
-      for (const [k, item] of Object.entries(strategicKnowledgeBase)) {
-        if (item.keywords.some(kw => lowerQ.includes(kw))) {
-          matchedKey = item;
-          break;
-        }
-      }
-
-      // Try server API first if network/server is online, fallback to rich KB
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3500);
-
-        const res = await fetch('/api/ai/analyze', { signal: controller.signal });
-        clearTimeout(timeoutId);
-
-        if (res.ok) {
-          const data = await res.json();
-          if (data.analysis) {
-            box.innerHTML = `
-              <div style="line-height:1.7;">
-                <div style="display:flex;align-items:center;gap:8px;color:var(--virtus-accent);font-weight:700;margin-bottom:8px;">
-                  <i class="fa-solid fa-sparkles"></i>
-                  <span>توصية استراتيجية لشركاء RoR (Gemini 3.6 Flash):</span>
-                </div>
-                <div style="white-space:pre-line;color:var(--virtus-text-secondary);">${data.analysis}</div>
-              </div>
-            `;
-            return;
-          }
-        }
-      } catch (err) {
-        // Fallback gracefully to tailored coffee economics knowledge
-      }
-
-      // Render strategic analysis
-      if (matchedKey) {
-        box.innerHTML = `
-          <div style="line-height:1.7;">
-            <div style="display:flex;align-items:center;gap:8px;color:var(--virtus-accent);font-weight:700;margin-bottom:8px;">
-              <i class="fa-solid fa-circle-check"></i>
-              <span>${matchedKey.title}</span>
-            </div>
-            <div style="color:var(--virtus-text-secondary);font-size:0.85rem;">
-              ${matchedKey.content}
-            </div>
-          </div>
-        `;
-      } else {
-        box.innerHTML = `
-          <div style="line-height:1.7;">
-            <div style="display:flex;align-items:center;gap:8px;color:var(--virtus-accent);font-weight:700;margin-bottom:8px;">
-              <i class="fa-solid fa-lightbulb"></i>
-              <span>الرؤية الاستراتيجية لـ RoR Partners:</span>
-            </div>
-            <p>1. <strong>الاستفادة من حماصة جيسن 15 كجم:</strong> رفع عقود الجملة هو الرافعة الاقتصادية الأعلى عائداً للمشروع لتغطية كافة مصاريف البار والإيجار.</p>
-            <p>2. <strong>تسكين الشواغر الحيوية:</strong> تسكين كاشير المقهى وباريستا الدعم يضمن حماية معايير الخدمة ورفع الإيرادات بنسبة 25%.</p>
-            <p>3. <strong>انضباط هندسة القائمة:</strong> حماية أصناف النجوم وتطوير أصناف الألغاز يحافظ على هامش مساهمة آمن فوق 75%.</p>
-          </div>
-        `;
-      }
-    }
-
-    // Replace original triggerAiAdvisor
-    window.triggerAiAdvisor = function () {
-      const modal = document.getElementById('aiAdvisorModal');
-      if (modal) {
-        modal.classList.add('active');
-        updateAiAdvisorInsights();
-      }
-    };
-
-    window.closeAiAdvisorModal = function () {
-      const modal = document.getElementById('aiAdvisorModal');
-      if (modal) modal.classList.remove('active');
-    };
-
-    // DOM Ready Initializer
+    // DOM Ready Initialization
     document.addEventListener('DOMContentLoaded', () => {
       computeDynamicGreeting();
       checkWelcomeSplash();
-      updateAiAdvisorInsights();
+      setupCollapsibleSidebar();
     });
   </script>
 
 </body>
-
 </html>

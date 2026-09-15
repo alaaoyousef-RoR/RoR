@@ -1,0 +1,43 @@
+<!-- 8. DEPARTMENT: Finance -->
+<div class="view-section" id="view-dept-finance">
+  <div class="department-view" id="dept-finance" data-dept="finance">
+    <div class="dept-header">
+      <div class="dept-info">
+        <h1><i class="fa-solid fa-calculator" style="color:var(--virtus-accent,#E06B43);margin-left:8px;"></i>8. قسم المالية والرقابة</h1>
+        <p class="dept-subtitle">Finance & Accounting • مستوحى من نظام Odoo Invoicing & Expenses</p>
+      </div>
+      <div class="dept-actions">
+        <button class="btn-secondary btn" onclick="exportToCSV(deptTasks.finance, 'مهام_المالية')"><i class="fa-solid fa-file-csv" style="margin-left:6px;"></i>تصدير مهام</button>
+        <button class="btn-primary btn" onclick="openAddTaskModal('finance')"><i class="fa-solid fa-plus" style="margin-left:6px;"></i>إضافة مهمة إدارية</button>
+      </div>
+    </div>
+    
+    <div class="tabs-container">
+      <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchDeptTab('finance', 'expert-tasks', this)">مهام النظام الخبيرة (12 مهمة)</button>
+        <button class="tab-btn" onclick="switchDeptTab('finance', 'mgmt-tasks', this)">مهام الإدارة (Kanban)</button>
+        <button class="tab-btn" onclick="switchDeptTab('finance', 'dashboard', this)">لوحة السيولة والامتثال الضريبي</button>
+      </div>
+      
+      <div class="tab-content active" id="expert-tasks-finance">
+        <div class="tasks-checklist" id="expertTasksList-finance"></div>
+      </div>
+      
+      <div class="tab-content" id="mgmt-tasks-finance">
+        <div class="kanban-board">
+          <div class="kanban-column" data-status="todo"><h3>للعمل <span class="count" id="todoCount-finance">0</span></h3><div class="tasks-container" id="todoTasks-finance"></div></div>
+          <div class="kanban-column" data-status="in-progress"><h3>قيد التنفيذ <span class="count" id="inProgressCount-finance">0</span></h3><div class="tasks-container" id="inProgressTasks-finance"></div></div>
+          <div class="kanban-column" data-status="done"><h3>مكتمل <span class="count" id="doneCount-finance">0</span></h3><div class="tasks-container" id="doneTasks-finance"></div></div>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="dashboard-finance">
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-icon green"><i class="fa-solid fa-money-bill-wave"></i></div><div class="kpi-content"><div class="kpi-label">مدرج السيولة النقدية</div><div class="kpi-value">6.5 أشهر</div></div></div>
+          <div class="kpi-card"><div class="kpi-icon blue"><i class="fa-solid fa-receipt"></i></div><div class="kpi-content"><div class="kpi-label">حالة ضريبة القيمة المضافة</div><div class="kpi-value">ممتثل ومطابق</div></div></div>
+          <div class="kpi-card"><div class="kpi-icon orange"><i class="fa-solid fa-chart-column"></i></div><div class="kpi-content"><div class="kpi-label">الذمم المدينة المتابعة</div><div class="kpi-value">6,750 ر.س</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<!-- 1. DEPARTMENT: Production & Roastery -->
+<div class="view-section" id="view-dept-prod">
+  <div class="department-view" id="dept-prod_roastery" data-dept="prod_roastery">
+    <div class="dept-header">
+      <div class="dept-info">
+        <h1><i class="fa-solid fa-fire-burner" style="color:var(--virtus-accent,#E06B43);margin-left:8px;"></i>1. قسم المحمصة والإنتاج</h1>
+        <p class="dept-subtitle">Production & Roastery • مستوحى من نظام Odoo MRP & Maintenance</p>
+      </div>
+      <div class="dept-actions">
+        <button class="btn-secondary btn" onclick="exportToCSV(deptTasks.prod_roastery, 'مهام_قسم_المحمصة')"><i class="fa-solid fa-file-csv" style="margin-left:6px;"></i>تصدير مهام</button>
+        <button class="btn-primary btn" onclick="openAddTaskModal('prod_roastery')"><i class="fa-solid fa-plus" style="margin-left:6px;"></i>إضافة مهمة إدارية</button>
+      </div>
+    </div>
+    
+    <div class="tabs-container">
+      <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchDeptTab('prod_roastery', 'expert-tasks', this)">مهام النظام الخبيرة (12 مهمة)</button>
+        <button class="tab-btn" onclick="switchDeptTab('prod_roastery', 'mgmt-tasks', this)">مهام الإدارة (Kanban)</button>
+        <button class="tab-btn" onclick="switchDeptTab('prod_roastery', 'dashboard', this)">لوحة مؤشرات الإنتاج والحماصة الرائدة</button>
+      </div>
+      
+      <!-- Tab 1: Expert Tasks -->
+      <div class="tab-content active" id="expert-tasks-prod_roastery">
+        <div style="background:var(--bg-cream);padding:0.75rem 1rem;border-radius:var(--radius-sm);margin-bottom:1rem;font-size:0.82rem;color:var(--text-secondary);">
+          مهام تشغيلية مستنتجة من المعايير العالمية لإدارة المحامص المختصة وتشغيل الحماصة الرائدة بأعلى كفاءة.
+        </div>
+        <div class="tasks-checklist" id="expertTasksList-prod_roastery"></div>
+      </div>
+      
+      <!-- Tab 2: Management Tasks Kanban -->
+      <div class="tab-content" id="mgmt-tasks-prod_roastery">
+        <div class="kanban-board">
+          <div class="kanban-column" data-status="todo">
+            <h3>للعمل <span class="count" id="todoCount-prod_roastery">0</span></h3>
+            <div class="tasks-container" id="todoTasks-prod_roastery"></div>
+          </div>
+          <div class="kanban-column" data-status="in-progress">
+            <h3>قيد التنفيذ <span class="count" id="inProgressCount-prod_roastery">0</span></h3>
+            <div class="tasks-container" id="inProgressTasks-prod_roastery"></div>
+          </div>
+          <div class="kanban-column" data-status="done">
+            <h3>مكتمل <span class="count" id="doneCount-prod_roastery">0</span></h3>
+            <div class="tasks-container" id="doneTasks-prod_roastery"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tab 3: Odoo Micro-Module -->
+      <div class="tab-content" id="dashboard-prod_roastery">
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-icon dark"><i class="fa-solid fa-leaf"></i></div><div class="kpi-content"><div class="kpi-label">المحمص هذا الأسبوع</div><div class="kpi-value">95 كجم</div></div></div>
+          <div class="kpi-card"><div class="kpi-icon blue"><i class="fa-solid fa-scale-balanced"></i></div><div class="kpi-content"><div class="kpi-label">متوسط نسبة الفاقد (Yield)</div><div class="kpi-value">86.5%</div></div></div>
+          <div class="kpi-card"><div class="kpi-icon green"><i class="fa-solid fa-bolt"></i></div><div class="kpi-content"><div class="kpi-label">جاهزية الحماصة الرائدة</div><div class="kpi-value">99.2%</div></div></div>
+        </div>
+        <div class="content-card" style="margin-bottom:0;">
+          <h3 style="font-size:1rem;font-weight:700;margin-bottom:0.75rem;">سجل دفعات التحميص المعتمدة (Batch Log)</h3>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead><tr><th>رقم الدفعة</th><th>المحصول</th><th>الوزن الأخضر</th><th>الوزن المحمص</th><th>البروفايل</th><th>المسؤول</th></tr></thead>
+              <tbody>
+                <tr><td>#B-104</td><td>كولومبيا ويلا</td><td>15.0 كجم</td><td>12.9 كجم</td><td>فلتر متوسط (11:20 دقيقة)</td><td>علاء</td></tr>
+                <tr><td>#B-103</td><td>إثيوبيا شلشلي</td><td>15.0 كجم</td><td>13.0 كجم</td><td>إسبريسو غني (12:05 دقيقة)</td><td>علاء</td></tr>
+                <tr><td>#B-102</td><td>برازيل فازيندا</td><td>15.0 كجم</td><td>13.1 كجم</td><td>كلاسيك بلند (11:45 دقيقة)</td><td>علاء</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<!-- 5. DEPARTMENT: E-commerce & Logistics -->
+<div class="view-section" id="view-dept-ecommerce">
+  <div class="department-view" id="dept-ecommerce" data-dept="ecommerce">
+    <div class="dept-header">
+      <div class="dept-info">
+        <h1><i class="fa-solid fa-boxes-packing" style="color:var(--virtus-accent,#E06B43);margin-left:8px;"></i>5. قسم التجارة الإلكترونية واللوجستيات</h1>
+        <p class="dept-subtitle">E-commerce & Logistics • مستوحى من نظام Odoo eCommerce & Inventory</p>
+      </div>
+      <div class="dept-actions">
+        <button class="btn-secondary btn" onclick="exportToCSV(deptTasks.ecommerce, 'مهام_المتجر_والشحن')"><i class="fa-solid fa-file-csv" style="margin-left:6px;"></i>تصدير مهام</button>
+        <button class="btn-primary btn" onclick="openAddTaskModal('ecommerce')"><i class="fa-solid fa-plus" style="margin-left:6px;"></i>إضافة مهمة إدارية</button>
+      </div>
+    </div>
+    
+    <div class="tabs-container">
+      <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchDeptTab('ecommerce', 'expert-tasks', this)">مهام النظام الخبيرة (12 مهمة)</button>
+        <button class="tab-btn" onclick="switchDeptTab('ecommerce', 'mgmt-tasks', this)">مهام الإدارة (Kanban)</button>
+        <button class="tab-btn" onclick="switchDeptTab('ecommerce', 'dashboard', this)">أداء الشحن ومخزون الأكياس</button>
+      </div>
+      
+      <div class="tab-content active" id="expert-tasks-ecommerce">
+        <div class="tasks-checklist" id="expertTasksList-ecommerce"></div>
+      </div>
+      
+      <div class="tab-content" id="mgmt-tasks-ecommerce">
+        <div class="kanban-board">
+          <div class="kanban-column" data-status="todo"><h3>للعمل <span class="count" id="todoCount-ecommerce">0</span></h3><div class="tasks-container" id="todoTasks-ecommerce"></div></div>
+          <div class="kanban-column" data-status="in-progress"><h3>قيد التنفيذ <span class="count" id="inProgressCount-ecommerce">0</span></h3><div class="tasks-container" id="inProgressTasks-ecommerce"></div></div>
+          <div class="kanban-column" data-status="done"><h3>مكتمل <span class="count" id="doneCount-ecommerce">0</span></h3><div class="tasks-container" id="doneTasks-ecommerce"></div></div>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="dashboard-ecommerce">
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-icon blue"><i class="fa-solid fa-box-open"></i></div><div class="kpi-content"><div class="kpi-label">طلبيات المتجر هذا الشهر</div><div class="kpi-value">48 طلبية</div></div></div>
+          <div class="kpi-card"><div class="kpi-icon green"><i class="fa-solid fa-clock"></i></div><div class="kpi-content"><div class="kpi-label">زمن التجهيز حتى الشحن</div><div class="kpi-value">4.2 ساعات</div></div></div>
+          <div class="kpi-card"><div class="kpi-icon dark"><i class="fa-solid fa-bag-shopping"></i></div><div class="kpi-content"><div class="kpi-label">متوسط قيمة سلة التسوق</div><div class="kpi-value">115 ر.س</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

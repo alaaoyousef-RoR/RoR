@@ -5,12 +5,12 @@
   <div class="content-card">
     <div class="card-header">
       <div>
-        <h2>✅ خطة الـ 40 مهمة التنفيذية للمرحلة الانتقالية</h2>
+        <h2><i class="fa-solid fa-list-check" style="color:var(--virtus-accent,#E06B43);margin-left:8px;"></i>خطة الـ 40 مهمة التنفيذية للمرحلة الانتقالية</h2>
         <div class="card-subtitle">توزيع المهام المحورية على أسابيع التشغيل الثمانية مع حوكمة المسؤوليات</div>
       </div>
       <div style="display:flex;gap:0.5rem;">
         <button onclick="exportToCSV(tasks, 'خطة_الـ40_مهمة_RoR')" class="btn btn-secondary" style="font-size:12px;">
-          <span>📥</span> تصدير CSV
+          <i class="fa-solid fa-file-csv" style="margin-left:6px;"></i>تصدير CSV
         </button>
       </div>
     </div>
@@ -37,7 +37,7 @@
           <label style="font-size:0.82rem;font-weight:700;">الحالة:</label>
           <select id="statusFilter" onchange="filterTasksByStatus(this.value)" style="padding:4px 10px;border-radius:6px;border:1px solid var(--border-light);font-family:inherit;font-size:12px;">
             <option value="all">كل الحالات</option>
-            <option value="completed">مكتمل ✓</option>
+            <option value="completed">مكتمل</option>
             <option value="in-progress">قيد التنفيذ</option>
             <option value="pending">معلق</option>
           </select>
@@ -72,15 +72,15 @@
   <div class="content-card">
     <div class="card-header">
       <div>
-        <h2>🍽️ مصفوفة هندسة القائمة (Menu Engineering 2D Matrix)</h2>
+        <h2><i class="fa-solid fa-utensils" style="color:var(--virtus-accent,#E06B43);margin-left:8px;"></i>مصفوفة هندسة القائمة (Menu Engineering 2D Matrix)</h2>
         <div class="card-subtitle">تصنيف الأصناف حسب مؤشري هامش الربح الإجمالي والشعبية لاتخاذ قرارات التسعير</div>
       </div>
       <div style="display:flex;gap:0.6rem;">
         <button onclick="openMenuModal()" class="btn btn-primary" style="font-size:12px;">
-          <span>➕</span> إضافة صنف جديد
+          <i class="fa-solid fa-plus" style="margin-left:6px;"></i>إضافة صنف جديد
         </button>
         <button onclick="exportToCSV(menuItems, 'هندسة_منيو_RoR')" class="btn btn-secondary" style="font-size:12px;">
-          <span>📥</span> تصدير CSV
+          <i class="fa-solid fa-file-csv" style="margin-left:6px;"></i>تصدير CSV
         </button>
       </div>
     </div>
@@ -92,7 +92,7 @@
         <!-- Stars -->
         <div class="quadrant stars">
           <div class="quadrant-header">
-            <h3 style="color:#15803D;">⭐ النجوم / Stars</h3>
+            <h3 style="color:#15803D;"><i class="fa-solid fa-star" style="margin-left:6px;"></i>النجوم / Stars</h3>
             <p>شعبية عالية + ربحية عالية (حافظ على الجودة وثبات الوصفة)</p>
           </div>
           <div class="items-list" id="starsItems"></div>
@@ -101,7 +101,7 @@
         <!-- Puzzles -->
         <div class="quadrant puzzles">
           <div class="quadrant-header">
-            <h3 style="color:#0066FF;">🧩 الألغاز / Puzzles</h3>
+            <h3 style="color:#0066FF;"><i class="fa-solid fa-puzzle-piece" style="margin-left:6px;"></i>الألغاز / Puzzles</h3>
             <p>شعبية منخفضة + ربحية عالية (ركز على الترويج وإعادة التموضع)</p>
           </div>
           <div class="items-list" id="puzzlesItems"></div>
@@ -110,7 +110,7 @@
         <!-- Plowhorses -->
         <div class="quadrant plowhorses">
           <div class="quadrant-header">
-            <h3 style="color:#D97706;">🐴 أحصنة المحراث / Plowhorses</h3>
+            <h3 style="color:#D97706;"><i class="fa-solid fa-horse" style="margin-left:6px;"></i>خيول الجر / Plowhorses</h3>
             <p>شعبية عالية + ربحية منخفضة (أعد هندسة التكلفة أو ارفع السعر تدريجياً)</p>
           </div>
           <div class="items-list" id="plowhorsesItems"></div>
@@ -119,7 +119,7 @@
         <!-- Dogs -->
         <div class="quadrant dogs">
           <div class="quadrant-header">
-            <h3 style="color:#DC2626;">🐕 الأصناف الضعيفة / Dogs</h3>
+            <h3 style="color:#DC2626;"><i class="fa-solid fa-triangle-exclamation" style="margin-left:6px;"></i>الأصناف الضعيفة / Dogs</h3>
             <p>شعبية منخفضة + ربحية منخفضة (مرشحة للإلغاء أو الاستبدال)</p>
           </div>
           <div class="items-list" id="dogsItems"></div>
@@ -137,7 +137,7 @@
   <div class="content-card">
     <div class="card-header">
       <div>
-        <h2>💰 حاسبة نقطة التعادل الشهرية لـ RoR</h2>
+        <h2><i class="fa-solid fa-scale-balanced" style="color:var(--virtus-accent,#E06B43);margin-left:8px;"></i>حاسبة نقطة التعادل الشهرية لـ RoR</h2>
         <div class="card-subtitle">نموذج مالي تفاعلي لحساب حجم المبيعات المطلوب لتغطية التكاليف التشغيلية الثابتة</div>
       </div>
       <span class="badge badge-blue">تحديث تفاعلي فوري</span>
@@ -214,7 +214,7 @@
   <div class="content-card">
     <div class="card-header">
       <div>
-        <h2>👥 مصفوفة المسؤوليات والصلاحيات (RACI Matrix)</h2>
+        <h2><i class="fa-solid fa-users" style="color:var(--virtus-accent,#E06B43);margin-left:8px;"></i>مصفوفة المسؤوليات والصلاحيات (RACI Matrix)</h2>
         <div class="card-subtitle">تحديد أصحاب القرار والتنفيذ والاستشارة والإحاطة للعمليات المحورية</div>
       </div>
       <div style="display:flex;gap:8px;font-size:11px;">
@@ -259,7 +259,7 @@
             <td><span class="badge badge-green">R (حساب تكاليف)</span></td>
           </tr>
           <tr>
-            <td style="font-weight:700;">عقود التوريد والجملة لحماصة جيسن</td>
+            <td style="font-weight:700;">عقود التوريد والجملة لالحماصة الرائدة</td>
             <td><span class="badge badge-green">R (مفاوض رئيسي)</span></td>
             <td><span class="badge badge-orange">C (جدولة الإنتاج)</span></td>
             <td><span class="badge badge-green">R (استقطاب B2B)</span></td>
@@ -285,11 +285,11 @@
   <div class="content-card">
     <div class="card-header">
       <div>
-        <h2>💧 سجل تتبع الهدر وإدارة التدفق النقدي</h2>
+        <h2><i class="fa-solid fa-trash-can" style="color:var(--virtus-accent,#E06B43);margin-left:8px;"></i>سجل تتبع الهدر وإدارة التدفق النقدي</h2>
         <div class="card-subtitle">الرقابة اليومية على الفواقد في البار والمحمصة لضبط التكاليف بصفر تكلفة</div>
       </div>
       <button onclick="exportToCSV(wasteLogs.bar, 'سجل_الهدر_RoR')" class="btn btn-secondary" style="font-size:12px;">
-        <span>📥</span> تصدير CSV
+        <i class="fa-solid fa-file-csv" style="margin-left:6px;"></i>تصدير CSV
       </button>
     </div>
 
@@ -319,7 +319,7 @@
   <div class="content-card">
     <div class="card-header">
       <div>
-        <h2>📅 خارطة طريق خطة الأسابيع (Roadmap Weeks 1 - 8)</h2>
+        <h2><i class="fa-solid fa-calendar-days" style="color:var(--virtus-accent,#E06B43);margin-left:8px;"></i>خارطة طريق خطة الأسابيع (Roadmap Weeks 1 - 8)</h2>
         <div class="card-subtitle">المعالم الرئيسية والأهداف المنجزة للمرحلة الانتقالية لـ RoR</div>
       </div>
       <span class="badge badge-green">8 محطات عمل</span>
@@ -382,7 +382,7 @@
 
       <div style="background:var(--primary-tint);border:1.5px solid var(--primary-light);border-radius:var(--radius-md);padding:1.25rem;">
         <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-          <span class="badge badge-blue">أسبوع 7 🔥</span>
+          <span class="badge badge-blue">أسبوع 7</span>
           <span class="badge badge-orange">قيد الإنجاز 3/5</span>
         </div>
         <h4 style="font-size:0.92rem;font-weight:700;color:var(--primary-dark);">التكلفة الأساسية ومعالجة الفروقات</h4>

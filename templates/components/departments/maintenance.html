@@ -1,0 +1,51 @@
+<!-- 6. DEPARTMENT: Maintenance & Technical Support -->
+<div class="view-section" id="view-dept-maint">
+  <div class="department-view" id="dept-maint" data-dept="maint">
+    <div class="dept-header">
+      <div class="dept-info">
+        <h1><i class="fa-solid fa-screwdriver-wrench" style="color:var(--virtus-accent,#E06B43);margin-left:8px;"></i>6. قسم الصيانة والدعم الفني</h1>
+        <p class="dept-subtitle">Maintenance & Technical Support • مستوحى من نظام Odoo Field Service</p>
+      </div>
+      <div class="dept-actions">
+        <button class="btn-secondary btn" onclick="exportToCSV(deptTasks.maint, 'مهام_الصيانة')"><i class="fa-solid fa-file-csv" style="margin-left:6px;"></i>تصدير مهام</button>
+        <button class="btn-primary btn" onclick="openAddTaskModal('maint')"><i class="fa-solid fa-plus" style="margin-left:6px;"></i>إضافة مهمة إدارية</button>
+      </div>
+    </div>
+    
+    <div class="tabs-container">
+      <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchDeptTab('maint', 'expert-tasks', this)">مهام النظام الخبيرة (12 مهمة)</button>
+        <button class="tab-btn" onclick="switchDeptTab('maint', 'mgmt-tasks', this)">مهام الإدارة (Kanban)</button>
+        <button class="tab-btn" onclick="switchDeptTab('maint', 'dashboard', this)">سجل صيانة المكائن والفلاتر</button>
+      </div>
+      
+      <div class="tab-content active" id="expert-tasks-maint">
+        <div class="tasks-checklist" id="expertTasksList-maint"></div>
+      </div>
+      
+      <div class="tab-content" id="mgmt-tasks-maint">
+        <div class="kanban-board">
+          <div class="kanban-column" data-status="todo"><h3>للعمل <span class="count" id="todoCount-maint">0</span></h3><div class="tasks-container" id="todoTasks-maint"></div></div>
+          <div class="kanban-column" data-status="in-progress"><h3>قيد التنفيذ <span class="count" id="inProgressCount-maint">0</span></h3><div class="tasks-container" id="inProgressTasks-maint"></div></div>
+          <div class="kanban-column" data-status="done"><h3>مكتمل <span class="count" id="doneCount-maint">0</span></h3><div class="tasks-container" id="doneTasks-maint"></div></div>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="dashboard-maint">
+        <div class="content-card" style="margin-bottom:0;">
+          <h3 style="font-size:1rem;font-weight:700;margin-bottom:0.75rem;">جدول الفحص الوقائي لمعدات RoR</h3>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead><tr><th>المعدة</th><th>المهمة الوقائية</th><th>آخر فحص</th><th>الموعد القادم</th><th>الحالة</th></tr></thead>
+              <tbody>
+                <tr><td>الحماصة الرائدة</td><td>تنظيف مجرى الدخان والشعلات</td><td>2026-09-10</td><td>2026-09-24</td><td><span class="badge badge-green">جاهزة وسليمة</span></td></tr>
+                <tr><td>مكينة سيمونيلي أوريليا</td><td>تبديل جوانات وتنظيف الرؤوس</td><td>2026-09-08</td><td>2026-09-22</td><td><span class="badge badge-green">جاهزة وسليمة</span></td></tr>
+                <tr><td>فلتر مياه البار 3M</td><td>فحص نسبة الأملاح TDS</td><td>2026-09-14</td><td>2026-09-21</td><td><span class="badge badge-green">نسبة 130 ppm</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
