@@ -3,32 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة أنظمة RoR الموحدة | RoR Integrated Suite</title>
-    <!-- Tailwind CSS -->
+    <title>بوابة أنظمة RoR | الهوية الرسمية</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: IBM Plex Sans Arabic -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- SheetJS (xlsx) for Excel Export -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         ror: {
-                            bg: '#F5F4F0',
-                            card: '#FFFFFF',
-                            dark: '#1C201D',
-                            accent: '#8C5E45',
-                            olive: '#3C5238',
-                            gold: '#C5A880',
-                            border: '#E8E2D8',
-                            danger: '#A94A42'
+                            base: '#FDFBF6',
+                            surface: '#F9F4E9',
+                            primary: '#425653',
+                            petrol: '#30424E',
+                            sage: '#ADB8AE',
+                            teal: '#638289',
+                            border: '#E3DFD5',
+                            danger: '#A84848'
                         }
                     },
                     fontFamily: {
@@ -39,1223 +33,243 @@
         }
     </script>
     <style>
-        body {
-            font-family: 'IBM Plex Sans Arabic', sans-serif;
-            background-color: #F5F4F0;
-            color: #1C201D;
-        }
-        .tab-btn-active {
-            border-bottom: 3px solid #8C5E45;
-            color: #8C5E45;
-            font-weight: 700;
-        }
+        body { font-family: 'IBM Plex Sans Arabic', sans-serif; background-color: #FDFBF6; color: #30424E; }
+        .tab-btn-active { border-bottom: 3px solid #425653; color: #425653; font-weight: 700; }
+        .custom-card { background-color: #FFFFFF; border: 1px solid #E3DFD5; transition: all 0.2s ease-in-out; }
+        .custom-card:hover { border-color: #ADB8AE; box-shadow: 0 10px 25px -5px rgba(48, 66, 78, 0.07); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
-
-    <!-- Top Master Switcher Bar -->
-    <header class="bg-ror-dark text-white py-3 px-4 md:px-8 sticky top-0 z-50 border-b border-ror-gold/20 shadow-md">
+<body class="min-h-screen flex flex-col justify-between">
+    <header class="bg-ror-petrol text-white py-3.5 px-4 md:px-8 sticky top-0 z-50 border-b border-ror-sage/30 shadow-sm">
         <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
             <div class="flex items-center gap-3 cursor-pointer" onclick="openProgram('portal')">
-                <div class="w-10 h-10 rounded-lg bg-ror-accent flex items-center justify-center font-bold text-lg text-white shadow">
-                    RoR
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-ror-primary border border-ror-sage/40 flex items-center justify-center font-bold text-lg text-ror-surface shadow-sm">RoR</div>
                 <div>
-                    <h1 class="text-sm md:text-base font-bold tracking-wide">بوابة أنظمة إدارة وتشغيل RoR</h1>
-                    <p class="text-[11px] text-ror-gold">مقهى ومحمصة قهوة مختصة • المنظومة الإدارية المتكاملة</p>
+                    <h1 class="text-sm md:text-base font-bold tracking-wide">بوابة تشغيل وإدارة RoR</h1>
+                    <p class="text-[11px] text-ror-sage">مقهى ومحمصة قهوة مختصة • المنظومة الإدارية</p>
                 </div>
             </div>
-
-            <div class="flex items-center gap-2 bg-white/10 p-1 rounded-xl backdrop-blur-sm border border-white/5 text-xs">
-                <button onclick="openProgram('portal')" id="btn-top-portal" class="px-3 py-1.5 rounded-lg font-bold transition-all bg-ror-gold text-ror-dark">
-                    <i class="fa-solid fa-house-chimney ml-1"></i> الرئيسية
-                </button>
-                <button onclick="openProgram('app1')" id="btn-top-app1" class="px-3 py-1.5 rounded-lg font-bold text-gray-300 hover:text-white transition-all">
-                    <i class="fa-solid fa-calendar-check ml-1"></i> نظام الـ 8 أسابيع
-                </button>
-                <button onclick="openProgram('app2')" id="btn-top-app2" class="px-3 py-1.5 rounded-lg font-bold text-gray-300 hover:text-white transition-all">
-                    <i class="fa-solid fa-chart-line ml-1"></i> نظام التحول والمبيعات
-                </button>
+            <div class="flex items-center gap-1.5 bg-black/20 p-1 rounded-xl border border-white/10 text-xs">
+                <button onclick="openProgram('portal')" id="btn-top-portal" class="px-3.5 py-1.5 rounded-lg font-bold transition-all bg-ror-primary text-white"><i class="fa-solid fa-house-chimney ml-1"></i> الرئيسية</button>
+                <button onclick="openProgram('app1')" id="btn-top-app1" class="px-3.5 py-1.5 rounded-lg font-bold text-gray-300 hover:text-white transition-all"><i class="fa-solid fa-calendar-check ml-1"></i> الـ 8 أسابيع</button>
+                <button onclick="openProgram('app2')" id="btn-top-app2" class="px-3.5 py-1.5 rounded-lg font-bold text-gray-300 hover:text-white transition-all"><i class="fa-solid fa-chart-line ml-1"></i> التحول والمبيعات</button>
             </div>
         </div>
     </header>
 
-    <div id="toast" class="fixed bottom-5 left-5 bg-ror-dark text-white border border-ror-gold px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none text-xs font-bold">
-        <i class="fa-solid fa-circle-check text-ror-gold text-base"></i>
+    <div id="toast" class="fixed bottom-5 left-5 bg-ror-petrol text-white border border-ror-sage px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none text-xs font-bold">
+        <i class="fa-solid fa-circle-check text-ror-sage text-base"></i>
         <span id="toast-msg">تم الحفظ بنجاح</span>
     </div>
 
-    <!-- VIEW 0: UNIFIED PORTAL -->
+    <!-- VIEW 0: PORTAL -->
     <section id="view-portal" class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-8 space-y-8">
-        <div class="bg-gradient-to-br from-ror-dark to-[#252b27] text-white p-6 md:p-10 rounded-3xl shadow-xl border border-ror-gold/20 relative overflow-hidden">
-            <div class="relative z-10 max-w-2xl space-y-3">
-                <span class="bg-ror-accent/40 text-ror-gold text-xs font-bold px-3 py-1 rounded-full border border-ror-gold/30 inline-block">
-                    منصة الإدارة المركزية
-                </span>
-                <h2 class="text-2xl md:text-4xl font-extrabold leading-snug">مرحباً بك في بوابة تشغيل RoR</h2>
-                <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
-                    منظومة برمجية موحدة تمكنك من التنقل بين منهجية الضبط التأسيسي والمالي (خطة الـ 8 أسابيع)، وبين تقارير المبيعات اليومية للبار والمحمصة وحماصة جيسن 15 كجم وإدارة المرحلة الانتقالية.
-                </p>
-            </div>
+        <div class="bg-gradient-to-r from-ror-petrol via-ror-primary to-[#2C3B37] text-white p-6 md:p-10 rounded-3xl shadow-md border border-ror-sage/30">
+            <span class="bg-ror-sage/25 text-ror-surface text-xs font-bold px-3 py-1 rounded-full border border-ror-sage/40 inline-block mb-3">منظومة العمليات والتحكم المركزي</span>
+            <h2 class="text-2xl md:text-4xl font-extrabold leading-snug">مرحباً بك في منصة تشغيل RoR</h2>
+            <p class="text-xs md:text-sm text-gray-200 leading-relaxed font-light mt-2">الهوية البصرية الرسمية (ألوان RoR المعتمدة وخط IBM Plex Sans Arabic).</p>
         </div>
-
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- App 1 Card -->
-            <div class="bg-white p-6 md:p-8 rounded-3xl border border-ror-border shadow-sm hover:shadow-lg transition-all flex flex-col justify-between space-y-6">
+            <div class="custom-card p-6 md:p-8 rounded-3xl flex flex-col justify-between space-y-6">
                 <div class="space-y-4">
-                    <div class="w-14 h-14 rounded-2xl bg-amber-50 text-ror-accent flex items-center justify-center text-2xl border border-ror-border">
-                        <i class="fa-solid fa-list-check"></i>
-                    </div>
+                    <div class="w-14 h-14 rounded-2xl bg-ror-surface text-ror-primary flex items-center justify-center text-2xl border border-ror-sage/40"><i class="fa-solid fa-list-check"></i></div>
                     <div>
-                        <span class="text-[11px] font-bold text-ror-accent uppercase tracking-wider">البرنامج الأول</span>
-                        <h3 class="text-xl font-bold text-ror-dark mt-1">نظام الـ 8 أسابيع للتشغيل والتقييم المالي</h3>
+                        <span class="text-[11px] font-bold text-ror-teal uppercase">النظام الأول</span>
+                        <h3 class="text-xl font-bold text-ror-petrol mt-1">نظام الـ 8 أسابيع للتشغيل والتقييم المالي</h3>
                     </div>
-                    <p class="text-xs text-gray-600 leading-relaxed">
-                        نظام مستوحى من منهجية طارق باشا: خطة الـ 40 مهمة المفصلة، مصفوفة هندسة المنيو ثنائية الأبعاد (Stars & Puzzles)، حاسبة نقطة التعادل، ومصفوفة الصلاحيات (RACI)، وسجل تتبع الهدر والسيولة اليومية.
-                    </p>
+                    <p class="text-xs text-gray-600 leading-relaxed">الـ 40 مهمة، هندسة المنيو، وحاسبة التعادل ومصفوفة RACI ومتابعة الهدر.</p>
                 </div>
-                <button onclick="openProgram('app1')" class="w-full bg-ror-dark text-white py-3 px-4 rounded-xl text-xs font-bold hover:bg-ror-accent transition-all flex items-center justify-center gap-2">
-                    <span>الدخول إلى نظام الـ 8 أسابيع</span>
-                    <i class="fa-solid fa-arrow-left"></i>
-                </button>
+                <button onclick="openProgram('app1')" class="w-full bg-ror-primary text-white py-3.5 px-4 rounded-xl text-xs font-bold hover:bg-ror-petrol transition-all flex items-center justify-center gap-2">الدخول للنظام <i class="fa-solid fa-arrow-left"></i></button>
             </div>
-
-            <!-- App 2 Card -->
-            <div class="bg-white p-6 md:p-8 rounded-3xl border border-ror-border shadow-sm hover:shadow-lg transition-all flex flex-col justify-between space-y-6">
+            <div class="custom-card p-6 md:p-8 rounded-3xl flex flex-col justify-between space-y-6">
                 <div class="space-y-4">
-                    <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-ror-olive flex items-center justify-center text-2xl border border-ror-border">
-                        <i class="fa-solid fa-fire-burner"></i>
-                    </div>
+                    <div class="w-14 h-14 rounded-2xl bg-ror-surface text-ror-teal flex items-center justify-center text-2xl border border-ror-sage/40"><i class="fa-solid fa-chart-pie"></i></div>
                     <div>
-                        <span class="text-[11px] font-bold text-ror-olive uppercase tracking-wider">البرنامج الثاني</span>
-                        <h3 class="text-xl font-bold text-ror-dark mt-1">نظام التحول التشغيلي والتقارير الاستراتيجية</h3>
+                        <span class="text-[11px] font-bold text-ror-teal uppercase">النظام الثاني</span>
+                        <h3 class="text-xl font-bold text-ror-petrol mt-1">نظام التحول التشغيلي والتقارير الاستراتيجية</h3>
                     </div>
-                    <p class="text-xs text-gray-600 leading-relaxed">
-                        مصمم لمرحلة ما بعد 4 سنوات لـ RoR: متابعة ورديات البار لعارف وعلم، تقارير مبيعات المحمصة بالجملة (B2B) والأرباع، استغلال حماصة جيسن 15 كجم، وحصر الالتزامات ومتابعة خطة التعافي.
-                    </p>
+                    <p class="text-xs text-gray-600 leading-relaxed">متابعة مبيعات البار اليومية، مبيعات حماصة جيسن 15 كجم، وتتبع صافي التدفق.</p>
                 </div>
-                <button onclick="openProgram('app2')" class="w-full bg-ror-olive text-white py-3 px-4 rounded-xl text-xs font-bold hover:bg-ror-dark transition-all flex items-center justify-center gap-2">
-                    <span>الدخول إلى نظام التحول والمبيعات</span>
-                    <i class="fa-solid fa-arrow-left"></i>
-                </button>
+                <button onclick="openProgram('app2')" class="w-full bg-ror-teal text-white py-3.5 px-4 rounded-xl text-xs font-bold hover:bg-ror-petrol transition-all flex items-center justify-center gap-2">الدخول للنظام <i class="fa-solid fa-arrow-left"></i></button>
             </div>
         </div>
     </section>
 
-    <!-- PROGRAM 1 CONTAINER -->
+    <!-- VIEW 1: APP 1 -->
     <div id="container-app1" class="hidden flex-grow flex flex-col">
-        <nav class="bg-white border-b border-ror-border sticky top-[57px] z-40 overflow-x-auto shadow-sm">
+        <nav class="bg-ror-surface border-b border-ror-border sticky top-[57px] z-40 overflow-x-auto shadow-sm">
             <div class="max-w-7xl mx-auto px-4 flex space-x-reverse space-x-1 whitespace-nowrap text-xs font-semibold">
-                <button onclick="switchApp1Tab('dash')" id="tab-app1-dash" class="py-3.5 px-4 text-ror-accent tab-btn-active"><i class="fa-solid fa-chart-pie ml-1"></i> لوحة التحكم</button>
-                <button onclick="switchApp1Tab('tasks')" id="tab-app1-tasks" class="py-3.5 px-4 text-gray-600 hover:text-ror-dark"><i class="fa-solid fa-calendar-check ml-1"></i> خطة الـ 40 مهمة</button>
-                <button onclick="switchApp1Tab('menu')" id="tab-app1-menu" class="py-3.5 px-4 text-gray-600 hover:text-ror-dark"><i class="fa-solid fa-utensils ml-1"></i> هندسة القائمة</button>
-                <button onclick="switchApp1Tab('breakeven')" id="tab-app1-breakeven" class="py-3.5 px-4 text-gray-600 hover:text-ror-dark"><i class="fa-solid fa-calculator ml-1"></i> نقطة التعادل</button>
-                <button onclick="switchApp1Tab('raci')" id="tab-app1-raci" class="py-3.5 px-4 text-gray-600 hover:text-ror-dark"><i class="fa-solid fa-users-gear ml-1"></i> مصفوفة RACI</button>
-                <button onclick="switchApp1Tab('waste')" id="tab-app1-waste" class="py-3.5 px-4 text-gray-600 hover:text-ror-dark"><i class="fa-solid fa-dumpster-fire ml-1"></i> الهدر والسيولة</button>
+                <button onclick="switchApp1Tab('dash')" id="tab-app1-dash" class="py-3.5 px-4 text-ror-primary tab-btn-active">لوحة التحكم</button>
+                <button onclick="switchApp1Tab('tasks')" id="tab-app1-tasks" class="py-3.5 px-4 text-gray-600">خطة الـ 40 مهمة</button>
+                <button onclick="switchApp1Tab('menu')" id="tab-app1-menu" class="py-3.5 px-4 text-gray-600">هندسة القائمة</button>
+                <button onclick="switchApp1Tab('breakeven')" id="tab-app1-breakeven" class="py-3.5 px-4 text-gray-600">نقطة التعادل</button>
+                <button onclick="switchApp1Tab('waste')" id="tab-app1-waste" class="py-3.5 px-4 text-gray-600">الهدر والسيولة</button>
             </div>
         </nav>
-
         <main class="max-w-7xl w-full mx-auto p-4 md:p-8 space-y-6 flex-grow">
-            <!-- App 1 Dash -->
             <section id="app1-dash" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
-                    <div class="bg-white p-4 rounded-2xl border border-ror-border shadow-sm">
-                        <span class="text-gray-500 font-bold block">المهام المكتملة</span>
-                        <span id="dash1-tasks" class="text-2xl font-extrabold text-ror-dark mt-1 block">0 / 40</span>
-                    </div>
-                    <div class="bg-white p-4 rounded-2xl border border-ror-border shadow-sm">
-                        <span class="text-gray-500 font-bold block">Food Cost التقديري</span>
-                        <span id="dash1-foodcost" class="text-2xl font-extrabold text-ror-accent mt-1 block">32.5%</span>
-                    </div>
-                    <div class="bg-white p-4 rounded-2xl border border-ror-border shadow-sm">
-                        <span class="text-gray-500 font-bold block">هامش المساهمة</span>
-                        <span id="dash1-margin" class="text-2xl font-extrabold text-ror-olive mt-1 block">67.5%</span>
-                    </div>
-                    <div class="bg-white p-4 rounded-2xl border border-ror-border shadow-sm">
-                        <span class="text-gray-500 font-bold block">إجمالي الهدر المسجل</span>
-                        <span id="dash1-waste" class="text-2xl font-extrabold text-ror-danger mt-1 block">0.00 ر.س</span>
-                    </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                    <div class="custom-card p-5 rounded-2xl"><span class="text-gray-500 font-bold block">المهام المكتملة</span><span id="dash1-tasks" class="text-2xl font-extrabold text-ror-petrol mt-1 block">0 / 40</span></div>
+                    <div class="custom-card p-5 rounded-2xl"><span class="text-gray-500 font-bold block">Food Cost التقديري</span><span id="dash1-foodcost" class="text-2xl font-extrabold text-ror-teal mt-1 block">32.5%</span></div>
+                    <div class="custom-card p-5 rounded-2xl"><span class="text-gray-500 font-bold block">هامش المساهمة</span><span id="dash1-margin" class="text-2xl font-extrabold text-ror-primary mt-1 block">67.5%</span></div>
+                    <div class="custom-card p-5 rounded-2xl"><span class="text-gray-500 font-bold block">الهدر المسجل</span><span id="dash1-waste" class="text-2xl font-extrabold text-ror-danger mt-1 block">0.00 ر.س</span></div>
                 </div>
-
-                <div class="bg-white p-6 rounded-2xl border border-ror-border shadow-sm">
-                    <h3 class="text-sm font-bold text-ror-dark mb-4"><i class="fa-solid fa-list-ol text-ror-accent ml-2"></i> التقدم حسب الأسابيع (خطة الـ 8 أسابيع)</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-xs" id="app1-weeks-grid"></div>
-                </div>
+                <div class="custom-card p-6 rounded-2xl"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-xs" id="app1-weeks-grid"></div></div>
             </section>
-
-            <!-- App 1 Tasks -->
             <section id="app1-tasks" class="space-y-4 hidden">
-                <div class="bg-white p-4 rounded-2xl border border-ror-border shadow-sm flex justify-between items-center">
-                    <h3 class="text-sm font-bold text-ror-dark">قائمة الـ 40 مهمة التشغيلية</h3>
-                    <select id="task-filter-week" onchange="renderTasks()" class="border border-ror-border rounded-lg text-xs p-2 font-bold outline-none">
+                <div class="custom-card p-4 rounded-2xl flex justify-between items-center text-xs">
+                    <span class="font-bold text-ror-petrol">قائمة الـ 40 مهمة</span>
+                    <select id="task-filter-week" onchange="renderTasks()" class="border border-ror-border rounded-xl p-2 bg-ror-surface font-bold">
                         <option value="all">كل الأسابيع (1 - 8)</option>
-                        <option value="1">الأسبوع 1: التأسيس وحصر الأصول</option>
-                        <option value="2">الأسبوع 2: الهيكلة ومصفوفة RACI</option>
-                        <option value="3">الأسبوع 3: تتبع الهدر وإجراءات العمل</option>
-                        <option value="4">الأسبوع 4: هندسة المنيو والمبيعات</option>
-                        <option value="5">الأسبوع 5: إدارة التدفق النقدي والنثريات</option>
-                        <option value="6">الأسبوع 6: التراخيص وضبط الجودة</option>
-                        <option value="7">الأسبوع 7: احتساب Food Cost</option>
-                        <option value="8">الأسبوع 8: التقييم النهائي والتوسع</option>
+                        <option value="1">الأسبوع 1</option><option value="2">الأسبوع 2</option><option value="3">الأسبوع 3</option><option value="4">الأسبوع 4</option>
+                        <option value="5">الأسبوع 5</option><option value="6">الأسبوع 6</option><option value="7">الأسبوع 7</option><option value="8">الأسبوع 8</option>
                     </select>
                 </div>
                 <div class="space-y-2.5" id="tasks-container"></div>
             </section>
-
-            <!-- App 1 Menu -->
             <section id="app1-menu" class="space-y-6 hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="bg-white p-5 rounded-2xl border border-ror-border shadow-sm space-y-3 text-xs">
-                        <h4 class="font-bold text-ror-dark border-b border-ror-border pb-2">إضافة صنف منيو</h4>
-                        <input type="text" id="menu-name" class="w-full border border-ror-border rounded-lg p-2 outline-none font-bold" placeholder="اسم المشروب">
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="number" id="menu-cost" class="w-full border border-ror-border rounded-lg p-2 outline-none font-bold" placeholder="التكلفة">
-                            <input type="number" id="menu-price" class="w-full border border-ror-border rounded-lg p-2 outline-none font-bold" placeholder="سعر البيع">
-                        </div>
-                        <input type="number" id="menu-sales" class="w-full border border-ror-border rounded-lg p-2 outline-none font-bold" placeholder="المبيعات الأسبوعية">
-                        <button onclick="saveMenuItem()" class="w-full bg-ror-dark text-white py-2.5 rounded-xl font-bold hover:bg-ror-accent transition-all">حفظ الصنف</button>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-2xl border border-ror-border shadow-sm col-span-1 lg:col-span-2">
-                        <div class="relative w-full aspect-square max-h-[300px] bg-ror-bg rounded-xl border border-ror-border overflow-hidden p-4 text-[10px] select-none">
-                            <div class="absolute inset-x-0 top-1/2 border-t border-dashed border-gray-400"></div>
-                            <div class="absolute inset-y-0 left-1/2 border-l border-dashed border-gray-400"></div>
-                            <span class="absolute top-2 right-2 bg-green-100 text-green-900 px-2 py-0.5 rounded font-bold">Stars ★</span>
-                            <span class="absolute top-2 left-2 bg-blue-100 text-blue-900 px-2 py-0.5 rounded font-bold">Puzzles ❓</span>
-                            <span class="absolute bottom-2 right-2 bg-amber-100 text-amber-900 px-2 py-0.5 rounded font-bold">Plowhorses 🐎</span>
-                            <span class="absolute bottom-2 left-2 bg-red-100 text-red-900 px-2 py-0.5 rounded font-bold">Dogs ⚠️</span>
-                            <div id="plot-dots" class="relative w-full h-full"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl border border-ror-border shadow-sm overflow-hidden text-xs">
-                    <div class="p-3.5 border-b border-ror-border flex justify-between items-center bg-gray-50/50">
-                        <span class="font-bold text-ror-dark">قائمة الأصناف والمبيعات الأسبوعية</span>
-                        <button onclick="exportMenuToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 shadow-sm text-xs cursor-pointer">
-                            <i class="fa-solid fa-file-excel"></i>
-                            <span>تصدير المنيو (Excel)</span>
-                        </button>
-                    </div>
-                    <table class="w-full text-right">
-                        <thead class="bg-ror-bg text-gray-500 border-b border-ror-border">
-                            <tr>
-                                <th class="p-2.5">الصنف</th>
-                                <th class="p-2.5">التكلفة</th>
-                                <th class="p-2.5">البيع</th>
-                                <th class="p-2.5">الهامش</th>
-                                <th class="p-2.5">الكمية</th>
-                                <th class="p-2.5">الإيراد</th>
-                                <th class="p-2.5">إجراء</th>
-                            </tr>
-                        </thead>
-                        <tbody id="menu-tbody" class="divide-y divide-ror-border"></tbody>
-                    </table>
-                </div>
+                <div class="custom-card p-5 rounded-2xl text-xs"><table class="w-full text-right"><tbody id="menu-tbody"></tbody></table></div>
             </section>
-
-            <!-- App 1 Break-even -->
-            <section id="app1-breakeven" class="space-y-6 hidden">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
-                    <div class="bg-white p-5 rounded-2xl border border-ror-border shadow-sm space-y-4">
-                        <h4 class="font-bold text-ror-dark border-b border-ror-border pb-2">مدخلات التكلفة</h4>
-                        <div>
-                            <div class="flex justify-between font-bold mb-1">
-                                <span>التكاليف الثابتة</span>
-                                <span id="lbl-be-fixed" class="text-ror-accent">45,000 ر.س</span>
-                            </div>
-                            <input type="range" id="inp-be-fixed" min="5000" max="150000" step="1000" value="45000" oninput="recalcBreakEven()" class="w-full accent-ror-accent">
-                        </div>
-                        <div>
-                            <div class="flex justify-between font-bold mb-1">
-                                <span>متوسط الفاتورة</span>
-                                <span id="lbl-be-ticket" class="text-ror-accent">45 ر.س</span>
-                            </div>
-                            <input type="range" id="inp-be-ticket" min="10" max="250" step="5" value="45" oninput="recalcBreakEven()" class="w-full accent-ror-accent">
-                        </div>
-                        <div>
-                            <div class="flex justify-between font-bold mb-1">
-                                <span>نسبة التكلفة المتغيرة (COGS)</span>
-                                <span id="lbl-be-cogs" class="text-ror-accent">32%</span>
-                            </div>
-                            <input type="range" id="inp-be-cogs" min="15" max="60" step="1" value="32" oninput="recalcBreakEven()" class="w-full accent-ror-accent">
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-2xl border border-ror-border shadow-sm md:col-span-2 flex flex-col justify-between space-y-4">
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
-                            <div class="p-3 bg-ror-bg rounded-xl border border-ror-border">
-                                <span class="text-gray-500 block">هامش الفاتورة</span>
-                                <span id="res-be-margin" class="text-lg font-bold text-ror-dark mt-1 block">0.00 ر.س</span>
-                            </div>
-                            <div class="p-3 bg-ror-bg rounded-xl border border-ror-border">
-                                <span class="text-gray-500 block">نقطة التعادل شهرياً</span>
-                                <span id="res-be-rev" class="text-lg font-bold text-ror-accent mt-1 block">0 ر.س</span>
-                            </div>
-                            <div class="p-3 bg-ror-bg rounded-xl border border-ror-border">
-                                <span class="text-gray-500 block">فواتير التعادل شهرياً</span>
-                                <span id="res-be-tickets" class="text-lg font-bold text-ror-olive mt-1 block">0 فاتورة</span>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-ror-dark text-white rounded-xl space-y-2 border border-ror-gold/20">
-                            <span class="text-ror-gold font-bold block">الأهداف اليومية المطلوبة لتحقيق التعادل:</span>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div>مبيعات اليوم: <strong id="res-be-daily-rev" class="text-white">0 ر.س</strong></div>
-                                <div>فواتير اليوم: <strong id="res-be-daily-tickets" class="text-ror-gold">0 فاتورة</strong></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <section id="app1-breakeven" class="space-y-6 hidden text-xs">
+                <div class="custom-card p-6 rounded-2xl text-center"><span class="text-lg font-bold text-ror-primary" id="res-be-rev">0 ر.س</span></div>
             </section>
-
-            <!-- App 1 RACI -->
-            <section id="app1-raci" class="space-y-4 hidden text-xs">
-                <div class="bg-white rounded-2xl border border-ror-border shadow-sm overflow-hidden">
-                    <div class="p-4 bg-ror-bg font-bold border-b border-ror-border">مصفوفة توزيع الأدوار والصلاحيات (RACI)</div>
-                    <table class="w-full text-right">
-                        <thead class="bg-ror-bg text-gray-600 border-b border-ror-border">
-                            <tr>
-                                <th class="p-3 font-bold">النشاط التشغيلي</th>
-                                <th class="p-3">المدير العام</th>
-                                <th class="p-3">رئيس البار</th>
-                                <th class="p-3">المحاسب</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-ror-border">
-                            <tr>
-                                <td class="p-3 font-bold">توريد البن والمواد الخام</td>
-                                <td class="p-3 text-blue-700 font-bold">A (يعتمد)</td>
-                                <td class="p-3 text-red-700 font-bold">R (يحدد الاحتياج)</td>
-                                <td class="p-3 text-amber-700 font-bold">C (يرتب الدفع)</td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 font-bold">تحميص حماصة جيسن 15 كجم</td>
-                                <td class="p-3 text-blue-700 font-bold">A (إشراف)</td>
-                                <td class="p-3 text-red-700 font-bold">R (التحميص)</td>
-                                <td class="p-3 text-gray-500 font-bold">-</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- App 1 Waste -->
             <section id="app1-waste" class="space-y-6 hidden text-xs">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-white p-5 rounded-2xl border border-ror-border shadow-sm space-y-3">
-                        <h4 class="font-bold text-ror-dark border-b border-ror-border pb-2">تسجيل هدر جديد</h4>
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="text" id="waste-item" placeholder="المادة" class="border border-ror-border rounded-lg p-2 outline-none font-bold">
-                            <input type="text" id="waste-qty" placeholder="الكمية" class="border border-ror-border rounded-lg p-2 outline-none font-bold">
-                        </div>
-                        <input type="number" id="waste-cost" placeholder="التكلفة (ر.س)" class="w-full border border-ror-border rounded-lg p-2 outline-none font-bold">
-                        <button onclick="saveWasteLog()" class="w-full bg-ror-danger text-white py-2 rounded-xl font-bold hover:bg-ror-dark transition-all">إضافة لسجل الهدر</button>
-                        <div class="overflow-x-auto max-h-40 overflow-y-auto border border-ror-border rounded-xl mt-3">
-                            <table class="w-full text-right"><tbody id="waste-tbody" class="divide-y divide-ror-border"></tbody></table>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-2xl border border-ror-border shadow-sm space-y-3">
-                        <h4 class="font-bold text-ror-dark border-b border-ror-border pb-2">حركة الصندوق والسيولة</h4>
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="number" id="cash-open" value="1500" oninput="recalcCash()" class="border border-ror-border rounded-lg p-2 outline-none font-bold">
-                            <input type="number" id="cash-sales" value="4800" oninput="recalcCash()" class="border border-ror-border rounded-lg p-2 outline-none font-bold">
-                        </div>
-                        <input type="number" id="cash-expenses" value="350" oninput="recalcCash()" class="w-full border border-ror-border rounded-lg p-2 outline-none font-bold">
-                        <div class="p-4 bg-ror-bg rounded-xl border border-ror-border text-center">
-                            <span class="text-gray-500 block">رصيد الإغلاق المتوقع بالصندوق</span>
-                            <span id="cash-close" class="text-2xl font-extrabold text-ror-olive mt-1 block">5,950.00 ر.س</span>
-                        </div>
-                    </div>
-                </div>
+                <div class="custom-card p-5 rounded-2xl"><table class="w-full text-right"><tbody id="waste-tbody"></tbody></table></div>
             </section>
         </main>
     </div>
 
-    <!-- PROGRAM 2 CONTAINER -->
+    <!-- VIEW 2: APP 2 -->
     <div id="container-app2" class="hidden flex-grow flex flex-col">
-        <nav class="bg-white border-b border-ror-border sticky top-[57px] z-40 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 flex justify-between items-center overflow-x-auto">
-                <div class="flex space-x-reverse space-x-1 whitespace-nowrap text-xs font-semibold py-1">
-                    <button onclick="switchApp2Tab('overview')" id="tab-app2-overview" class="py-3.5 px-4 text-ror-olive tab-btn-active"><i class="fa-solid fa-compass ml-1"></i> الرؤية الانتقالية</button>
-                    <button onclick="switchApp2Tab('financial')" id="tab-app2-financial" class="py-3.5 px-4 text-gray-600 hover:text-ror-dark"><i class="fa-solid fa-file-invoice-dollar ml-1"></i> التقارير والالتزامات</button>
-                    <button onclick="switchApp2Tab('cafe')" id="tab-app2-cafe" class="py-3.5 px-4 text-gray-600 hover:text-ror-dark"><i class="fa-solid fa-mug-hot ml-1"></i> مبيعات المقهى</button>
-                    <button onclick="switchApp2Tab('roastery')" id="tab-app2-roastery" class="py-3.5 px-4 text-gray-600 hover:text-ror-dark"><i class="fa-solid fa-boxes-stacked ml-1"></i> مبيعات المحمصة</button>
-                    <button onclick="switchApp2Tab('plan')" id="tab-app2-plan" class="py-3.5 px-4 text-gray-600 hover:text-ror-dark"><i class="fa-solid fa-rocket ml-1"></i> خطة ثورة RoR</button>
-                </div>
-                <div class="hidden sm:flex items-center gap-2">
-                    <button onclick="exportComprehensiveSalesReport()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold text-xs transition-all flex items-center gap-1.5 shadow-sm whitespace-nowrap cursor-pointer">
-                        <i class="fa-solid fa-file-excel"></i>
-                        <span>تصدير تقرير المبيعات (Excel)</span>
-                    </button>
-                </div>
+        <nav class="bg-ror-surface border-b border-ror-border sticky top-[57px] z-40 overflow-x-auto shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 flex space-x-reverse space-x-1 whitespace-nowrap text-xs font-semibold">
+                <button onclick="switchApp2Tab('overview')" id="tab-app2-overview" class="py-3.5 px-4 text-ror-teal tab-btn-active">مؤشرات التحول</button>
+                <button onclick="switchApp2Tab('cafe')" id="tab-app2-cafe" class="py-3.5 px-4 text-gray-600">مبيعات البار</button>
+                <button onclick="switchApp2Tab('roastery')" id="tab-app2-roastery" class="py-3.5 px-4 text-gray-600">مبيعات المحمصة</button>
             </div>
         </nav>
-
         <main class="max-w-7xl w-full mx-auto p-4 md:p-8 space-y-6 flex-grow">
-            <!-- App 2 Overview -->
             <section id="app2-overview" class="space-y-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
-                    <div class="bg-white p-4 rounded-2xl border border-ror-border shadow-sm">
-                        <span class="text-gray-500 font-bold block">مبيعات البار</span>
-                        <span id="stat-cafe" class="text-2xl font-extrabold text-ror-dark mt-1 block">0.00 ر.س</span>
-                    </div>
-                    <div class="bg-white p-4 rounded-2xl border border-ror-border shadow-sm">
-                        <span class="text-gray-500 font-bold block">مبيعات المحمصة</span>
-                        <span id="stat-roastery" class="text-2xl font-extrabold text-ror-accent mt-1 block">0.00 ر.س</span>
-                    </div>
-                    <div class="bg-white p-4 rounded-2xl border border-ror-border shadow-sm">
-                        <span class="text-gray-500 font-bold block">المصاريف والالتزامات</span>
-                        <span id="stat-expenses" class="text-2xl font-extrabold text-ror-danger mt-1 block">0.00 ر.س</span>
-                    </div>
-                    <div class="bg-white p-4 rounded-2xl border border-ror-border shadow-sm">
-                        <span class="text-gray-500 font-bold block">صافي الدخل التشغيلي</span>
-                        <span id="stat-net" class="text-2xl font-extrabold text-ror-olive mt-1 block">0.00 ر.س</span>
-                    </div>
-                </div>
-
-                <!-- Excel Export Quick Actions Banner -->
-                <div class="bg-gradient-to-r from-emerald-900/10 via-white to-white p-5 rounded-2xl border border-emerald-200/80 shadow-sm flex flex-wrap justify-between items-center gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-xl shadow-md shadow-emerald-700/20">
-                            <i class="fa-solid fa-file-excel"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-sm text-ror-dark">تصدير تقارير المبيعات والأداء المالي (Excel)</h4>
-                            <p class="text-xs text-gray-500 mt-0.5">تصدير جداول المبيعات اليومية للبار والمحمصة والمصاريف التشغيلية بملفات إكسيل معتمدة</p>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <button onclick="exportComprehensiveSalesReport()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl font-bold transition-all flex items-center gap-2 shadow-sm text-xs cursor-pointer">
-                            <i class="fa-solid fa-file-excel"></i>
-                            <span>تصدير التقرير الشامل لجميع المبيعات</span>
-                        </button>
-                        <button onclick="exportCafeSalesToExcel()" class="bg-white hover:bg-gray-50 text-ror-olive px-3.5 py-2 rounded-xl font-bold transition-all border border-emerald-300 flex items-center gap-1.5 text-xs shadow-xs cursor-pointer">
-                            <i class="fa-solid fa-mug-hot"></i>
-                            <span>تقرير مبيعات البار</span>
-                        </button>
-                        <button onclick="exportRoasterySalesToExcel()" class="bg-white hover:bg-gray-50 text-ror-accent px-3.5 py-2 rounded-xl font-bold transition-all border border-amber-300 flex items-center gap-1.5 text-xs shadow-xs cursor-pointer">
-                            <i class="fa-solid fa-boxes-stacked"></i>
-                            <span>تقرير مبيعات المحمصة</span>
-                        </button>
-                    </div>
+                    <div class="custom-card p-5 rounded-2xl"><span class="text-gray-500 font-bold block">مبيعات البار</span><span id="stat-cafe" class="text-2xl font-extrabold text-ror-petrol mt-1 block">0.00 ر.س</span></div>
+                    <div class="custom-card p-5 rounded-2xl"><span class="text-gray-500 font-bold block">مبيعات المحمصة</span><span id="stat-roastery" class="text-2xl font-extrabold text-ror-teal mt-1 block">0.00 ر.س</span></div>
+                    <div class="custom-card p-5 rounded-2xl"><span class="text-gray-500 font-bold block">المصاريف</span><span id="stat-expenses" class="text-2xl font-extrabold text-ror-danger mt-1 block">0.00 ر.س</span></div>
+                    <div class="custom-card p-5 rounded-2xl"><span class="text-gray-500 font-bold block">صافي الدخل</span><span id="stat-net" class="text-2xl font-extrabold text-ror-primary mt-1 block">0.00 ر.س</span></div>
                 </div>
             </section>
-
-            <!-- App 2 Financials -->
-            <section id="app2-financial" class="space-y-4 hidden text-xs">
-                <div class="bg-white p-4 rounded-2xl border border-ror-border shadow-sm flex flex-wrap justify-between items-center gap-3">
-                    <div>
-                        <h3 class="font-bold text-sm text-ror-dark flex items-center gap-2">
-                            <i class="fa-solid fa-file-invoice-dollar text-ror-danger"></i>
-                            <span>المصاريف والالتزامات الشهرية</span>
-                        </h3>
-                        <p class="text-[11px] text-gray-500 mt-0.5">حصر الالتزامات التشغيلية والرواتب لضبط خطة التعافي والسيولة</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="exportFinancialsToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-lg font-bold hover:shadow transition-all flex items-center gap-1.5 text-xs shadow-sm cursor-pointer">
-                            <i class="fa-solid fa-file-excel"></i>
-                            <span>تصدير الالتزامات (Excel)</span>
-                        </button>
-                        <button onclick="addQuickFinancial()" class="bg-ror-dark text-white px-3.5 py-1.5 rounded-lg font-bold hover:bg-ror-accent transition-all flex items-center gap-1 text-xs cursor-pointer">
-                            <i class="fa-solid fa-plus"></i>
-                            <span>إضافة بند</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="bg-white rounded-2xl border border-ror-border shadow-sm overflow-hidden">
-                    <table class="w-full text-right">
-                        <thead class="bg-ror-bg text-gray-600 border-b border-ror-border text-[11px] font-bold">
-                            <tr>
-                                <th class="p-3">البند المالي</th>
-                                <th class="p-3">التصنيف</th>
-                                <th class="p-3">المبلغ الشهري</th>
-                                <th class="p-3">النوع</th>
-                                <th class="p-3 text-center">إجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="app2-fin-tbody" class="divide-y divide-ror-border"></tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- App 2 Cafe Sales -->
-            <section id="app2-cafe" class="space-y-4 hidden text-xs">
-                <div class="bg-white p-4 rounded-2xl border border-ror-border shadow-sm flex flex-wrap justify-between items-center gap-3">
-                    <div>
-                        <h3 class="font-bold text-sm text-ror-dark flex items-center gap-2">
-                            <i class="fa-solid fa-mug-hot text-ror-olive"></i>
-                            <span>مبيعات البار اليومية (عارف / علم)</span>
-                        </h3>
-                        <p class="text-[11px] text-gray-500 mt-0.5">متابعة إيرادات ورديات البار، عدد الأكواب، ومبيعات الحلى</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="exportCafeSalesToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-lg font-bold hover:shadow transition-all flex items-center gap-1.5 text-xs shadow-sm cursor-pointer">
-                            <i class="fa-solid fa-file-excel"></i>
-                            <span>تصدير تقرير المبيعات (Excel)</span>
-                        </button>
-                        <button onclick="addQuickCafeSale()" class="bg-ror-olive text-white px-3.5 py-1.5 rounded-lg font-bold hover:bg-ror-dark transition-all flex items-center gap-1 text-xs cursor-pointer">
-                            <i class="fa-solid fa-plus"></i>
-                            <span>تسجيل مبيعات وردية</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="bg-white rounded-2xl border border-ror-border shadow-sm overflow-hidden">
-                    <table class="w-full text-right">
-                        <thead class="bg-ror-bg text-gray-600 border-b border-ror-border text-[11px] font-bold">
-                            <tr>
-                                <th class="p-3">التاريخ والوردية</th>
-                                <th class="p-3">عدد الأكواب</th>
-                                <th class="p-3">إجمالي الإيراد</th>
-                                <th class="p-3">الموظف / الباريستا</th>
-                                <th class="p-3 text-center">إجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="app2-cafe-tbody" class="divide-y divide-ror-border"></tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- App 2 Roastery Sales -->
-            <section id="app2-roastery" class="space-y-4 hidden text-xs">
-                <div class="bg-white p-4 rounded-2xl border border-ror-border shadow-sm flex flex-wrap justify-between items-center gap-3">
-                    <div>
-                        <h3 class="font-bold text-sm text-ror-dark flex items-center gap-2">
-                            <i class="fa-solid fa-boxes-stacked text-ror-accent"></i>
-                            <span>مبيعات المحمصة (حماصة جيسن 15 كجم والأرباع)</span>
-                        </h3>
-                        <p class="text-[11px] text-gray-500 mt-0.5">مبيعات الجملة B2B ورف الفرع وحبوب القهوة المختصة</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="exportRoasterySalesToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-lg font-bold hover:shadow transition-all flex items-center gap-1.5 text-xs shadow-sm cursor-pointer">
-                            <i class="fa-solid fa-file-excel"></i>
-                            <span>تصدير تقرير المبيعات (Excel)</span>
-                        </button>
-                        <button onclick="addQuickRoastSale()" class="bg-ror-accent text-white px-3.5 py-1.5 rounded-lg font-bold hover:bg-ror-dark transition-all flex items-center gap-1 text-xs cursor-pointer">
-                            <i class="fa-solid fa-plus"></i>
-                            <span>تسجيل مبيعات بن</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="bg-white rounded-2xl border border-ror-border shadow-sm overflow-hidden">
-                    <table class="w-full text-right">
-                        <thead class="bg-ror-bg text-gray-600 border-b border-ror-border text-[11px] font-bold">
-                            <tr>
-                                <th class="p-3">العميل / الجهة</th>
-                                <th class="p-3">المحصول</th>
-                                <th class="p-3">الكمية المباعة</th>
-                                <th class="p-3">إجمالي القيمة</th>
-                                <th class="p-3">حالة السداد</th>
-                                <th class="p-3 text-center">إجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="app2-roast-tbody" class="divide-y divide-ror-border"></tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- App 2 Plan -->
-            <section id="app2-plan" class="space-y-4 hidden text-xs">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-white p-5 rounded-2xl border border-ror-border shadow-sm space-y-2">
-                        <span class="font-bold text-ror-accent text-sm block">1. استعادة الجملة والـ B2B</span>
-                        <p class="text-gray-600 leading-relaxed">استهداف 10 مقاهٍ ومكاتب لتعويض عميل حائل وتأمين طلب دوري يغذي إنتاج حماصة جيسن 15 كجم.</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border border-ror-border shadow-sm space-y-2">
-                        <span class="font-bold text-ror-olive text-sm block">2. إيقاف نزيف الأوفر تايم</span>
-                        <p class="text-gray-600 leading-relaxed">دمج تغليف القهوة أثناء فترات الهدوء لعارف وعلم في دوامهم الأساسي وتوفير النقد.</p>
-                    </div>
-                </div>
-            </section>
+            <section id="app2-cafe" class="space-y-4 hidden text-xs"><div class="custom-card rounded-2xl p-4"><table class="w-full text-right"><tbody id="app2-cafe-tbody"></tbody></table></div></section>
+            <section id="app2-roastery" class="space-y-4 hidden text-xs"><div class="custom-card rounded-2xl p-4"><table class="w-full text-right"><tbody id="app2-roast-tbody"></tbody></table></div></section>
         </main>
     </div>
 
-    <!-- Script Logic -->
     <script>
         const defaultTasks = [
             { id: 1, week: 1, title: "حصر الأصول الثابتة وحماصة جيسن 15 كجم ومكائن البار.", status: "completed" },
-            { id: 2, week: 1, title: "إدخال بيانات موردي البن الأخضر ومواد التغليف.", status: "completed" },
-            { id: 3, week: 1, title: "إعداد قائمة المكونات الأولية للمشروبات.", status: "in-progress" },
-            { id: 4, week: 1, title: "تعيين أسعار التكلفة المعيارية لوصفات القهوة.", status: "not-started" },
-            { id: 5, week: 1, title: "ضبط أرصدة المخزون الافتتاحية للمستودع والبار.", status: "not-started" }
+            { id: 2, week: 1, title: "إدخال بيانات موردي البن الأخضر ومواد التغليف.", status: "completed" }
         ];
-
         let tasks = JSON.parse(localStorage.getItem('ror_tasks')) || defaultTasks;
-        let menuItems = JSON.parse(localStorage.getItem('ror_menu')) || [
-            { id: 1, name: "V60 إثيوبي شلشلي", cost: 4.5, price: 18.0, sales: 210 },
-            { id: 2, name: "فلات وايت RoR", cost: 3.8, price: 15.0, sales: 290 },
-            { id: 3, name: "قهوة اليوم (كوب)", cost: 1.8, price: 9.0, sales: 320 }
-        ];
-        let wasteLogs = JSON.parse(localStorage.getItem('ror_waste')) || [
-            { item: "حليب مراعي طازج", qty: "3 لتر", cost: 18.0, reason: "انتهاء صلاحية" }
-        ];
-        let financials = JSON.parse(localStorage.getItem('ror_financials')) || [
-            { title: "رسوم المقابل المالي والإقامات", category: "عمالة وتأمينات", amount: 2000, type: "ثابتة" },
-            { title: "التأمينات الاجتماعية", category: "عمالة وتأمينات", amount: 500, type: "ثابتة" },
-            { title: "فاتورة الكهرباء التقديرية", category: "تشغيلي مباشر", amount: 1500, type: "متغيرة" }
-        ];
-        let cafeSales = JSON.parse(localStorage.getItem('ror_cafe_sales')) || [
-            { date: "2026-09-14", shift: "صباحية (عارف)", cups: 65, sweets: 210, revenue: 1185, tickets: 48, staff: "عارف" },
-            { date: "2026-09-14", shift: "مسائية (علم)", cups: 92, sweets: 340, revenue: 1720, tickets: 64, staff: "علم" }
-        ];
-        let roasterySales = JSON.parse(localStorage.getItem('ror_roast_sales')) || [
-            { client: "مقهى الأفق (حائل - سابق)", crop: "برازيل فازيندا", qty: 50, price: 75, total: 3750, status: "مدفوع (تحويل)" },
-            { client: "مبيعات رف الفرع (أرباع)", crop: "إثيوبيا شلشلي", qty: 15, price: 110, total: 1650, status: "نقد/شبكة" }
-        ];
+        let menuItems = JSON.parse(localStorage.getItem('ror_menu')) || [{ id: 1, name: "فلات وايت RoR", cost: 3.8, price: 15.0, sales: 290 }];
+        let wasteLogs = JSON.parse(localStorage.getItem('ror_waste')) || [{ item: "حليب مراعي", qty: "3 لتر", cost: 18.0, reason: "انتهاء صلاحية" }];
+        let cafeSales = JSON.parse(localStorage.getItem('ror_cafe_sales')) || [{ date: "2026-09-14", shift: "صباحية (عارف)", cups: 65, sweets: 210, revenue: 1185, tickets: 48, staff: "عارف" }];
+        let roasterySales = JSON.parse(localStorage.getItem('ror_roast_sales')) || [{ client: "مبيعات رف الفرع (أرباع)", crop: "إثيوبيا شلشلي", qty: 15, price: 110, total: 1650, status: "مدفوع" }];
 
         window.onload = function() {
             renderTasks();
             renderMenuItems();
             renderWasteLogs();
-            recalcBreakEven();
-            renderFinancialTable();
             renderCafeSalesTable();
             renderRoasterySalesTable();
             recalcApp2Metrics();
         };
 
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            document.getElementById('toast-msg').textContent = msg;
-            t.classList.remove('translate-y-20', 'opacity-0');
-            t.classList.add('translate-y-0', 'opacity-100');
-            setTimeout(() => {
-                t.classList.remove('translate-y-0', 'opacity-100');
-                t.classList.add('translate-y-20', 'opacity-0');
-            }, 2500);
-        }
-
         function openProgram(prog) {
-            document.getElementById('view-portal').classList.add('hidden');
-            document.getElementById('container-app1').classList.add('hidden');
-            document.getElementById('container-app2').classList.add('hidden');
-            ['portal', 'app1', 'app2'].forEach(p => {
-                document.getElementById(`btn-top-${p}`).className = "px-3 py-1.5 rounded-lg font-bold text-gray-300 hover:text-white transition-all";
-            });
-
+            ['view-portal', 'container-app1', 'container-app2'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            ['portal', 'app1', 'app2'].forEach(p => document.getElementById(`btn-top-${p}`).className = "px-3.5 py-1.5 rounded-lg font-bold text-gray-300 hover:text-white transition-all");
             if(prog === 'portal') {
                 document.getElementById('view-portal').classList.remove('hidden');
-                document.getElementById('btn-top-portal').className = "px-3 py-1.5 rounded-lg font-bold bg-ror-gold text-ror-dark transition-all";
+                document.getElementById('btn-top-portal').className = "px-3.5 py-1.5 rounded-lg font-bold bg-ror-primary text-white transition-all";
             } else if(prog === 'app1') {
                 document.getElementById('container-app1').classList.remove('hidden');
-                document.getElementById('btn-top-app1').className = "px-3 py-1.5 rounded-lg font-bold bg-ror-accent text-white transition-all";
-            } else if(prog === 'app2') {
+                document.getElementById('btn-top-app1').className = "px-3.5 py-1.5 rounded-lg font-bold bg-ror-primary text-white transition-all";
+            } else {
                 document.getElementById('container-app2').classList.remove('hidden');
-                document.getElementById('btn-top-app2').className = "px-3 py-1.5 rounded-lg font-bold bg-ror-olive text-white transition-all";
+                document.getElementById('btn-top-app2').className = "px-3.5 py-1.5 rounded-lg font-bold bg-ror-teal text-white transition-all";
             }
         }
 
-        function switchApp1Tab(tab) {
-            ['dash', 'tasks', 'menu', 'breakeven', 'raci', 'waste'].forEach(t => {
-                document.getElementById(`app1-${t}`).classList.add('hidden');
-                document.getElementById(`tab-app1-${t}`).classList.remove('tab-btn-active');
+        function switchApp1Tab(t) {
+            ['dash', 'tasks', 'menu', 'breakeven', 'waste'].forEach(x => {
+                document.getElementById(`app1-${x}`).classList.add('hidden');
+                document.getElementById(`tab-app1-${x}`).classList.remove('tab-btn-active');
             });
-            document.getElementById(`app1-${tab}`).classList.remove('hidden');
-            document.getElementById(`tab-app1-${tab}`).classList.add('tab-btn-active');
-            if(tab === 'menu') renderPlotDots();
+            document.getElementById(`app1-${t}`).classList.remove('hidden');
+            document.getElementById(`tab-app1-${t}`).classList.add('tab-btn-active');
         }
 
-        function switchApp2Tab(tab) {
-            ['overview', 'financial', 'cafe', 'roastery', 'plan'].forEach(t => {
-                document.getElementById(`app2-${t}`).classList.add('hidden');
-                document.getElementById(`tab-app2-${t}`).classList.remove('tab-btn-active');
+        function switchApp2Tab(t) {
+            ['overview', 'cafe', 'roastery'].forEach(x => {
+                document.getElementById(`app2-${x}`).classList.add('hidden');
+                document.getElementById(`tab-app2-${x}`).classList.remove('tab-btn-active');
             });
-            document.getElementById(`app2-${tab}`).classList.remove('hidden');
-            document.getElementById(`tab-app2-${tab}`).classList.add('tab-btn-active');
+            document.getElementById(`app2-${t}`).classList.remove('hidden');
+            document.getElementById(`tab-app2-${t}`).classList.add('tab-btn-active');
         }
 
         function renderTasks() {
             const container = document.getElementById('tasks-container');
-            const weekFilter = document.getElementById('task-filter-week').value;
+            if(!container) return;
             container.innerHTML = '';
-            const filtered = tasks.filter(t => weekFilter === 'all' || t.week == weekFilter);
-            const completedCount = tasks.filter(t => t.status === 'completed').length;
-            document.getElementById('dash1-tasks').textContent = `${completedCount} / 40`;
-
-            filtered.forEach(t => {
-                let badge = t.status === 'completed' ? 'bg-green-100 text-green-800' : t.status === 'in-progress' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-700';
+            tasks.forEach(t => {
                 const el = document.createElement('div');
-                el.className = "p-3 bg-white rounded-xl border border-ror-border flex justify-between items-center text-xs";
-                el.innerHTML = `
-                    <div>
-                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${badge}">${t.status}</span>
-                        <span class="font-bold text-ror-dark mr-2">${t.title}</span>
-                    </div>
-                    <select onchange="updateTask(${t.id}, this.value)" class="border border-ror-border rounded-lg p-1 font-bold outline-none text-xs">
-                        <option value="not-started" ${t.status === 'not-started' ? 'selected' : ''}>لم تبدأ</option>
-                        <option value="in-progress" ${t.status === 'in-progress' ? 'selected' : ''}>قيد التنفيذ</option>
-                        <option value="completed" ${t.status === 'completed' ? 'selected' : ''}>مكتملة</option>
-                    </select>
-                `;
+                el.className = "p-3 custom-card rounded-2xl flex justify-between items-center text-xs";
+                el.innerHTML = `<span>الأسبوع ${t.week}: ${t.title}</span><span class="font-bold text-ror-primary">${t.status}</span>`;
                 container.appendChild(el);
             });
-        }
-
-        function updateTask(id, st) {
-            const t = tasks.find(x => x.id === id);
-            if(t) {
-                t.status = st;
-                localStorage.setItem('ror_tasks', JSON.stringify(tasks));
-                renderTasks();
-                showToast("تم تحديث المهمة");
-            }
+            document.getElementById('dash1-tasks').textContent = `${tasks.filter(x => x.status === 'completed').length} / 40`;
         }
 
         function renderMenuItems() {
             const tbody = document.getElementById('menu-tbody');
+            if(!tbody) return;
             tbody.innerHTML = '';
-            let totalCost = 0, totalRev = 0;
-            menuItems.forEach(item => {
-                const margin = item.price - item.cost;
-                const rev = item.price * item.sales;
-                totalCost += item.cost * item.sales;
-                totalRev += rev;
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="p-2.5 font-bold">${item.name}</td>
-                    <td class="p-2.5">${item.cost} ر.س</td>
-                    <td class="p-2.5">${item.price} ر.س</td>
-                    <td class="p-2.5 font-bold text-ror-olive">${margin} ر.س</td>
-                    <td class="p-2.5">${item.sales}</td>
-                    <td class="p-2.5 font-bold">${rev} ر.س</td>
-                    <td class="p-2.5"><button onclick="deleteMenuItem(${item.id})" class="text-ror-danger"><i class="fa-solid fa-trash"></i></button></td>
-                `;
-                tbody.appendChild(tr);
+            menuItems.forEach(i => {
+                tbody.innerHTML += `<tr><td class="p-2 font-bold">${i.name}</td><td class="p-2">${i.price} ر.س</td><td class="p-2">${i.sales} مبيعات</td></tr>`;
             });
-            const fc = totalRev > 0 ? (totalCost / totalRev) * 100 : 32.5;
-            document.getElementById('dash1-foodcost').textContent = `${fc.toFixed(1)}%`;
-            document.getElementById('dash1-margin').textContent = `${(100 - fc).toFixed(1)}%`;
-            renderPlotDots();
-        }
-
-        function renderPlotDots() {
-            const cont = document.getElementById('plot-dots');
-            cont.innerHTML = '';
-            menuItems.forEach((item, idx) => {
-                const dot = document.createElement('div');
-                dot.className = "absolute w-3.5 h-3.5 rounded-full bg-ror-accent border border-white shadow";
-                dot.style.left = `${20 + (idx * 20) % 70}%`;
-                dot.style.bottom = `${30 + (idx * 20) % 60}%`;
-                cont.appendChild(dot);
-            });
-        }
-
-        function saveMenuItem() {
-            const name = document.getElementById('menu-name').value.trim();
-            const cost = parseFloat(document.getElementById('menu-cost').value);
-            const price = parseFloat(document.getElementById('menu-price').value);
-            const sales = parseInt(document.getElementById('menu-sales').value);
-            if(!name || isNaN(cost) || isNaN(price) || isNaN(sales)) return alert("أكمل البيانات");
-            menuItems.push({ id: Date.now(), name, cost, price, sales });
-            localStorage.setItem('ror_menu', JSON.stringify(menuItems));
-            renderMenuItems();
-            showToast("تمت إضافة الصنف");
-        }
-
-        function deleteMenuItem(id) {
-            menuItems = menuItems.filter(x => x.id !== id);
-            localStorage.setItem('ror_menu', JSON.stringify(menuItems));
-            renderMenuItems();
-            showToast("تم الحذف");
-        }
-
-        function recalcBreakEven() {
-            const fixed = parseFloat(document.getElementById('inp-be-fixed').value);
-            const ticket = parseFloat(document.getElementById('inp-be-ticket').value);
-            const cogs = parseFloat(document.getElementById('inp-be-cogs').value);
-            document.getElementById('lbl-be-fixed').textContent = `${fixed.toLocaleString()} ر.س`;
-            document.getElementById('lbl-be-ticket').textContent = `${ticket} ر.س`;
-            document.getElementById('lbl-be-cogs').textContent = `${cogs}%`;
-            const cmPct = 1 - (cogs / 100);
-            const beRev = fixed / cmPct;
-            document.getElementById('res-be-margin').textContent = `${(ticket * cmPct).toFixed(1)} ر.س`;
-            document.getElementById('res-be-rev').textContent = `${Math.ceil(beRev).toLocaleString()} ر.س`;
-            document.getElementById('res-be-tickets').textContent = `${Math.ceil(beRev / ticket).toLocaleString()} فاتورة`;
-            document.getElementById('res-be-daily-rev').textContent = `${Math.ceil(beRev / 30).toLocaleString()} ر.س`;
-            document.getElementById('res-be-daily-tickets').textContent = `${Math.ceil(beRev / ticket / 30).toLocaleString()} فاتورة`;
         }
 
         function renderWasteLogs() {
             const tbody = document.getElementById('waste-tbody');
+            if(!tbody) return;
             tbody.innerHTML = '';
-            let sum = 0;
             wasteLogs.forEach(w => {
-                sum += w.cost;
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td class="p-2 font-bold">${w.item}</td><td class="p-2">${w.qty}</td><td class="p-2 font-bold text-ror-danger">${w.cost} ر.س</td><td class="p-2 text-gray-500">${w.reason}</td>`;
-                tbody.appendChild(tr);
+                tbody.innerHTML += `<tr><td class="p-2 font-bold">${w.item}</td><td class="p-2 text-ror-danger">${w.cost} ر.س</td></tr>`;
             });
-            document.getElementById('dash1-waste').textContent = `${sum} ر.س`;
-        }
-
-        function saveWasteLog() {
-            const item = document.getElementById('waste-item').value.trim();
-            const qty = document.getElementById('waste-qty').value.trim();
-            const cost = parseFloat(document.getElementById('waste-cost').value);
-            if(!item || !qty || isNaN(cost)) return alert("أكمل بيانات الهدر");
-            wasteLogs.unshift({ item, qty, cost, reason: "تلف/معايرة" });
-            localStorage.setItem('ror_waste', JSON.stringify(wasteLogs));
-            renderWasteLogs();
-            showToast("تم توثيق الهدر");
-        }
-
-        function recalcCash() {
-            const op = parseFloat(document.getElementById('cash-open').value) || 0;
-            const sa = parseFloat(document.getElementById('cash-sales').value) || 0;
-            const ex = parseFloat(document.getElementById('cash-expenses').value) || 0;
-            document.getElementById('cash-close').textContent = `${(op + sa - ex).toLocaleString()} ر.س`;
-        }
-
-        function renderFinancialTable() {
-            const tbody = document.getElementById('app2-fin-tbody');
-            tbody.innerHTML = '';
-            financials.forEach((f, index) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="p-3 font-bold">${f.title}</td>
-                    <td class="p-3 text-gray-500">${f.category}</td>
-                    <td class="p-3 font-bold text-ror-danger">${f.amount.toLocaleString()} ر.س</td>
-                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-100">${f.type}</span></td>
-                    <td class="p-3 text-center"><button onclick="deleteFinancial(${index})" class="text-ror-danger hover:text-red-700 transition-colors p-1" title="حذف البند"><i class="fa-solid fa-trash"></i></button></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function deleteFinancial(index) {
-            if(!confirm("هل أنت متأكد من حذف هذا البند المالي؟")) return;
-            financials.splice(index, 1);
-            localStorage.setItem('ror_financials', JSON.stringify(financials));
-            renderFinancialTable();
-            recalcApp2Metrics();
-            showToast("تم حذف البند المالي");
         }
 
         function renderCafeSalesTable() {
             const tbody = document.getElementById('app2-cafe-tbody');
+            if(!tbody) return;
             tbody.innerHTML = '';
-            cafeSales.forEach((c, index) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="p-3 font-bold">${c.date} <span class="text-[10px] text-gray-400 block">${c.shift}</span></td>
-                    <td class="p-3 font-bold text-ror-olive">${c.cups} كوب</td>
-                    <td class="p-3 font-bold text-ror-dark">${(c.revenue || 0).toLocaleString()} ر.س</td>
-                    <td class="p-3 text-gray-500">${c.staff}</td>
-                    <td class="p-3 text-center"><button onclick="deleteCafeSale(${index})" class="text-ror-danger hover:text-red-700 transition-colors p-1" title="حذف السجل"><i class="fa-solid fa-trash"></i></button></td>
-                `;
-                tbody.appendChild(tr);
+            cafeSales.forEach(c => {
+                tbody.innerHTML += `<tr><td class="p-2">${c.date} (${c.staff})</td><td class="p-2 font-bold">${c.revenue} ر.س</td></tr>`;
             });
-        }
-
-        function deleteCafeSale(index) {
-            if(!confirm("هل أنت متأكد من حذف سجل مبيعات هذه الوردية؟")) return;
-            cafeSales.splice(index, 1);
-            localStorage.setItem('ror_cafe_sales', JSON.stringify(cafeSales));
-            renderCafeSalesTable();
-            recalcApp2Metrics();
-            showToast("تم حذف سجل مبيعات الوردية");
         }
 
         function renderRoasterySalesTable() {
             const tbody = document.getElementById('app2-roast-tbody');
+            if(!tbody) return;
             tbody.innerHTML = '';
-            roasterySales.forEach((r, index) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="p-3 font-bold">${r.client}</td>
-                    <td class="p-3 font-semibold text-ror-accent">${r.crop}</td>
-                    <td class="p-3 font-bold">${r.qty} كجم</td>
-                    <td class="p-3 font-bold text-ror-olive">${(r.total || 0).toLocaleString()} ر.س</td>
-                    <td class="p-3 text-emerald-700 font-bold">${r.status}</td>
-                    <td class="p-3 text-center"><button onclick="deleteRoastSale(${index})" class="text-ror-danger hover:text-red-700 transition-colors p-1" title="حذف السجل"><i class="fa-solid fa-trash"></i></button></td>
-                `;
-                tbody.appendChild(tr);
+            roasterySales.forEach(r => {
+                tbody.innerHTML += `<tr><td class="p-2">${r.client}</td><td class="p-2 font-bold">${r.total} ر.س</td></tr>`;
             });
-        }
-
-        function deleteRoastSale(index) {
-            if(!confirm("هل أنت متأكد من حذف سجل مبيعات المحمصة هذا؟")) return;
-            roasterySales.splice(index, 1);
-            localStorage.setItem('ror_roast_sales', JSON.stringify(roasterySales));
-            renderRoasterySalesTable();
-            recalcApp2Metrics();
-            showToast("تم حذف سجل مبيعات المحمصة");
         }
 
         function recalcApp2Metrics() {
-            const totalExp = financials.reduce((s, x) => s + x.amount, 0);
-            const totalCafe = cafeSales.reduce((s, x) => s + x.revenue, 0);
-            const totalRoast = roasterySales.reduce((s, x) => s + x.total, 0);
-            document.getElementById('stat-expenses').textContent = `${totalExp.toLocaleString()} ر.س`;
-            document.getElementById('stat-cafe').textContent = `${totalCafe.toLocaleString()} ر.س`;
-            document.getElementById('stat-roastery').textContent = `${totalRoast.toLocaleString()} ر.س`;
-            document.getElementById('stat-net').textContent = `${(totalCafe + totalRoast - totalExp).toLocaleString()} ر.س`;
-        }
-
-        function addQuickFinancial() {
-            const title = prompt("اسم البند المالي:");
-            const amount = parseFloat(prompt("المبلغ الشهري:") || 0);
-            if(!title || !amount) return;
-            financials.push({ title, category: "تشغيلي", amount, type: "ثابتة" });
-            localStorage.setItem('ror_financials', JSON.stringify(financials));
-            renderFinancialTable();
-            recalcApp2Metrics();
-            showToast("تم الحفظ");
-        }
-
-        function addQuickCafeSale() {
-            const cups = parseInt(prompt("عدد الأكواب المباعة:") || 0);
-            const rev = parseFloat(prompt("إجمالي الإيراد:") || 0);
-            if(!rev) return;
-            cafeSales.unshift({ date: new Date().toISOString().split('T')[0], shift: "وردية اليوم", cups, sweets: 0, revenue: rev, tickets: cups, staff: "عارف/علم" });
-            localStorage.setItem('ror_cafe_sales', JSON.stringify(cafeSales));
-            renderCafeSalesTable();
-            recalcApp2Metrics();
-            showToast("تم تسجيل مبيعات البار");
-        }
-
-        function addQuickRoastSale() {
-            const client = prompt("اسم العميل:") || "مقهى محلي";
-            const qty = parseFloat(prompt("الكمية بالكيلو:") || 0);
-            const price = parseFloat(prompt("سعر الكيلو:") || 80);
-            if(!qty || !price) return;
-            roasterySales.unshift({ client, crop: "محصول مختص", qty, price, total: qty * price, status: "مدفوع" });
-            localStorage.setItem('ror_roast_sales', JSON.stringify(roasterySales));
-            renderRoasterySalesTable();
-            recalcApp2Metrics();
-            showToast("تم تسجيل مبيعات البن");
-        }
-
-        // ==========================================
-        // EXCEL EXPORT FUNCTIONS (SheetJS)
-        // ==========================================
-
-        function exportCafeSalesToExcel() {
-            if(typeof XLSX === 'undefined') {
-                alert("جاري تحميل مكتبة إكسيل، يرجى التأكد من اتصال الإنترنت والمحاولة مرة أخرى.");
-                return;
-            }
-            if(!cafeSales || cafeSales.length === 0) {
-                alert("لا توجد سجلات مبيعات بار لتصديرها.");
-                return;
-            }
-
-            const now = new Date();
-            const dateStr = now.toISOString().split('T')[0];
-            const header = [
-                ["مقهى ومحمصة RoR - تقرير مبيعات البار اليومية"],
-                [`تاريخ ووقت الاستخراج: ${now.toLocaleDateString('ar-SA')} - ${now.toLocaleTimeString('ar-SA')}`],
-                [],
-                ["التاريخ", "الوردية", "الموظف / الباريستا", "عدد الأكواب", "مبيعات الحلى (ر.س)", "إجمالي الإيراد (ر.س)", "عدد الفواتير"]
-            ];
-
-            let totalCups = 0;
-            let totalSweets = 0;
-            let totalRev = 0;
-            let totalTickets = 0;
-
-            const rows = cafeSales.map(c => {
-                const cups = Number(c.cups) || 0;
-                const sweets = Number(c.sweets) || 0;
-                const rev = Number(c.revenue) || 0;
-                const tickets = Number(c.tickets) || cups;
-                totalCups += cups;
-                totalSweets += sweets;
-                totalRev += rev;
-                totalTickets += tickets;
-
-                return [
-                    c.date || '',
-                    c.shift || '',
-                    c.staff || '',
-                    cups,
-                    sweets,
-                    rev,
-                    tickets
-                ];
-            });
-
-            const summary = [
-                [],
-                ["المجموع الإجمالي", "", "", totalCups, totalSweets, totalRev, totalTickets]
-            ];
-
-            const ws = XLSX.utils.aoa_to_sheet([...header, ...rows, ...summary]);
-            ws['!views'] = [{ rightToLeft: true }];
-            ws['!cols'] = [
-                { wch: 15 }, // التاريخ
-                { wch: 22 }, // الوردية
-                { wch: 18 }, // الموظف
-                { wch: 14 }, // عدد الأكواب
-                { wch: 18 }, // مبيعات الحلى
-                { wch: 20 }, // إجمالي الإيراد
-                { wch: 14 }  // عدد الفواتير
-            ];
-
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "مبيعات البار اليومية");
-            XLSX.writeFile(wb, `تقرير_مبيعات_البار_RoR_${dateStr}.xlsx`);
-            showToast("تم تصدير تقرير مبيعات البار (Excel) بنجاح");
-        }
-
-        function exportRoasterySalesToExcel() {
-            if(typeof XLSX === 'undefined') {
-                alert("جاري تحميل مكتبة إكسيل، يرجى التأكد من اتصال الإنترنت والمحاولة مرة أخرى.");
-                return;
-            }
-            if(!roasterySales || roasterySales.length === 0) {
-                alert("لا توجد سجلات مبيعات محمصة لتصديرها.");
-                return;
-            }
-
-            const now = new Date();
-            const dateStr = now.toISOString().split('T')[0];
-            const header = [
-                ["مقهى ومحمصة RoR - تقرير مبيعات المحمصة وحماصة جيسن 15 كجم والأرباع"],
-                [`تاريخ ووقت الاستخراج: ${now.toLocaleDateString('ar-SA')} - ${now.toLocaleTimeString('ar-SA')}`],
-                [],
-                ["العميل / الجهة", "نوع المحصول", "الكمية المباعة (كجم)", "سعر الكيلو (ر.س)", "إجمالي القيمة (ر.س)", "حالة السداد"]
-            ];
-
-            let totalQty = 0;
-            let totalRevenue = 0;
-
-            const rows = roasterySales.map(r => {
-                const qty = Number(r.qty) || 0;
-                const price = Number(r.price) || 0;
-                const total = Number(r.total) || (qty * price);
-                totalQty += qty;
-                totalRevenue += total;
-
-                return [
-                    r.client || '',
-                    r.crop || '',
-                    qty,
-                    price,
-                    total,
-                    r.status || ''
-                ];
-            });
-
-            const summary = [
-                [],
-                ["المجموع الإجمالي", "", totalQty, "", totalRevenue, ""]
-            ];
-
-            const ws = XLSX.utils.aoa_to_sheet([...header, ...rows, ...summary]);
-            ws['!views'] = [{ rightToLeft: true }];
-            ws['!cols'] = [
-                { wch: 28 }, // العميل
-                { wch: 20 }, // المحصول
-                { wch: 18 }, // الكمية
-                { wch: 16 }, // سعر الكيلو
-                { wch: 18 }, // إجمالي القيمة
-                { wch: 20 }  // حالة السداد
-            ];
-
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "مبيعات المحمصة");
-            XLSX.writeFile(wb, `تقرير_مبيعات_المحمصة_RoR_${dateStr}.xlsx`);
-            showToast("تم تصدير تقرير مبيعات المحمصة (Excel) بنجاح");
-        }
-
-        function exportFinancialsToExcel() {
-            if(typeof XLSX === 'undefined') {
-                alert("جاري تحميل مكتبة إكسيل، يرجى التأكد من اتصال الإنترنت والمحاولة مرة أخرى.");
-                return;
-            }
-            if(!financials || financials.length === 0) {
-                alert("لا توجد التزامات مالية مسجلة لتصديرها.");
-                return;
-            }
-
-            const now = new Date();
-            const dateStr = now.toISOString().split('T')[0];
-            const header = [
-                ["مقهى ومحمصة RoR - سجل المصاريف والالتزامات التشغيلية"],
-                [`تاريخ ووقت الاستخراج: ${now.toLocaleDateString('ar-SA')} - ${now.toLocaleTimeString('ar-SA')}`],
-                [],
-                ["البند المالي", "التصنيف", "المبلغ الشهري (ر.س)", "نوع الالتزام"]
-            ];
-
-            let totalExp = 0;
-            const rows = financials.map(f => {
-                const amt = Number(f.amount) || 0;
-                totalExp += amt;
-                return [f.title || '', f.category || '', amt, f.type || ''];
-            });
-
-            const summary = [
-                [],
-                ["إجمالي المصاريف والالتزامات", "", totalExp, ""]
-            ];
-
-            const ws = XLSX.utils.aoa_to_sheet([...header, ...rows, ...summary]);
-            ws['!views'] = [{ rightToLeft: true }];
-            ws['!cols'] = [
-                { wch: 30 },
-                { wch: 22 },
-                { wch: 20 },
-                { wch: 18 }
-            ];
-
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "المصاريف والالتزامات");
-            XLSX.writeFile(wb, `سجل_الالتزامات_المالية_RoR_${dateStr}.xlsx`);
-            showToast("تم تصدير الالتزامات المالية (Excel) بنجاح");
-        }
-
-        function exportComprehensiveSalesReport() {
-            if(typeof XLSX === 'undefined') {
-                alert("جاري تحميل مكتبة إكسيل، يرجى التأكد من اتصال الإنترنت والمحاولة مرة أخرى.");
-                return;
-            }
-
-            const now = new Date();
-            const dateStr = now.toISOString().split('T')[0];
-            const wb = XLSX.utils.book_new();
-
-            // 1. Dashboard & KPI Sheet
-            const totalCafe = cafeSales.reduce((s, x) => s + (Number(x.revenue) || 0), 0);
-            const totalRoast = roasterySales.reduce((s, x) => s + (Number(x.total) || 0), 0);
-            const totalRevenue = totalCafe + totalRoast;
-            const totalExp = financials.reduce((s, x) => s + (Number(x.amount) || 0), 0);
-            const netIncome = totalRevenue - totalExp;
-            const totalCups = cafeSales.reduce((s, x) => s + (Number(x.cups) || 0), 0);
-            const totalRoastKg = roasterySales.reduce((s, x) => s + (Number(x.qty) || 0), 0);
-
-            const summaryAoa = [
-                ["منظومة RoR - التقرير الشامل للمبيعات والأداء والتحول التشغيلي"],
-                [`تاريخ ووقت الاستخراج: ${now.toLocaleDateString('ar-SA')} - ${now.toLocaleTimeString('ar-SA')}`],
-                [],
-                ["المؤشر التشغيلي والمالي", "القيمة", "الوحدة / التوضيح"],
-                ["إجمالي مبيعات البار اليومية", totalCafe, "ر.س"],
-                ["إجمالي مبيعات المحمصة (الجملة والأرباع)", totalRoast, "ر.س"],
-                ["إجمالي المبيعات الكلية", totalRevenue, "ر.س"],
-                ["المصاريف والالتزامات التشغيلية", totalExp, "ر.س"],
-                ["صافي الدخل التشغيلي التقديري", netIncome, "ر.س"],
-                ["إجمالي أكواب البار المباعة", totalCups, "كوب"],
-                ["إجمالي كميات البن المباعة", totalRoastKg, "كجم"],
-                ["عدد عمليات بيع البن المسجلة", roasterySales.length, "عملية"],
-                ["عدد ورديات البار المسجلة", cafeSales.length, "وردية"]
-            ];
-            const wsSummary = XLSX.utils.aoa_to_sheet(summaryAoa);
-            wsSummary['!views'] = [{ rightToLeft: true }];
-            wsSummary['!cols'] = [{ wch: 38 }, { wch: 18 }, { wch: 25 }];
-            XLSX.utils.book_append_sheet(wb, wsSummary, "ملخص الأداء والمبيعات");
-
-            // 2. Cafe Sales Sheet
-            const cafeHeader = [
-                ["سجل مبيعات البار اليومية - ورديات عارف وعلم"],
-                [],
-                ["التاريخ", "الوردية", "الموظف / الباريستا", "عدد الأكواب", "مبيعات الحلى (ر.س)", "إجمالي الإيراد (ر.س)", "عدد الفواتير"]
-            ];
-            let cCups = 0, cSweets = 0, cRev = 0, cTickets = 0;
-            const cafeRows = cafeSales.map(c => {
-                const cups = Number(c.cups) || 0;
-                const sweets = Number(c.sweets) || 0;
-                const rev = Number(c.revenue) || 0;
-                const tickets = Number(c.tickets) || cups;
-                cCups += cups; cSweets += sweets; cRev += rev; cTickets += tickets;
-                return [c.date || '', c.shift || '', c.staff || '', cups, sweets, rev, tickets];
-            });
-            const wsCafe = XLSX.utils.aoa_to_sheet([...cafeHeader, ...cafeRows, [], ["المجموع الإجمالي", "", "", cCups, cSweets, cRev, cTickets]]);
-            wsCafe['!views'] = [{ rightToLeft: true }];
-            wsCafe['!cols'] = [{ wch: 15 }, { wch: 22 }, { wch: 18 }, { wch: 14 }, { wch: 18 }, { wch: 20 }, { wch: 14 }];
-            XLSX.utils.book_append_sheet(wb, wsCafe, "مبيعات البار");
-
-            // 3. Roastery Sales Sheet
-            const roastHeader = [
-                ["سجل مبيعات المحمصة وحماصة جيسن 15 كجم والأرباع"],
-                [],
-                ["العميل / الجهة", "نوع المحصول", "الكمية (كجم)", "سعر الكيلو (ر.س)", "إجمالي القيمة (ر.س)", "حالة السداد"]
-            ];
-            let rQty = 0, rTotal = 0;
-            const roastRows = roasterySales.map(r => {
-                const qty = Number(r.qty) || 0;
-                const price = Number(r.price) || 0;
-                const total = Number(r.total) || (qty * price);
-                rQty += qty; rTotal += total;
-                return [r.client || '', r.crop || '', qty, price, total, r.status || ''];
-            });
-            const wsRoast = XLSX.utils.aoa_to_sheet([...roastHeader, ...roastRows, [], ["المجموع الإجمالي", "", rQty, "", rTotal, ""]]);
-            wsRoast['!views'] = [{ rightToLeft: true }];
-            wsRoast['!cols'] = [{ wch: 28 }, { wch: 20 }, { wch: 18 }, { wch: 16 }, { wch: 18 }, { wch: 20 }];
-            XLSX.utils.book_append_sheet(wb, wsRoast, "مبيعات المحمصة");
-
-            // 4. Financial Obligations Sheet
-            const finHeader = [
-                ["سجل المصاريف والالتزامات التشغيلية"],
-                [],
-                ["البند المالي", "التصنيف", "المبلغ الشهري (ر.س)", "نوع الالتزام"]
-            ];
-            let fTotal = 0;
-            const finRows = financials.map(f => {
-                const amt = Number(f.amount) || 0;
-                fTotal += amt;
-                return [f.title || '', f.category || '', amt, f.type || ''];
-            });
-            const wsFin = XLSX.utils.aoa_to_sheet([...finHeader, ...finRows, [], ["إجمالي الالتزامات والمصاريف", "", fTotal, ""]]);
-            wsFin['!views'] = [{ rightToLeft: true }];
-            wsFin['!cols'] = [{ wch: 30 }, { wch: 22 }, { wch: 20 }, { wch: 18 }];
-            XLSX.utils.book_append_sheet(wb, wsFin, "الالتزامات التشغيلية");
-
-            XLSX.writeFile(wb, `التقرير_الشامل_لمبيعات_RoR_${dateStr}.xlsx`);
-            showToast("تم تصدير التقرير الشامل لجميع المبيعات (Excel) بنجاح");
-        }
-
-        function exportMenuToExcel() {
-            if(typeof XLSX === 'undefined') {
-                alert("جاري تحميل مكتبة إكسيل...");
-                return;
-            }
-            const now = new Date();
-            const dateStr = now.toISOString().split('T')[0];
-            const header = [
-                ["مقهى ومحمصة RoR - هندسة المنيو والمبيعات الأسبوعية للأصناف"],
-                [`تاريخ ووقت الاستخراج: ${now.toLocaleDateString('ar-SA')} - ${now.toLocaleTimeString('ar-SA')}`],
-                [],
-                ["اسم المشروب / الصنف", "التكلفة (ر.س)", "سعر البيع (ر.س)", "هامش الربح (ر.س)", "نسبة الهامش %", "المبيعات الأسبوعية (كوب)", "الإيراد الأسبوعي (ر.س)"]
-            ];
-
-            let totalSales = 0;
-            let totalRevenue = 0;
-
-            const rows = menuItems.map(m => {
-                const cost = Number(m.cost) || 0;
-                const price = Number(m.price) || 0;
-                const sales = Number(m.sales) || 0;
-                const margin = price - cost;
-                const marginPct = price > 0 ? ((margin / price) * 100).toFixed(1) + '%' : '0%';
-                const rev = price * sales;
-                totalSales += sales;
-                totalRevenue += rev;
-
-                return [m.name || '', cost, price, margin, marginPct, sales, rev];
-            });
-
-            const summary = [
-                [],
-                ["المجموع الإجمالي", "", "", "", "", totalSales, totalRevenue]
-            ];
-
-            const ws = XLSX.utils.aoa_to_sheet([...header, ...rows, ...summary]);
-            ws['!views'] = [{ rightToLeft: true }];
-            ws['!cols'] = [
-                { wch: 28 }, // اسم الصنف
-                { wch: 15 }, // التكلفة
-                { wch: 15 }, // البيع
-                { wch: 16 }, // الهامش
-                { wch: 16 }, // نسبة الهامش
-                { wch: 22 }, // المبيعات الأسبوعية
-                { wch: 22 }  // الإيراد
-            ];
-
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "هندسة القائمة");
-            XLSX.writeFile(wb, `تقرير_هندسة_المنيو_RoR_${dateStr}.xlsx`);
-            showToast("تم تصدير تقرير المنيو والمبيعات (Excel) بنجاح");
+            const cafe = cafeSales.reduce((s, x) => s + x.revenue, 0);
+            const roast = roasterySales.reduce((s, x) => s + x.total, 0);
+            document.getElementById('stat-cafe').textContent = `${cafe.toLocaleString()} ر.س`;
+            document.getElementById('stat-roastery').textContent = `${roast.toLocaleString()} ر.س`;
+            document.getElementById('stat-net').textContent = `${(cafe + roast).toLocaleString()} ر.س`;
         }
     </script>
 </body>
